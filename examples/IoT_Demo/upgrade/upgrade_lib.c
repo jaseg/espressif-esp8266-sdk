@@ -21,7 +21,7 @@ struct upgrade_param {
     uint8_t *buffer;
 };
 
-LOCAL struct upgrade_param *upgrade;
+static struct upgrade_param *upgrade;
 
 extern SpiFlashChip *flashchip;
 
@@ -31,7 +31,7 @@ extern SpiFlashChip *flashchip;
  * Parameters   :
  * Returns      :
 *******************************************************************************/
-LOCAL bool ICACHE_FLASH_ATTR
+static bool ICACHE_FLASH_ATTR
 system_upgrade_internal(struct upgrade_param *upgrade, uint8_t *data, uint16 len)
 {
     bool ret = false;
@@ -86,7 +86,7 @@ system_upgrade_internal(struct upgrade_param *upgrade, uint8_t *data, uint16 len
  * Parameters   :
  * Returns      :
 *******************************************************************************/
-LOCAL bool ICACHE_FLASH_ATTR
+static bool ICACHE_FLASH_ATTR
 system_upgrade(uint8_t *data, uint16 len)
 {
     bool ret;
@@ -102,7 +102,7 @@ system_upgrade(uint8_t *data, uint16 len)
  * Parameters   :
  * Returns      :
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 system_upgrade_init(void)
 {
     uint32_t user_bin2_start;
@@ -137,7 +137,7 @@ system_upgrade_init(void)
  * Parameters   :
  * Returns      :
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 system_upgrade_deinit(void)
 {
     os_free(upgrade);

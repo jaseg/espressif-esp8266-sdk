@@ -16,19 +16,19 @@
 #if SENSOR_DEVICE
 #include "user_sensor.h"
 
-LOCAL struct keys_param keys;
-LOCAL struct single_key_param *single_key[SENSOR_KEY_NUM];
-LOCAL os_timer_t sensor_sleep_timer;
-LOCAL os_timer_t link_led_timer;
-LOCAL uint8_t link_led_level = 0;
-LOCAL uint32_t link_start_time;
+static struct keys_param keys;
+static struct single_key_param *single_key[SENSOR_KEY_NUM];
+static os_timer_t sensor_sleep_timer;
+static os_timer_t link_led_timer;
+static uint8_t link_led_level = 0;
+static uint32_t link_start_time;
 
 #if HUMITURE_SUB_DEVICE
 #include "driver/i2c_master.h"
 
 #define MVH3004_Addr    0x88
 
-LOCAL uint8_t humiture_data[4];
+static uint8_t humiture_data[4];
 
 /******************************************************************************
  * FunctionName : user_mvh3004_burst_read
@@ -38,7 +38,7 @@ LOCAL uint8_t humiture_data[4];
  *                uint16 len - read length
  * Returns      : bool - true or false
 *******************************************************************************/
-LOCAL bool ICACHE_FLASH_ATTR
+static bool ICACHE_FLASH_ATTR
 user_mvh3004_burst_read(uint8_t addr, uint8_t *pData, uint16 len)
 {
     uint8_t ack;
@@ -115,7 +115,7 @@ user_mvh3004_get_poweron_th(void)
  * Parameters   : none
  * Returns      : none
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 user_sensor_long_press(void)
 {
     user_esp_platform_set_active(0);
@@ -123,7 +123,7 @@ user_sensor_long_press(void)
     system_restart();
 }
 
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 user_link_led_init(void)
 {
     PIN_FUNC_SELECT(SENSOR_LINK_LED_IO_MUX, SENSOR_LINK_LED_IO_FUNC);
@@ -137,7 +137,7 @@ user_link_led_output(uint8_t level)
     GPIO_OUTPUT_SET(GPIO_ID_PIN(SENSOR_LINK_LED_IO_NUM), level);
 }
 
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 user_link_led_timer_cb(void)
 {
     link_led_level = (~link_led_level) & 0x01;

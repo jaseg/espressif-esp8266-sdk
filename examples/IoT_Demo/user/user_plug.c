@@ -18,11 +18,11 @@
 
 #if PLUG_DEVICE
 
-LOCAL struct plug_saved_param plug_param;
-LOCAL struct keys_param keys;
-LOCAL struct single_key_param *single_key[PLUG_KEY_NUM];
-LOCAL os_timer_t link_led_timer;
-LOCAL uint8_t link_led_level = 0;
+static struct plug_saved_param plug_param;
+static struct keys_param keys;
+static struct single_key_param *single_key[PLUG_KEY_NUM];
+static os_timer_t link_led_timer;
+static uint8_t link_led_level = 0;
 
 /******************************************************************************
  * FunctionName : user_plug_get_status
@@ -62,7 +62,7 @@ user_plug_set_status(bool status)
  * Parameters   : none
  * Returns      : none
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 user_plug_short_press(void)
 {
     user_plug_set_status((~plug_param.status) & 0x01);
@@ -78,7 +78,7 @@ user_plug_short_press(void)
  * Parameters   : none
  * Returns      : none
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 user_plug_long_press(void)
 {
 	user_esp_platform_set_active(0);
@@ -86,7 +86,7 @@ user_plug_long_press(void)
     system_restart();
 }
 
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 user_link_led_init(void)
 {
     PIN_FUNC_SELECT(PLUG_LINK_LED_IO_MUX, PLUG_LINK_LED_IO_FUNC);
@@ -98,7 +98,7 @@ user_link_led_output(uint8_t level)
     GPIO_OUTPUT_SET(GPIO_ID_PIN(PLUG_LINK_LED_IO_NUM), level);
 }
 
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 user_link_led_timer_cb(void)
 {
     link_led_level = (~link_led_level) & 0x01;

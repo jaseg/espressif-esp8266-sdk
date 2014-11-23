@@ -18,12 +18,12 @@
 #define UPGRADE_DBG
 #endif
 
-LOCAL struct espconn *upgrade_conn;
-LOCAL uint8_t *pbuf;
-LOCAL os_timer_t upgrade_10s;
-LOCAL os_timer_t upgrade_timer;
-LOCAL uint32_t totallength = 0;
-LOCAL uint32_t sumlength = 0;
+static struct espconn *upgrade_conn;
+static uint8_t *pbuf;
+static os_timer_t upgrade_10s;
+static os_timer_t upgrade_timer;
+static uint32_t totallength = 0;
+static uint32_t sumlength = 0;
 
 /******************************************************************************
  * FunctionName : upgrade_disconcb
@@ -31,7 +31,7 @@ LOCAL uint32_t sumlength = 0;
  * Parameters   : arg -- Additional argument to pass to the callback function
  * Returns      : none
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 upgrade_disconcb(void *arg)
 {
     struct espconn *pespconn = arg;
@@ -53,7 +53,7 @@ upgrade_disconcb(void *arg)
  * Parameters   : arg -- Additional argument to pass to the callback function
  * Returns      : none
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 upgrade_datasent(void *arg)
 {
     struct espconn *pespconn = arg;
@@ -69,7 +69,7 @@ upgrade_datasent(void *arg)
  * Returns      : none
 *******************************************************************************/
 void ICACHE_FLASH_ATTR
-LOCAL upgrade_deinit(void)
+static upgrade_deinit(void)
 {
     if (system_upgrade_flag_check() != UPGRADE_FLAG_START) {
         system_upgrade_deinit();
@@ -84,7 +84,7 @@ LOCAL upgrade_deinit(void)
  * Parameters   : pespconn -- A point to the host
  * Returns      : none
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR upgrade_10s_cb(struct espconn *pespconn)
+static void ICACHE_FLASH_ATTR upgrade_10s_cb(struct espconn *pespconn)
 {
     if (pespconn == NULL) {
         return;
@@ -105,7 +105,7 @@ LOCAL void ICACHE_FLASH_ATTR upgrade_10s_cb(struct espconn *pespconn)
  *                length -- The length of received data
  * Returns      : none
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 upgrade_check(struct upgrade_server_info *server)
 {
 	UPGRADE_DBG("upgrade_check\n");
@@ -146,7 +146,7 @@ upgrade_check(struct upgrade_server_info *server)
  *                length -- The length of upgrade data
  * Returns      : none
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 upgrade_download(void *arg, char *pusrdata, unsigned short length)
 {
     char *ptr = NULL;
@@ -208,7 +208,7 @@ upgrade_download(void *arg, char *pusrdata, unsigned short length)
  * Parameters   : arg -- Additional argument to pass to the callback function
  * Returns      : none
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 upgrade_connect_cb(void *arg)
 {
     struct espconn *pespconn = arg;
@@ -236,7 +236,7 @@ upgrade_connect_cb(void *arg)
  *                url -- the url whitch upgrade files saved
  * Returns      : none
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 upgrade_connect(struct upgrade_server_info *server)
 {
 	UPGRADE_DBG("upgrade_connect\n");

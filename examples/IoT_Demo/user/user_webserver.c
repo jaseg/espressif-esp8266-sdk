@@ -28,13 +28,13 @@
 #include "user_light.h"
 #endif
 
-LOCAL struct station_config *sta_conf;
-LOCAL struct softap_config *ap_conf;
+static struct station_config *sta_conf;
+static struct softap_config *ap_conf;
 
 //LOCAL struct secrty_server_info *sec_server;
 //LOCAL struct upgrade_server_info *server;
 //struct lewei_login_info *login_info;
-LOCAL scaninfo *pscaninfo;
+static scaninfo *pscaninfo;
 
 extern uint16 scannum;
 
@@ -44,7 +44,7 @@ extern uint16 scannum;
  * Parameters   : js_ctx -- A pointer to a JSON set up
  * Returns      : result
 *******************************************************************************/
-LOCAL int ICACHE_FLASH_ATTR
+static int ICACHE_FLASH_ATTR
 device_get(struct jsontree_context *js_ctx)
 {
     const char *path = jsontree_path_name(js_ctx, js_ctx->depth - 1);
@@ -70,7 +70,7 @@ device_get(struct jsontree_context *js_ctx)
     return 0;
 }
 
-LOCAL struct jsontree_callback device_callback =
+static struct jsontree_callback device_callback =
     JSONTREE_CALLBACK(device_get, NULL);
 
 /******************************************************************************
@@ -79,7 +79,7 @@ LOCAL struct jsontree_callback device_callback =
  * Parameters   : js_ctx -- A pointer to a JSON set up
  * Returns      : result
 *******************************************************************************/
-LOCAL int ICACHE_FLASH_ATTR
+static int ICACHE_FLASH_ATTR
 version_get(struct jsontree_context *js_ctx)
 {
     const char *path = jsontree_path_name(js_ctx, js_ctx->depth - 1);
@@ -100,7 +100,7 @@ version_get(struct jsontree_context *js_ctx)
     return 0;
 }
 
-LOCAL struct jsontree_callback version_callback =
+static struct jsontree_callback version_callback =
     JSONTREE_CALLBACK(version_get, NULL);
 
 JSONTREE_OBJECT(device_tree,
@@ -116,7 +116,7 @@ JSONTREE_OBJECT(info_tree,
 JSONTREE_OBJECT(INFOTree,
                 JSONTREE_PAIR("info", &info_tree));
 
-LOCAL int ICACHE_FLASH_ATTR
+static int ICACHE_FLASH_ATTR
 connect_status_get(struct jsontree_context *js_ctx)
 {
     const char *path = jsontree_path_name(js_ctx, js_ctx->depth - 1);
@@ -128,7 +128,7 @@ connect_status_get(struct jsontree_context *js_ctx)
     return 0;
 }
 
-LOCAL struct jsontree_callback connect_status_callback =
+static struct jsontree_callback connect_status_callback =
     JSONTREE_CALLBACK(connect_status_get, NULL);
 
 JSONTREE_OBJECT(status_sub_tree,
@@ -147,7 +147,7 @@ JSONTREE_OBJECT(con_status_tree,
  * Parameters   : js_ctx -- A pointer to a JSON set up
  * Returns      : result
 *******************************************************************************/
-LOCAL int ICACHE_FLASH_ATTR
+static int ICACHE_FLASH_ATTR
 status_get(struct jsontree_context *js_ctx)
 {
     if (user_plug_get_status() == 1) {
@@ -166,7 +166,7 @@ status_get(struct jsontree_context *js_ctx)
  *                parser -- A pointer to a JSON parser state
  * Returns      : result
 *******************************************************************************/
-LOCAL int ICACHE_FLASH_ATTR
+static int ICACHE_FLASH_ATTR
 status_set(struct jsontree_context *js_ctx, struct jsonparse_state *parser)
 {
     int type;
@@ -186,7 +186,7 @@ status_set(struct jsontree_context *js_ctx, struct jsonparse_state *parser)
     return 0;
 }
 
-LOCAL struct jsontree_callback status_callback =
+static struct jsontree_callback status_callback =
     JSONTREE_CALLBACK(status_get, status_set);
 
 JSONTREE_OBJECT(status_tree,
@@ -198,7 +198,7 @@ JSONTREE_OBJECT(StatusTree,
 #endif
 
 #if LIGHT_DEVICE
-LOCAL int ICACHE_FLASH_ATTR
+static int ICACHE_FLASH_ATTR
 light_status_get(struct jsontree_context *js_ctx)
 {
     const char *path = jsontree_path_name(js_ctx, js_ctx->depth - 1);
@@ -216,7 +216,7 @@ light_status_get(struct jsontree_context *js_ctx)
     return 0;
 }
 
-LOCAL int ICACHE_FLASH_ATTR
+static int ICACHE_FLASH_ATTR
 light_status_set(struct jsontree_context *js_ctx, struct jsonparse_state *parser)
 {
     int type;
@@ -260,7 +260,7 @@ light_status_set(struct jsontree_context *js_ctx, struct jsonparse_state *parser
     return 0;
 }
 
-LOCAL struct jsontree_callback light_callback =
+static struct jsontree_callback light_callback =
     JSONTREE_CALLBACK(light_status_get, light_status_set);
 
 JSONTREE_OBJECT(rgb_tree,
@@ -280,7 +280,7 @@ JSONTREE_OBJECT(PwmTree,
  * Parameters   : js_ctx -- A pointer to a JSON set up
  * Returns      : result
 *******************************************************************************/
-LOCAL int ICACHE_FLASH_ATTR
+static int ICACHE_FLASH_ATTR
 wifi_station_get(struct jsontree_context *js_ctx)
 {
     const char *path = jsontree_path_name(js_ctx, js_ctx->depth - 1);
@@ -315,7 +315,7 @@ wifi_station_get(struct jsontree_context *js_ctx)
  *                parser -- A pointer to a JSON parser state
  * Returns      : result
 *******************************************************************************/
-LOCAL int ICACHE_FLASH_ATTR
+static int ICACHE_FLASH_ATTR
 wifi_station_set(struct jsontree_context *js_ctx, struct jsonparse_state *parser)
 {
     int type;
@@ -362,7 +362,7 @@ wifi_station_set(struct jsontree_context *js_ctx, struct jsonparse_state *parser
     return 0;
 }
 
-LOCAL struct jsontree_callback wifi_station_callback =
+static struct jsontree_callback wifi_station_callback =
     JSONTREE_CALLBACK(wifi_station_get, wifi_station_set);
 
 JSONTREE_OBJECT(get_station_config_tree,
@@ -394,7 +394,7 @@ JSONTREE_OBJECT(set_station_tree,
  * Parameters   : js_ctx -- A pointer to a JSON set up
  * Returns      : result
 *******************************************************************************/
-LOCAL int ICACHE_FLASH_ATTR
+static int ICACHE_FLASH_ATTR
 wifi_softap_get(struct jsontree_context *js_ctx)
 {
     const char *path = jsontree_path_name(js_ctx, js_ctx->depth - 1);
@@ -457,7 +457,7 @@ wifi_softap_get(struct jsontree_context *js_ctx)
  *                parser -- A pointer to a JSON parser state
  * Returns      : result
 *******************************************************************************/
-LOCAL int ICACHE_FLASH_ATTR
+static int ICACHE_FLASH_ATTR
 wifi_softap_set(struct jsontree_context *js_ctx, struct jsonparse_state *parser)
 {
     int type;
@@ -518,7 +518,7 @@ wifi_softap_set(struct jsontree_context *js_ctx, struct jsonparse_state *parser)
     return 0;
 }
 
-LOCAL struct jsontree_callback wifi_softap_callback =
+static struct jsontree_callback wifi_softap_callback =
     JSONTREE_CALLBACK(wifi_softap_get, wifi_softap_set);
 
 JSONTREE_OBJECT(softap_config_tree,
@@ -560,12 +560,12 @@ JSONTREE_OBJECT(wifi_req_tree,
  * Parameters   : js_ctx -- A pointer to a JSON set up
  * Returns      : result
 *******************************************************************************/
-LOCAL int ICACHE_FLASH_ATTR
+static int ICACHE_FLASH_ATTR
 scan_get(struct jsontree_context *js_ctx)
 {
     const char *path = jsontree_path_name(js_ctx, js_ctx->depth - 1);
     //    STAILQ_HEAD(, bss_info) *pbss = scanarg;
-    LOCAL struct bss_info *bss;
+    static struct bss_info *bss;
 
     if (os_strncmp(path, "TotalPage", 9) == 0) {
         jsontree_write_int(js_ctx, pscaninfo->totalpage);
@@ -624,7 +624,7 @@ scan_get(struct jsontree_context *js_ctx)
     return 0;
 }
 
-LOCAL struct jsontree_callback scan_callback =
+static struct jsontree_callback scan_callback =
     JSONTREE_CALLBACK(scan_get, NULL);
 
 JSONTREE_OBJECT(scaninfo_tree,
@@ -659,7 +659,7 @@ JSONTREE_OBJECT(scan_tree,
  *                purl_frame -- the result of parsing the url
  * Returns      : none
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 parse_url(char *precv, URL_Frame *purl_frame)
 {
     char *str = NULL;
@@ -725,9 +725,9 @@ parse_url(char *precv, URL_Frame *purl_frame)
     }
 }
 
-LOCAL char *precvbuffer;
+static char *precvbuffer;
 static uint32_t dat_sumlength = 0;
-LOCAL bool save_data(char *precv, uint16 length)
+static bool save_data(char *precv, uint16 length)
 {
     bool flag = false;
     char length_buf[10] = {0};
@@ -783,8 +783,8 @@ LOCAL bool save_data(char *precv, uint16 length)
     }
 }
 
-LOCAL os_timer_t *restart_10ms;
-LOCAL rst_parm *rstparm;
+static os_timer_t *restart_10ms;
+static rst_parm *rstparm;
 
 /******************************************************************************
  * FunctionName : restart_10ms_cb
@@ -792,7 +792,7 @@ LOCAL rst_parm *rstparm;
  * Parameters   : arg -- Additional argument to pass to the function
  * Returns      : none
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 restart_10ms_cb(void *arg)
 {
     if (rstparm != NULL && rstparm->pespconn != NULL) {
@@ -855,7 +855,7 @@ restart_10ms_cb(void *arg)
  *                psend -- The send data
  * Returns      :
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 data_send(void *arg, bool responseOK, char *psend)
 {
     uint16 length = 0;
@@ -913,7 +913,7 @@ Content-Length: 0\r\nServer: lwIP/1.4.0\r\n\n");
  *                ParmType -- json format type
  * Returns      : none
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 json_send(void *arg, ParmType ParmType)
 {
     char *pbuf = NULL;
@@ -1036,7 +1036,7 @@ json_send(void *arg, ParmType ParmType)
  *                responseOK --  true or false
  * Returns      : none
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 response_send(void *arg, bool responseOK)
 {
     struct espconn *ptrespconn = arg;
@@ -1051,7 +1051,7 @@ response_send(void *arg, bool responseOK)
  *                status -- scan status
  * Returns      : none
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR json_scan_cb(void *arg, STATUS status)
+static void ICACHE_FLASH_ATTR json_scan_cb(void *arg, STATUS status)
 {
     pscaninfo->pbss = arg;
 
@@ -1084,7 +1084,7 @@ LOCAL void ICACHE_FLASH_ATTR json_scan_cb(void *arg, STATUS status)
  *                length -- The length of received data
  * Returns      : none
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 webserver_recv(void *arg, char *pusrdata, unsigned short length)
 {
     URL_Frame *pURL_Frame = NULL;
@@ -1351,7 +1351,7 @@ webserver_recv(void *arg, char *pusrdata, unsigned short length)
  * Parameters   : arg -- Additional argument to pass to the callback function
  * Returns      : none
 *******************************************************************************/
-LOCAL ICACHE_FLASH_ATTR
+static ICACHE_FLASH_ATTR
 void webserver_recon(void *arg, int8_t err)
 {
     struct espconn *pesp_conn = arg;
@@ -1367,7 +1367,7 @@ void webserver_recon(void *arg, int8_t err)
  * Parameters   : arg -- Additional argument to pass to the callback function
  * Returns      : none
 *******************************************************************************/
-LOCAL ICACHE_FLASH_ATTR
+static ICACHE_FLASH_ATTR
 void webserver_discon(void *arg)
 {
     struct espconn *pesp_conn = arg;
@@ -1383,7 +1383,7 @@ void webserver_discon(void *arg)
  * Parameters   : arg -- Additional argument to pass to the callback function
  * Returns      : none
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 webserver_listen(void *arg)
 {
     struct espconn *pesp_conn = arg;
@@ -1402,8 +1402,8 @@ webserver_listen(void *arg)
 void ICACHE_FLASH_ATTR
 user_webserver_init(uint32_t port)
 {
-    LOCAL struct espconn esp_conn;
-    LOCAL esp_tcp esptcp;
+    static struct espconn esp_conn;
+    static esp_tcp esptcp;
 
     esp_conn.type = ESPCONN_TCP;
     esp_conn.state = ESPCONN_NONE;

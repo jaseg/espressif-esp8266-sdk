@@ -25,7 +25,7 @@
 #define ESP_DBG
 #endif
 
-LOCAL os_timer_t device_timer;
+static os_timer_t device_timer;
 uint32_t min_wait_second;
 char timestamp_str[11];
 int timestamp = 0;

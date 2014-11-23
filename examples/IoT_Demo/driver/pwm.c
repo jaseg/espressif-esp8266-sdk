@@ -15,22 +15,22 @@
 #include "user_interface.h"
 #include "driver/pwm.h"
 
-LOCAL struct pwm_single_param pwm_single_toggle[2][PWM_CHANNEL + 1];
-LOCAL struct pwm_single_param *pwm_single;
+static struct pwm_single_param pwm_single_toggle[2][PWM_CHANNEL + 1];
+static struct pwm_single_param *pwm_single;
 
-LOCAL struct pwm_param pwm;
+static struct pwm_param pwm;
 
-LOCAL uint8_t pwm_out_io_num[PWM_CHANNEL] = {PWM_0_OUT_IO_NUM, PWM_1_OUT_IO_NUM, PWM_2_OUT_IO_NUM};
+static uint8_t pwm_out_io_num[PWM_CHANNEL] = {PWM_0_OUT_IO_NUM, PWM_1_OUT_IO_NUM, PWM_2_OUT_IO_NUM};
 
-LOCAL uint8_t pwm_channel_toggle[2];
-LOCAL uint8_t *pwm_channel;
+static uint8_t pwm_channel_toggle[2];
+static uint8_t *pwm_channel;
 
-LOCAL uint8_t pwm_toggle = 1;
-LOCAL uint8_t pwm_timer_down = 1;
+static uint8_t pwm_toggle = 1;
+static uint8_t pwm_timer_down = 1;
 
-LOCAL uint8_t pwm_current_channel = 0;
+static uint8_t pwm_current_channel = 0;
 
-LOCAL uint16 pwm_gpio = 0;
+static uint16 pwm_gpio = 0;
 
 //XXX: 0xffffffff/(80000000/16)=35A
 #define US_TO_RTC_TIMER_TICKS(t)          \
@@ -54,7 +54,7 @@ typedef enum {
     TM_EDGE_INT   = 0,
 } TIMER_INT_MODE;
 
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 pwm_insert_sort(struct pwm_single_param pwm[], uint8_t n)
 {
     uint8_t i;
@@ -206,7 +206,7 @@ pwm_set_freq(uint16 freq)
  *                uint8_t *duty : each channel's duty
  * Returns      : NONE
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 pwm_set_freq_duty(uint16 freq, uint8_t *duty)
 {
     uint8_t i;
@@ -249,7 +249,7 @@ pwm_get_freq(void)
  * Parameters   : NONE
  * Returns      : NONE
 *******************************************************************************/
-LOCAL void
+static void
 pwm_tim1_intr_handler(void)
 {
     RTC_CLR_REG_MASK(FRC1_INT_ADDRESS, FRC1_INT_CLR_MASK);

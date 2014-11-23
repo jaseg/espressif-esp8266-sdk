@@ -19,7 +19,7 @@
 // UartDev is defined and initialized in rom code.
 extern UartDevice UartDev;
 
-LOCAL void uart0_rx_intr_handler(void *para);
+static void uart0_rx_intr_handler(void *para);
 
 /******************************************************************************
  * FunctionName : uart_config
@@ -29,7 +29,7 @@ LOCAL void uart0_rx_intr_handler(void *para);
  * Parameters   : uart_no, use UART0 or UART1 defined ahead
  * Returns      : NONE
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 uart_config(uint8_t uart_no)
 {
     if (uart_no == UART1) {
@@ -69,7 +69,7 @@ uart_config(uint8_t uart_no)
  * Parameters   : uint8_t TxChar - character to tx
  * Returns      : OK
 *******************************************************************************/
-LOCAL STATUS ICACHE_FLASH_ATTR
+static STATUS ICACHE_FLASH_ATTR
 uart1_tx_one_char(uint8_t TxChar)
 {
     while (true)
@@ -91,7 +91,7 @@ uart1_tx_one_char(uint8_t TxChar)
  * Parameters   : char c - character to tx
  * Returns      : NONE
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 uart1_write_char(char c)
 {
     if (c == '\n') {
@@ -110,7 +110,7 @@ uart1_write_char(char c)
  * Parameters   : void *para - point to ETS_UART_INTR_ATTACH's arg
  * Returns      : NONE
 *******************************************************************************/
-LOCAL void
+static void
 uart0_rx_intr_handler(void *para)
 {
     /* uart0 and uart1 intr combine togther, when interrupt occur, see reg 0x3ff20020, bit2, bit0 represents

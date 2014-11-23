@@ -18,7 +18,7 @@
 
 #if LIGHT_DEVICE
 
-LOCAL struct light_saved_param light_param;
+static struct light_saved_param light_param;
 
 /******************************************************************************
  * FunctionName : user_light_get_duty

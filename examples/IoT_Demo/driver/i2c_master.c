@@ -14,8 +14,8 @@
 
 #include "driver/i2c_master.h"
 
-LOCAL uint8_t m_nLastSDA;
-LOCAL uint8_t m_nLastSCL;
+static uint8_t m_nLastSDA;
+static uint8_t m_nLastSCL;
 
 /******************************************************************************
  * FunctionName : i2c_master_setDC
@@ -25,7 +25,7 @@ LOCAL uint8_t m_nLastSCL;
  *                uint8_t SCL
  * Returns      : NONE
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 i2c_master_setDC(uint8_t SDA, uint8_t SCL)
 {
     SDA	&= 0x01;
@@ -51,7 +51,7 @@ i2c_master_setDC(uint8_t SDA, uint8_t SCL)
  * Parameters   : NONE
  * Returns      : uint8_t - SDA bit value
 *******************************************************************************/
-LOCAL uint8_t ICACHE_FLASH_ATTR
+static uint8_t ICACHE_FLASH_ATTR
 i2c_master_getDC(void)
 {
     uint8_t sda_out;

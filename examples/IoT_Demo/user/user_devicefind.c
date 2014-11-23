@@ -32,7 +32,7 @@ const char *device_find_response_ok = "I'm Flammable Gas.";
 #endif
 
 /*---------------------------------------------------------------------------*/
-LOCAL struct espconn ptrespconn;
+static struct espconn ptrespconn;
 
 /******************************************************************************
  * FunctionName : user_devicefind_recv
@@ -42,7 +42,7 @@ LOCAL struct espconn ptrespconn;
  *                length -- The length of received data
  * Returns      : none
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 user_devicefind_recv(void *arg, char *pusrdata, unsigned short length)
 {
     char DeviceBuffer[40] = {0};

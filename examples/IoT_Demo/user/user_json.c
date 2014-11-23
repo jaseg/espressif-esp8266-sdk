@@ -16,9 +16,9 @@
 
 #include "user_json.h"
 
-LOCAL char *json_buf;
-LOCAL int pos;
-LOCAL int size;
+static char *json_buf;
+static int pos;
+static int size;
 
 /******************************************************************************
  * FunctionName : find_json_path

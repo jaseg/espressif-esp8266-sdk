@@ -54,7 +54,7 @@
 \"body\": {\"datapoint\": {\"x\": %d.%03d}}, \"meta\": {\"Authorization\": \"token %s\"}}\n"
 #endif
 
-LOCAL uint32_t count = 0;
+static uint32_t count = 0;
 #endif
 
 #define UPGRADE_FRAME  "{\"path\": \"/v1/messages/\", \"method\": \"POST\", \"meta\": {\"Authorization\": \"token %s\"},\
@@ -72,21 +72,21 @@ Authorization: token %s\r\n\
 Accept-Encoding: gzip,deflate,sdch\r\n\
 Accept-Language: zh-CN,zh;q=0.8\r\n\r\n"
 
-LOCAL uint8_t ping_status;
-LOCAL os_timer_t beacon_timer;
+static uint8_t ping_status;
+static os_timer_t beacon_timer;
 #endif
 
 #ifdef USE_DNS
 ip_addr_t esp_server_ip;
 #endif
 
-LOCAL struct espconn user_conn;
-LOCAL struct _esp_tcp user_tcp;
-LOCAL os_timer_t client_timer;
-LOCAL struct esp_platform_saved_param esp_param;
-LOCAL uint8_t device_status;
-LOCAL uint8_t device_recon_count = 0;
-LOCAL uint32_t active_nonce = 0;
+static struct espconn user_conn;
+static struct _esp_tcp user_tcp;
+static os_timer_t client_timer;
+static struct esp_platform_saved_param esp_param;
+static uint8_t device_status;
+static uint8_t device_recon_count = 0;
+static uint32_t active_nonce = 0;
 struct rst_info rtc_info;
 void user_esp_platform_check_ip(uint8_t reset_flag);
 
@@ -422,7 +422,7 @@ user_esp_platform_set_info(struct espconn *pconn, uint8_t *pbuffer)
  * Parameters   : pespconn -- the espconn used to reconnect with host
  * Returns      : none
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 user_esp_platform_reconnect(struct espconn *pespconn)
 {
     ESP_DBG("user_esp_platform_reconnect\n");
@@ -436,7 +436,7 @@ user_esp_platform_reconnect(struct espconn *pespconn)
  * Parameters   : arg -- Additional argument to pass to the callback function
  * Returns      : none
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 user_esp_platform_discon_cb(void *arg)
 {
     struct espconn *pespconn = arg;
@@ -484,7 +484,7 @@ user_esp_platform_discon_cb(void *arg)
  * Parameters   : espconn -- the espconn used to disconnect with host
  * Returns      : none
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 user_esp_platform_discon(struct espconn *pespconn)
 {
     ESP_DBG("user_esp_platform_discon\n");
@@ -506,7 +506,7 @@ user_esp_platform_discon(struct espconn *pespconn)
  * Parameters   : arg -- Additional argument to pass to the callback function
  * Returns      : none
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 user_esp_platform_sent_cb(void *arg)
 {
     struct espconn *pespconn = arg;
@@ -520,7 +520,7 @@ user_esp_platform_sent_cb(void *arg)
  * Parameters   : pespconn -- the espconn used to connetion with the host
  * Returns      : none
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 user_esp_platform_sent(struct espconn *pespconn)
 {
     uint8_t devkey[token_size] = {0};
@@ -612,7 +612,7 @@ user_esp_platform_sent(struct espconn *pespconn)
  * Parameters   : pespconn -- the espconn used to connetion with the host
  * Returns      : none
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 user_esp_platform_sent_beacon(struct espconn *pespconn)
 {
     if (pespconn == NULL) {
@@ -663,7 +663,7 @@ user_esp_platform_sent_beacon(struct espconn *pespconn)
  *                nonce -- mark the message received from server
  * Returns      : none
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 user_platform_rpc_set_rsp(struct espconn *pespconn, int nonce)
 {
     char *pbuf = (char *)os_zalloc(packet_size);
@@ -688,7 +688,7 @@ user_platform_rpc_set_rsp(struct espconn *pespconn, int nonce)
  * Parameters   : pespconn -- the espconn used to connetion with the host
  * Returns      : none
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 user_platform_timer_get(struct espconn *pespconn)
 {
     uint8_t devkey[token_size] = {0};
@@ -715,7 +715,7 @@ user_platform_timer_get(struct espconn *pespconn)
  * Parameters   : pespconn -- the espconn used to connetion with the host
  * Returns      : none
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 user_esp_platform_upgrade_rsp(void *arg)
 {
     struct upgrade_server_info *server = arg;
@@ -774,7 +774,7 @@ user_esp_platform_upgrade_rsp(void *arg)
  *                server -- upgrade param
  * Returns      : none
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 user_esp_platform_upgrade_begin(struct espconn *pespconn, struct upgrade_server_info *server)
 {
     uint8_t user_bin[9] = {0};
@@ -829,11 +829,11 @@ user_esp_platform_upgrade_begin(struct espconn *pespconn, struct upgrade_server_
  *                length -- The length of received data
  * Returns      : none
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 user_esp_platform_recv_cb(void *arg, char *pusrdata, unsigned short length)
 {
     char *pstr = NULL;
-    LOCAL char pbuffer[1024 * 2] = {0};
+    static char pbuffer[1024 * 2] = {0};
     struct espconn *pespconn = arg;
 
     ESP_DBG("user_esp_platform_recv_cb %s\n", pusrdata);
@@ -939,7 +939,7 @@ user_esp_platform_recv_cb(void *arg, char *pusrdata, unsigned short length)
  * Parameters   :
  * Returns      : none
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 user_esp_platform_ap_change(void)
 {
     uint8_t current_id;
@@ -964,7 +964,7 @@ user_esp_platform_ap_change(void)
 }
 #endif
 
-LOCAL bool ICACHE_FLASH_ATTR
+static bool ICACHE_FLASH_ATTR
 user_esp_platform_reset_mode(void)
 {
     if (wifi_get_opmode() == STATION_MODE) {
@@ -989,7 +989,7 @@ user_esp_platform_reset_mode(void)
  * Parameters   : arg -- Additional argument to pass to the callback function
  * Returns      : none
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 user_esp_platform_recon_cb(void *arg, int8_t err)
 {
     struct espconn *pespconn = (struct espconn *)arg;
@@ -1043,7 +1043,7 @@ user_esp_platform_recon_cb(void *arg, int8_t err)
  * Parameters   : arg -- Additional argument to pass to the callback function
  * Returns      : none
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 user_esp_platform_connect_cb(void *arg)
 {
     struct espconn *pespconn = arg;
@@ -1068,7 +1068,7 @@ user_esp_platform_connect_cb(void *arg)
  * Parameters   : espconn -- the espconn used to connect the connection
  * Returns      : none
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 user_esp_platform_connect(struct espconn *pespconn)
 {
     ESP_DBG("user_esp_platform_connect\n");
@@ -1092,7 +1092,7 @@ user_esp_platform_connect(struct espconn *pespconn)
  *                dns_gethostbyname
  * Returns      : none
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 user_esp_platform_dns_found(const char *name, ip_addr_t *ipaddr, void *arg)
 {
     struct espconn *pespconn = (struct espconn *)arg;
@@ -1143,7 +1143,7 @@ user_esp_platform_dns_found(const char *name, ip_addr_t *ipaddr, void *arg)
  * Parameters   : arg -- Additional argument to pass to the callback function
  * Returns      : none
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 user_esp_platform_dns_check_cb(void *arg)
 {
     struct espconn *pespconn = arg;
@@ -1155,7 +1155,7 @@ user_esp_platform_dns_check_cb(void *arg)
     os_timer_arm(&client_timer, 1000, 0);
 }
 
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 user_esp_platform_start_dns(struct espconn *pespconn)
 {
     esp_server_ip.addr = 0;

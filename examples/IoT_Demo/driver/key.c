@@ -17,7 +17,7 @@
 
 #include "driver/key.h"
 
-LOCAL void key_intr_handler(struct keys_param *keys);
+static void key_intr_handler(struct keys_param *keys);
 
 /******************************************************************************
  * FunctionName : key_init_single
@@ -85,7 +85,7 @@ key_init(struct keys_param *keys)
  * Parameters   : single_key_param *single_key - single key parameter
  * Returns      : none
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 key_5s_cb(struct single_key_param *single_key)
 {
     os_timer_disarm(&single_key->key_5s);
@@ -104,7 +104,7 @@ key_5s_cb(struct single_key_param *single_key)
  * Parameters   : single_key_param *single_key - single key parameter
  * Returns      : none
 *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+static void ICACHE_FLASH_ATTR
 key_50ms_cb(struct single_key_param *single_key)
 {
     os_timer_disarm(&single_key->key_50ms);
@@ -129,7 +129,7 @@ key_50ms_cb(struct single_key_param *single_key)
  * Parameters   : key_param *keys - keys parameter, which inited by key_init_single
  * Returns      : none
 *******************************************************************************/
-LOCAL void
+static void
 key_intr_handler(struct keys_param *keys)
 {
     uint8_t i;
