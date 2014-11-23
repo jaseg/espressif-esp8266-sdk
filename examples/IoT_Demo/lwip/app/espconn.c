@@ -127,7 +127,7 @@ void ICACHE_FLASH_ATTR espconn_list_delete(espconn_msg **phead, espconn_msg* pde
  * Parameters   : espconn -- the espconn used to build server
  * Returns      : none
  *******************************************************************************/
-bool ICACHE_FLASH_ATTR espconn_find_connection(struct espconn *pespconn, espconn_msg **pnode)
+uint8_t ICACHE_FLASH_ATTR espconn_find_connection(struct espconn *pespconn, espconn_msg **pnode)
 {
 	espconn_msg *plist = NULL;
 	struct ip_addr ip_remot;
@@ -137,7 +137,7 @@ bool ICACHE_FLASH_ATTR espconn_find_connection(struct espconn *pespconn, espconn
 	while(plist != NULL){
 		if (pespconn == plist->pespconn){
 			*pnode = plist;
-			return true;
+			return 1;
 		} else {
 			IP4_ADDR(&ip_remot, pespconn->proto.tcp->remote_ip[0], pespconn->proto.tcp->remote_ip[1],
 					pespconn->proto.tcp->remote_ip[2], pespconn->proto.tcp->remote_ip[3]);
@@ -146,12 +146,12 @@ bool ICACHE_FLASH_ATTR espconn_find_connection(struct espconn *pespconn, espconn
 					plist->pcommon.remote_ip[2], plist->pcommon.remote_ip[3]);
 			if ((ip_list.addr == ip_remot.addr) && (pespconn->proto.tcp->remote_port == plist->pcommon.remote_port)){
 				*pnode = plist;
-				return true;
+				return 1;
 			}
 		}
 		plist = plist ->pnext;
 	}
-	return false;
+	return 0;
 }
 
 /******************************************************************************
@@ -251,7 +251,7 @@ int8_t ICACHE_FLASH_ATTR
 espconn_sent(struct espconn *espconn, uint8_t *psent, uint16 length)
 {
 	espconn_msg *pnode = NULL;
-	bool value = false;
+	uint8_t value = 0;
     if (espconn == NULL) {
         return ESPCONN_ARG;
     }
@@ -553,7 +553,7 @@ espconn_accept(struct espconn *espconn)
 int8_t ICACHE_FLASH_ATTR espconn_regist_time(struct espconn *espconn, uint32_t interval, uint8_t type_flag)
 {
 	espconn_msg *pnode = NULL;
-	bool value = false;
+	uint8_t value = 0;
 	if ((espconn == NULL) || (type_flag > 0x01))
 		return ESPCONN_ARG;
 
@@ -580,7 +580,7 @@ int8_t ICACHE_FLASH_ATTR
 espconn_disconnect(struct espconn *espconn)
 {
 	espconn_msg *pnode = NULL;
-	bool value = false;
+	uint8_t value = 0;
 
     if (espconn == NULL) {
         return ESPCONN_ARG;;
@@ -606,7 +606,7 @@ int8_t ICACHE_FLASH_ATTR
 espconn_delete(struct espconn *espconn)
 {
 	espconn_msg *pnode = NULL;
-	bool value = false;
+	uint8_t value = 0;
 
     if (espconn == NULL) {
         return ESPCONN_ARG;

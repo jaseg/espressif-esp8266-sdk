@@ -46,7 +46,7 @@ int8_t ICACHE_FLASH_ATTR
 espconn_secure_disconnect(struct espconn *espconn)
 {
 	espconn_msg *pnode = NULL;
-	bool value = false;
+	uint8_t value = 0;
 	if (espconn == NULL)
 		return ESPCONN_ARG;
 
@@ -71,7 +71,7 @@ int8_t ICACHE_FLASH_ATTR
 espconn_secure_sent(struct espconn *espconn, uint8_t *psent, uint16 length)
 {
 	espconn_msg *pnode = NULL;
-	bool value = false;
+	uint8_t value = 0;
 	if (espconn == NULL)
 		return ESPCONN_ARG;
 

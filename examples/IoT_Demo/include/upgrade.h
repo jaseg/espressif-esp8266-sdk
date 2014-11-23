@@ -31,8 +31,8 @@ struct upgrade_server_info {
 };
 
 #ifdef UPGRADE_SSL_ENABLE
-bool system_upgrade_start_ssl(struct upgrade_server_info *server);
+uint8_t system_upgrade_start_ssl(struct upgrade_server_info *server);
 #else
-bool system_upgrade_start(struct upgrade_server_info *server);
+uint8_t system_upgrade_start(struct upgrade_server_info *server);
 #endif
 #endif

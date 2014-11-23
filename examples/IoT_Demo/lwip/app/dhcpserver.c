@@ -25,7 +25,7 @@ static struct dhcps_msg msg_dhcps;
 struct dhcps_state s;
 
 static struct dhcps_lease dhcps_lease;
-static bool dhcps_lease_flag = true;
+static uint8_t dhcps_lease_flag = 1;
 static list_node *plist = NULL;
 /******************************************************************************
  * FunctionName : node_insert_to_list
@@ -449,7 +449,7 @@ static void ICACHE_FLASH_ATTR send_ack(struct dhcps_msg *m)
 static uint8_t ICACHE_FLASH_ATTR parse_options(uint8_t *optptr, int16_t len)
 {
         struct ip_addr client;
-    	bool is_dhcp_parse_end = false;
+    	uint8_t is_dhcp_parse_end = 0;
 
         client.addr = *( (uint32_t *) &client_address);// Ҫ�����DHCP�ͻ��˵�IP
 
@@ -483,7 +483,7 @@ static uint8_t ICACHE_FLASH_ATTR parse_options(uint8_t *optptr, int16_t len)
                         break;
                 case DHCP_OPTION_END:
 			            {
-			                is_dhcp_parse_end = true;
+			                is_dhcp_parse_end = 1;
 			            }
                         break;
             }
@@ -602,7 +602,7 @@ static int16_t ICACHE_FLASH_ATTR parse_msg(struct dhcps_msg *m, uint16 len)
 								station = next_station;
 							}
 
-							if (wifi_softap_set_station_info(m->chaddr, &client_address_plus) == false) {
+							if (wifi_softap_set_station_info(m->chaddr, &client_address_plus) == 0) {
 								return 0;
 							}
 
@@ -810,12 +810,12 @@ void ICACHE_FLASH_ATTR dhcps_stop(void)
 	udp_remove(pcb_dhcps);
 }
 
-bool ICACHE_FLASH_ATTR wifi_softap_set_dhcps_lease(struct dhcps_lease *please)
+uint8_t ICACHE_FLASH_ATTR wifi_softap_set_dhcps_lease(struct dhcps_lease *please)
 {
 	struct ip_info info;
 	uint32_t softap_ip = 0;
 	if (please == NULL)
-		return false;
+		return 0;
 
 	os_bzero(&info, sizeof(struct ip_info));
 	wifi_get_ip_info(SOFTAP_IF, &info);
@@ -825,23 +825,23 @@ bool ICACHE_FLASH_ATTR wifi_softap_set_dhcps_lease(struct dhcps_lease *please)
 
 	/*config ip information can't contain local ip*/
 	if ((please->start_ip <= softap_ip) && (softap_ip <= please->end_ip))
-		return false;
+		return 0;
 
 	/*config ip information must be in the same segment as the local ip*/
 	softap_ip >>= 8;
 	if ((please->start_ip >> 8 != softap_ip)
 			|| (please->end_ip >> 8 != softap_ip)) {
-		return false;
+		return 0;
 	}
 
 	if (please->end_ip - please->start_ip > DHCPS_MAX_LEASE)
-		return false;
+		return 0;
 
 	os_bzero(&dhcps_lease, sizeof(dhcps_lease));
 	dhcps_lease.start_ip = please->start_ip;
 	dhcps_lease.end_ip = please->end_ip;
-	dhcps_lease_flag = false;
-	return true;
+	dhcps_lease_flag = 0;
+	return 1;
 }
 
 void ICACHE_FLASH_ATTR dhcps_coarse_tmr(void)

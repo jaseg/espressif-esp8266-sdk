@@ -9,7 +9,7 @@
 typedef struct _ssl_msg {
     SSL_CTX *ssl_ctx;
     SSL *ssl;
-    bool quiet;
+    uint8_t quiet;
     char *private_key_file;
     uint8_t session_id[SSL_SESSION_ID_SIZE];
     uint16 pkt_length;

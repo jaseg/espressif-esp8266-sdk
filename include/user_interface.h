@@ -59,8 +59,8 @@ struct upgrade_server_info {
     struct espconn *pespconn;
 };
 
-bool system_upgrade_start(struct upgrade_server_info *server);
-bool system_upgrade_start_ssl(struct upgrade_server_info *server);
+uint8_t system_upgrade_start(struct upgrade_server_info *server);
+uint8_t system_upgrade_start_ssl(struct upgrade_server_info *server);
 uint8_t system_upgrade_userbin_check(void);
 void system_upgrade_reboot(void);
 
@@ -98,8 +98,8 @@ void system_init_done_cb(init_done_cb_t cb);
 uint32_t system_rtc_clock_cali_proc(void);
 uint32_t system_get_rtc_time(void);
 
-bool system_rtc_mem_read(uint8_t src_addr, void *des_addr, uint16 load_size);
-bool system_rtc_mem_write(uint8_t des_addr, const void *src_addr, uint16 save_size);
+uint8_t system_rtc_mem_read(uint8_t src_addr, void *des_addr, uint16 load_size);
+uint8_t system_rtc_mem_write(uint8_t des_addr, const void *src_addr, uint16 save_size);
 
 void system_uart_swap(void);
 
@@ -111,7 +111,7 @@ uint16 system_adc_read(void);
 #define STATIONAP_MODE  0x03
 
 uint8_t wifi_get_opmode(void);
-bool wifi_set_opmode(uint8_t opmode);
+uint8_t wifi_set_opmode(uint8_t opmode);
 
 struct bss_info {
     STAILQ_ENTRY(bss_info)     next;
@@ -142,11 +142,11 @@ struct station_config {
     uint8_t bssid[6];
 };
 
-bool wifi_station_get_config(struct station_config *config);
-bool wifi_station_set_config(struct station_config *config);
+uint8_t wifi_station_get_config(struct station_config *config);
+uint8_t wifi_station_set_config(struct station_config *config);
 
-bool wifi_station_connect(void);
-bool wifi_station_disconnect(void);
+uint8_t wifi_station_connect(void);
+uint8_t wifi_station_disconnect(void);
 
 struct scan_config {
     uint8_t *ssid;
@@ -155,10 +155,10 @@ struct scan_config {
     uint8_t show_hidden;
 };
 
-bool wifi_station_scan(struct scan_config *config, scan_done_cb_t cb);
+uint8_t wifi_station_scan(struct scan_config *config, scan_done_cb_t cb);
 
 uint8_t wifi_station_get_auto_connect(void);
-bool wifi_station_set_auto_connect(uint8_t set);
+uint8_t wifi_station_set_auto_connect(uint8_t set);
 
 enum {
     STATION_IDLE = 0,
@@ -172,11 +172,11 @@ enum {
 uint8_t wifi_station_get_connect_status(void);
 
 uint8_t wifi_station_get_current_ap_id(void);
-bool wifi_station_ap_change(uint8_t current_ap_id);
-bool wifi_station_ap_number_set(uint8_t ap_number);
+uint8_t wifi_station_ap_change(uint8_t current_ap_id);
+uint8_t wifi_station_ap_number_set(uint8_t ap_number);
 
-bool wifi_station_dhcpc_start(void);
-bool wifi_station_dhcpc_stop(void);
+uint8_t wifi_station_dhcpc_start(void);
+uint8_t wifi_station_dhcpc_stop(void);
 
 typedef enum _auth_mode {
     AUTH_OPEN           = 0,
@@ -196,8 +196,8 @@ struct softap_config {
     uint8_t max_connection;
 };
 
-bool wifi_softap_get_config(struct softap_config *config);
-bool wifi_softap_set_config(struct softap_config *config);
+uint8_t wifi_softap_get_config(struct softap_config *config);
+uint8_t wifi_softap_set_config(struct softap_config *config);
 
 struct station_info {
 	STAILQ_ENTRY(station_info)	next;
@@ -214,20 +214,20 @@ struct dhcps_lease {
 struct station_info * wifi_softap_get_station_info(void);
 void wifi_softap_free_station_info(void);
 
-bool wifi_softap_dhcps_start(void);
-bool wifi_softap_dhcps_stop(void);
-bool wifi_softap_set_dhcps_lease(struct dhcps_lease *please);
+uint8_t wifi_softap_dhcps_start(void);
+uint8_t wifi_softap_dhcps_stop(void);
+uint8_t wifi_softap_set_dhcps_lease(struct dhcps_lease *please);
 
 #define STATION_IF      0x00
 #define SOFTAP_IF       0x01
 
-bool wifi_get_ip_info(uint8_t if_index, struct ip_info *info);
-bool wifi_set_ip_info(uint8_t if_index, struct ip_info *info);
-bool wifi_get_macaddr(uint8_t if_index, uint8_t *macaddr);
-bool wifi_set_macaddr(uint8_t if_index, uint8_t *macaddr);
+uint8_t wifi_get_ip_info(uint8_t if_index, struct ip_info *info);
+uint8_t wifi_set_ip_info(uint8_t if_index, struct ip_info *info);
+uint8_t wifi_get_macaddr(uint8_t if_index, uint8_t *macaddr);
+uint8_t wifi_set_macaddr(uint8_t if_index, uint8_t *macaddr);
 
 uint8_t wifi_get_channel(void);
-bool wifi_set_channel(uint8_t channel);
+uint8_t wifi_set_channel(uint8_t channel);
 
 void wifi_status_led_install(uint8_t gpio_id, uint32_t gpio_name, uint8_t gpio_func);
 
@@ -248,6 +248,6 @@ enum phy_mode {
 };
 
 enum phy_mode wifi_get_phy_mode(void);
-bool wifi_set_phy_mode(enum phy_mode mode);
+uint8_t wifi_set_phy_mode(enum phy_mode mode);
 
 #endif

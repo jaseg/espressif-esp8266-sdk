@@ -116,7 +116,7 @@ upgrade_check(struct upgrade_server_info *server)
         os_timer_disarm(&upgrade_timer);
         system_upgrade_flag_set(UPGRADE_FLAG_IDLE);
         upgrade_deinit();
-        server->upgrade_flag = false;
+        server->upgrade_flag = 0;
 
         if (server->check_cb != NULL) {
             server->check_cb(server);
@@ -124,7 +124,7 @@ upgrade_check(struct upgrade_server_info *server)
     } else {
         os_timer_disarm(&upgrade_timer);
         upgrade_deinit();
-        server->upgrade_flag = true;
+        server->upgrade_flag = 1;
 
         if (server->check_cb != NULL) {
             server->check_cb(server);
@@ -266,7 +266,7 @@ upgrade_connect(struct upgrade_server_info *server)
  * Parameters   : server -- A point to a server parmer which connected
  * Returns      : none
 *******************************************************************************/
-bool ICACHE_FLASH_ATTR
+uint8_t ICACHE_FLASH_ATTR
 #ifdef UPGRADE_SSL_ENABLE
 system_upgrade_start_ssl(struct upgrade_server_info *server)
 #else
@@ -274,7 +274,7 @@ system_upgrade_start(struct upgrade_server_info *server)
 #endif
 {
     if (system_upgrade_flag_check() == UPGRADE_FLAG_START) {
-        return false;
+        return 0;
     }
 
     if (upgrade_conn == NULL) {
@@ -308,5 +308,5 @@ system_upgrade_start(struct upgrade_server_info *server)
         }
     }
 
-    return true;
+    return 1;
 }

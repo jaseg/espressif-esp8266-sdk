@@ -31,13 +31,13 @@ extern SpiFlashChip *flashchip;
  * Parameters   :
  * Returns      :
 *******************************************************************************/
-static bool ICACHE_FLASH_ATTR
+static uint8_t ICACHE_FLASH_ATTR
 system_upgrade_internal(struct upgrade_param *upgrade, uint8_t *data, uint16 len)
 {
-    bool ret = false;
+    uint8_t ret = 0;
     if(data == NULL || len == 0)
     {
-    	return true;
+    	return 1;
     }
     upgrade->buffer = (uint8_t *)os_zalloc(len + upgrade->extra);
 
@@ -71,7 +71,7 @@ system_upgrade_internal(struct upgrade_param *upgrade, uint8_t *data, uint16 len
             break;
         }
 
-        ret = true;
+        ret = 1;
         upgrade->fw_bin_addr += len;
     } while (0);
 
@@ -86,10 +86,10 @@ system_upgrade_internal(struct upgrade_param *upgrade, uint8_t *data, uint16 len
  * Parameters   :
  * Returns      :
 *******************************************************************************/
-static bool ICACHE_FLASH_ATTR
+static uint8_t ICACHE_FLASH_ATTR
 system_upgrade(uint8_t *data, uint16 len)
 {
-    bool ret;
+    uint8_t ret;
 
     ret = system_upgrade_internal(upgrade, data, len);
 
