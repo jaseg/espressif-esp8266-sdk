@@ -126,7 +126,7 @@ PACK_STRUCT_BEGIN
 struct igmp_msg {
  PACK_STRUCT_FIELD(uint8_t           igmp_msgtype);
  PACK_STRUCT_FIELD(uint8_t           igmp_maxresp);
- PACK_STRUCT_FIELD(uint16          igmp_checksum);
+ PACK_STRUCT_FIELD(uint16_t          igmp_checksum);
  PACK_STRUCT_FIELD(ip_addr_p_t    igmp_group_address);
 } PACK_STRUCT_STRUCT;
 PACK_STRUCT_END
@@ -757,7 +757,7 @@ static err_t
 igmp_ip_output_if(struct pbuf *p, ip_addr_t *src, ip_addr_t *dest, struct netif *netif)
 {
   /* This is the "router alert" option */
-  uint16 ra[2];
+  uint16_t ra[2];
   ra[0] = PP_HTONS(ROUTER_ALERT);
   ra[1] = 0x0000; /* Router shall examine packet */
   IGMP_STATS_INC(igmp.xmit);

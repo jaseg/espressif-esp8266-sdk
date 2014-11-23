@@ -16,7 +16,7 @@ typedef void (*upgrade_states_check_callback)(void * arg);
 
 struct upgrade_server_info {
     uint8_t ip[4];
-    uint16 port;
+    uint16_t port;
 
     uint8_t upgrade_flag;
 

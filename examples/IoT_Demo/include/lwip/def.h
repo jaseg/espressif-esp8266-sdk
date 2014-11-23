@@ -51,7 +51,7 @@ extern "C" {
  * 'a' is expected to be 'higher' (without overflow) than 'b'. */
 #define LWIP_U32_DIFF(a, b) (((a) >= (b)) ? ((a) - (b)) : (((a) + ((b) ^ 0xFFFFFFFF) + 1))) 
 
-/* Endianess-optimized shifting of two uint8_t to create one uint16 */
+/* Endianess-optimized shifting of two uint8_t to create one uint16_t */
 #if BYTE_ORDER == LITTLE_ENDIAN
 #define LWIP_MAKE_U16(a, b) ((a << 8) | b)
 #else
@@ -100,8 +100,8 @@ extern "C" {
 #define lwip_htonl(x) LWIP_PLATFORM_HTONL(x)
 #define lwip_ntohl(x) LWIP_PLATFORM_HTONL(x)
 #else /* LWIP_PLATFORM_BYTESWAP */
-uint16 lwip_htons(uint16 x);
-uint16 lwip_ntohs(uint16 x);
+uint16_t lwip_htons(uint16_t x);
+uint16_t lwip_ntohs(uint16_t x);
 uint32_t lwip_htonl(uint32_t x);
 uint32_t lwip_ntohl(uint32_t x);
 #endif /* LWIP_PLATFORM_BYTESWAP */

@@ -87,10 +87,10 @@ struct pbuf {
    * For non-queue packet chains this is the invariant:
    * p->tot_len == p->len + (p->next? p->next->tot_len: 0)
    */
-  uint16 tot_len;
+  uint16_t tot_len;
 
   /** length of this buffer */
-  uint16 len;
+  uint16_t len;
 
   /** pbuf_type as uint8_t instead of enum to save space */
   uint8_t /*pbuf_type*/ type;
@@ -103,7 +103,7 @@ struct pbuf {
    * that refer to this pbuf. This can be pointers from an application,
    * the stack itself, or pbuf->next pointers from a chain.
    */
-  uint16 ref;
+  uint16_t ref;
   
   /* add a pointer for esf_buf */
   void * eb; 
@@ -125,13 +125,13 @@ struct pbuf_custom {
 /* Initializes the pbuf module. This call is empty for now, but may not be in future. */
 #define pbuf_init()
 
-struct pbuf *pbuf_alloc(pbuf_layer l, uint16 length, pbuf_type type)ICACHE_FLASH_ATTR;
+struct pbuf *pbuf_alloc(pbuf_layer l, uint16_t length, pbuf_type type)ICACHE_FLASH_ATTR;
 #if LWIP_SUPPORT_CUSTOM_PBUF
-struct pbuf *pbuf_alloced_custom(pbuf_layer l, uint16 length, pbuf_type type,
+struct pbuf *pbuf_alloced_custom(pbuf_layer l, uint16_t length, pbuf_type type,
                                  struct pbuf_custom *p, void *payload_mem,
-                                 uint16 payload_mem_len)ICACHE_FLASH_ATTR;
+                                 uint16_t payload_mem_len)ICACHE_FLASH_ATTR;
 #endif /* LWIP_SUPPORT_CUSTOM_PBUF */
-void pbuf_realloc(struct pbuf *p, uint16 size)ICACHE_FLASH_ATTR;
+void pbuf_realloc(struct pbuf *p, uint16_t size)ICACHE_FLASH_ATTR;
 uint8_t pbuf_header(struct pbuf *p, int16_t header_size)ICACHE_FLASH_ATTR;
 void pbuf_ref(struct pbuf *p)ICACHE_FLASH_ATTR;
 uint8_t pbuf_free(struct pbuf *p)ICACHE_FLASH_ATTR;
@@ -140,18 +140,18 @@ void pbuf_cat(struct pbuf *head, struct pbuf *tail)ICACHE_FLASH_ATTR;
 void pbuf_chain(struct pbuf *head, struct pbuf *tail)ICACHE_FLASH_ATTR;
 struct pbuf *pbuf_dechain(struct pbuf *p)ICACHE_FLASH_ATTR;
 err_t pbuf_copy(struct pbuf *p_to, struct pbuf *p_from)ICACHE_FLASH_ATTR;
-uint16 pbuf_copy_partial(struct pbuf *p, void *dataptr, uint16 len, uint16 offset)ICACHE_FLASH_ATTR;
-err_t pbuf_take(struct pbuf *buf, const void *dataptr, uint16 len)ICACHE_FLASH_ATTR;
+uint16_t pbuf_copy_partial(struct pbuf *p, void *dataptr, uint16_t len, uint16_t offset)ICACHE_FLASH_ATTR;
+err_t pbuf_take(struct pbuf *buf, const void *dataptr, uint16_t len)ICACHE_FLASH_ATTR;
 struct pbuf *pbuf_coalesce(struct pbuf *p, pbuf_layer layer)ICACHE_FLASH_ATTR;
 #if LWIP_CHECKSUM_ON_COPY
-err_t pbuf_fill_chksum(struct pbuf *p, uint16 start_offset, const void *dataptr,
-                       uint16 len, uint16 *chksum)ICACHE_FLASH_ATTR;
+err_t pbuf_fill_chksum(struct pbuf *p, uint16_t start_offset, const void *dataptr,
+                       uint16_t len, uint16_t *chksum)ICACHE_FLASH_ATTR;
 #endif /* LWIP_CHECKSUM_ON_COPY */
 
-uint8_t pbuf_get_at(struct pbuf* p, uint16 offset)ICACHE_FLASH_ATTR;
-uint16 pbuf_memcmp(struct pbuf* p, uint16 offset, const void* s2, uint16 n)ICACHE_FLASH_ATTR;
-uint16 pbuf_memfind(struct pbuf* p, const void* mem, uint16 mem_len, uint16 start_offset)ICACHE_FLASH_ATTR;
-uint16 pbuf_strstr(struct pbuf* p, const char* substr)ICACHE_FLASH_ATTR;
+uint8_t pbuf_get_at(struct pbuf* p, uint16_t offset)ICACHE_FLASH_ATTR;
+uint16_t pbuf_memcmp(struct pbuf* p, uint16_t offset, const void* s2, uint16_t n)ICACHE_FLASH_ATTR;
+uint16_t pbuf_memfind(struct pbuf* p, const void* mem, uint16_t mem_len, uint16_t start_offset)ICACHE_FLASH_ATTR;
+uint16_t pbuf_strstr(struct pbuf* p, const char* substr)ICACHE_FLASH_ATTR;
 
 #ifdef __cplusplus
 }

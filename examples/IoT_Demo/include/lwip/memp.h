@@ -76,7 +76,7 @@ typedef enum {
 #endif /* MEM_USE_POOLS */
 
 #if MEMP_MEM_MALLOC || MEM_USE_POOLS
-extern const uint16 memp_sizes[MEMP_MAX];
+extern const uint16_t memp_sizes[MEMP_MAX];
 #endif /* MEMP_MEM_MALLOC || MEM_USE_POOLS */
 
 #if MEMP_MEM_MALLOC

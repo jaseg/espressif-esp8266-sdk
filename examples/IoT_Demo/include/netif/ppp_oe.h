@@ -83,8 +83,8 @@ PACK_STRUCT_BEGIN
 struct pppoehdr {
   PACK_STRUCT_FIELD(uint8_t vertype);
   PACK_STRUCT_FIELD(uint8_t code);
-  PACK_STRUCT_FIELD(uint16 session);
-  PACK_STRUCT_FIELD(uint16 plen);
+  PACK_STRUCT_FIELD(uint16_t session);
+  PACK_STRUCT_FIELD(uint16_t plen);
 } PACK_STRUCT_STRUCT;
 PACK_STRUCT_END
 #ifdef PACK_STRUCT_USE_INCLUDES
@@ -96,8 +96,8 @@ PACK_STRUCT_END
 #endif
 PACK_STRUCT_BEGIN
 struct pppoetag {
-  PACK_STRUCT_FIELD(uint16 tag);
-  PACK_STRUCT_FIELD(uint16 len);
+  PACK_STRUCT_FIELD(uint16_t tag);
+  PACK_STRUCT_FIELD(uint16_t len);
 } PACK_STRUCT_STRUCT;
 PACK_STRUCT_END
 #ifdef PACK_STRUCT_USE_INCLUDES
@@ -152,7 +152,7 @@ struct pppoe_softc {
 
   int sc_state;                /* discovery phase or session connected */
   struct eth_addr sc_dest;     /* hardware address of concentrator */
-  uint16 sc_session;            /* PPPoE session id */
+  uint16_t sc_session;            /* PPPoE session id */
 
 #ifdef PPPOE_TODO
   char *sc_service_name;       /* if != NULL: requested name of service */

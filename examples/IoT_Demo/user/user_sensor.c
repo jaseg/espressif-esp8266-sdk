@@ -35,14 +35,14 @@ static uint8_t humiture_data[4];
  * Description  : burst read mvh3004's internal data
  * Parameters   : uint8_t addr - mvh3004's address
  *                uint8_t *pData - data point to put read data
- *                uint16 len - read length
+ *                uint16_t len - read length
  * Returns      : bool - true or false
 *******************************************************************************/
 static bool ICACHE_FLASH_ATTR
-user_mvh3004_burst_read(uint8_t addr, uint8_t *pData, uint16 len)
+user_mvh3004_burst_read(uint8_t addr, uint8_t *pData, uint16_t len)
 {
     uint8_t ack;
-    uint16 i;
+    uint16_t i;
 
     i2c_master_start();
     i2c_master_writeByte(addr);

@@ -55,25 +55,25 @@
 #if (LWIP_PLATFORM_BYTESWAP == 0) && (BYTE_ORDER == LITTLE_ENDIAN)
 
 /**
- * Convert an uint16 from host- to network byte order.
+ * Convert an uint16_t from host- to network byte order.
  *
- * @param n uint16 in host byte order
+ * @param n uint16_t in host byte order
  * @return n in network byte order
  */
 uint16
-lwip_htons(uint16 n)
+lwip_htons(uint16_t n)
 {
   return ((n & 0xff) << 8) | ((n & 0xff00) >> 8);
 }
 
 /**
- * Convert an uint16 from network- to host byte order.
+ * Convert an uint16_t from network- to host byte order.
  *
- * @param n uint16 in network byte order
+ * @param n uint16_t in network byte order
  * @return n in host byte order
  */
 uint16
-lwip_ntohs(uint16 n)
+lwip_ntohs(uint16_t n)
 {
   return lwip_htons(n);
 }

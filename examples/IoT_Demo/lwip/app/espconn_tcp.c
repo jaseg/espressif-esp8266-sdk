@@ -143,16 +143,16 @@ espconn_tcp_disconnect_successful(void *arg)
  * Description  : sent data for client or server
  * Parameters   : void *arg -- client or server to send
  *                uint8_t* psent -- Data to send
- *                uint16 length -- Length of data to send
+ *                uint16_t length -- Length of data to send
  * Returns      : none
 *******************************************************************************/
 void ICACHE_FLASH_ATTR
-espconn_tcp_sent(void *arg, uint8_t *psent, uint16 length)
+espconn_tcp_sent(void *arg, uint8_t *psent, uint16_t length)
 {
 	espconn_msg *ptcp_sent = arg;
     struct tcp_pcb *pcb = NULL;
     err_t err = 0;
-    uint16 len = 0;
+    uint16_t len = 0;
     uint8_t data_to_send = false;
 
     espconn_printf("espconn_tcp_sent ptcp_sent %p psent %p length %d\n", ptcp_sent, psent, length);
@@ -166,7 +166,7 @@ espconn_tcp_sent(void *arg, uint8_t *psent, uint16 length)
         len = tcp_sndbuf(pcb);
     } else {
         len = length;
-        LWIP_ASSERT("length did not fit into uint16!", (len == length));
+        LWIP_ASSERT("length did not fit into uint16_t!", (len == length));
     }
 
     if (len > (2 * pcb->mss)) {
@@ -295,7 +295,7 @@ espconn_client_recv(void *arg, struct tcp_pcb *pcb, struct pbuf *p, err_t err)
 
     if (err == ERR_OK && p != NULL) {
     	char *pdata = NULL;
-    	uint16 length = 0;
+    	uint16_t length = 0;
         pdata = (char *)os_zalloc(p ->tot_len + 1);
         length = pbuf_copy_partial(p, pdata, p ->tot_len, 0);
         pbuf_free(p);
@@ -331,7 +331,7 @@ espconn_client_recv(void *arg, struct tcp_pcb *pcb, struct pbuf *p, err_t err)
  *                ERR_ABRT: if you have called tcp_abort from within the function!
 *******************************************************************************/
 static err_t ICACHE_FLASH_ATTR
-espconn_client_sent(void *arg, struct tcp_pcb *pcb, uint16 len)
+espconn_client_sent(void *arg, struct tcp_pcb *pcb, uint16_t len)
 {
 	espconn_msg *psent_cb = arg;
 	psent_cb->pcommon.pcb = pcb;
@@ -642,7 +642,7 @@ espconn_server_recv(void *arg, struct tcp_pcb *pcb, struct pbuf *p, err_t err)
  *                ERR_ABRT: if you have called tcp_abort from within the function!
 *******************************************************************************/
 static err_t ICACHE_FLASH_ATTR
-espconn_server_sent(void *arg, struct tcp_pcb *pcb, uint16 len)
+espconn_server_sent(void *arg, struct tcp_pcb *pcb, uint16_t len)
 {
 	espconn_msg *psent_cb = arg;
 	psent_cb->pcommon.pcb = pcb;

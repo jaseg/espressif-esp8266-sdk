@@ -132,7 +132,7 @@ netconn_delete(struct netconn *conn)
  *         ERR_OK if the information was retrieved
  */
 err_t
-netconn_getaddr(struct netconn *conn, ip_addr_t *addr, uint16 *port, uint8_t local)
+netconn_getaddr(struct netconn *conn, ip_addr_t *addr, uint16_t *port, uint8_t local)
 {
   struct api_msg msg;
   err_t err;
@@ -163,7 +163,7 @@ netconn_getaddr(struct netconn *conn, ip_addr_t *addr, uint16 *port, uint8_t loc
  * @return ERR_OK if bound, any other err_t on failure
  */
 err_t
-netconn_bind(struct netconn *conn, ip_addr_t *addr, uint16 port)
+netconn_bind(struct netconn *conn, ip_addr_t *addr, uint16_t port)
 {
   struct api_msg msg;
   err_t err;
@@ -189,7 +189,7 @@ netconn_bind(struct netconn *conn, ip_addr_t *addr, uint16 port)
  * @return ERR_OK if connected, return value of tcp_/udp_/raw_connect otherwise
  */
 err_t
-netconn_connect(struct netconn *conn, ip_addr_t *addr, uint16 port)
+netconn_connect(struct netconn *conn, ip_addr_t *addr, uint16_t port)
 {
   struct api_msg msg;
   err_t err;
@@ -342,7 +342,7 @@ static err_t
 netconn_recv_data(struct netconn *conn, void **new_buf)
 {
   void *buf = NULL;
-  uint16 len;
+  uint16_t len;
   err_t err;
 #if LWIP_TCP
   struct api_msg msg;
@@ -537,7 +537,7 @@ netconn_recved(struct netconn *conn, uint32_t length)
  * @return ERR_OK if data was sent, any other err_t on error
  */
 err_t
-netconn_sendto(struct netconn *conn, struct netbuf *buf, ip_addr_t *addr, uint16 port)
+netconn_sendto(struct netconn *conn, struct netbuf *buf, ip_addr_t *addr, uint16_t port)
 {
   if (buf != NULL) {
     ip_addr_set(&buf->addr, addr);

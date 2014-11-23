@@ -212,16 +212,16 @@ espconn_ssl_dissuccessful(void *arg)
  * Description  : sent data for client or server
  * Parameters   : void *arg -- client or server to send
  *                uint8_t* psent -- Data to send
- *                uint16 length -- Length of data to send
+ *                uint16_t length -- Length of data to send
  * Returns      : none
 *******************************************************************************/
 void ICACHE_FLASH_ATTR
-espconn_ssl_sent(void *arg, uint8_t *psent, uint16 length)
+espconn_ssl_sent(void *arg, uint8_t *psent, uint16_t length)
 {
 	espconn_msg *pssl_sent = arg;
     struct tcp_pcb *pcb = NULL;
     ssl_msg *pssl = NULL;
-    uint16 len = 0;
+    uint16_t len = 0;
     int res = 0;
 
     ssl_printf("espconn_ssl_sent pcb %p psent %p length %d\n", arg, psent, length);
@@ -253,14 +253,14 @@ espconn_ssl_sent(void *arg, uint8_t *psent, uint16 length)
  * Description  : sent data for client or server
  * Parameters   : void *arg -- client or server to send
  *                uint8_t* psent -- Data to send
- *                uint16 length -- Length of data to send
+ *                uint16_t length -- Length of data to send
  * Returns      : none
 *******************************************************************************/
 void ICACHE_FLASH_ATTR
-espconn_sent_packet(struct tcp_pcb *pcb, uint8_t *psent, uint16 length)
+espconn_sent_packet(struct tcp_pcb *pcb, uint8_t *psent, uint16_t length)
 {
 	err_t err = 0;
-	uint16 len = 0;
+	uint16_t len = 0;
 	if (pcb == NULL || psent == NULL || length == 0) {
 	   return;
 	}
@@ -297,7 +297,7 @@ espconn_sent_packet(struct tcp_pcb *pcb, uint8_t *psent, uint16 length)
 static void ICACHE_FLASH_ATTR
 espconn_ssl_cclose_cb(void *arg)
 {
-    static uint16 timecount = 0;
+    static uint16_t timecount = 0;
     espconn_msg *pcclose_cb = arg;
 
     if (pcclose_cb == NULL) {
@@ -357,14 +357,14 @@ espconn_ssl_cclose(void *arg, struct tcp_pcb *pcb)
  *                ERR_ABRT: if you have called tcp_abort from within the function!
 *******************************************************************************/
 static err_t ICACHE_FLASH_ATTR
-espconn_ssl_csent(void *arg, struct tcp_pcb *pcb, uint16 len)
+espconn_ssl_csent(void *arg, struct tcp_pcb *pcb, uint16_t len)
 {
 	espconn_msg *psent = arg;
     ssl_msg *pssl = psent->pssl;
     psent->pcommon.pcb = pcb;
     if (pssl->quiet == true) {
     	int pkt_size = pssl->ssl->bm_index + SSL_RECORD_SIZE;
-    	uint16 max_len = 2 * pcb->mss;
+    	uint16_t max_len = 2 * pcb->mss;
     	pssl->pkt_length += len;
     	ssl_printf("espconn_ssl_csent %d %d %d\n", len, pssl->pkt_length, pkt_size);
     	if (pssl->pkt_length == pkt_size){
@@ -403,7 +403,7 @@ espconn_ssl_csent(void *arg, struct tcp_pcb *pcb, uint16 len)
 static err_t ICACHE_FLASH_ATTR
 espconn_ssl_crecv(void *arg, struct tcp_pcb *pcb, struct pbuf *p, err_t err)
 {
-    uint16 ret = 0;
+    uint16_t ret = 0;
     espconn_msg *precv = arg;
     ssl_msg *pssl = precv->pssl;
     ssl_printf("espconn_ssl_crecv %d %p %p\n", __LINE__, pssl->ssl, p);
@@ -713,7 +713,7 @@ espconn_ssl_client(struct espconn *espconn)
 static void ICACHE_FLASH_ATTR
 espconn_ssl_sclose_cb(void *arg)
 {
-    static uint16 timecount = 0;
+    static uint16_t timecount = 0;
     espconn_msg *psclose_cb = arg;
 
     if (psclose_cb == NULL) {
@@ -774,7 +774,7 @@ espconn_ssl_sclose(void *arg, struct tcp_pcb *pcb)
  *                ERR_ABRT: if you have called tcp_abort from within the function!
 *******************************************************************************/
 static err_t ICACHE_FLASH_ATTR
-espconn_ssl_ssent(void *arg, struct tcp_pcb *pcb, uint16 len)
+espconn_ssl_ssent(void *arg, struct tcp_pcb *pcb, uint16_t len)
 {
 	espconn_msg *psent = arg;
     ssl_msg *pssl = psent->pssl;
@@ -803,7 +803,7 @@ espconn_ssl_ssent(void *arg, struct tcp_pcb *pcb, uint16 len)
        } else {
 
     	   int pkt_size = pssl->ssl->bm_index + SSL_RECORD_SIZE;
-    	   uint16 max_len = 2 * pcb->mss;
+    	   uint16_t max_len = 2 * pcb->mss;
     	   pssl->pkt_length += len;
     	   ssl_printf("espconn_ssl_ssent %d %d %d\n", len, pssl->pkt_length, pkt_size);
     	   if (pssl->pkt_length == pkt_size){
@@ -842,7 +842,7 @@ espconn_ssl_ssent(void *arg, struct tcp_pcb *pcb, uint16 len)
 static err_t ICACHE_FLASH_ATTR
 espconn_ssl_srecv(void *arg, struct tcp_pcb *pcb, struct pbuf *p, err_t err)
 {
-    uint16 ret = 0;
+    uint16_t ret = 0;
     espconn_msg *precv = arg;
     ssl_msg *pssl = precv->pssl;
     ssl_printf("espconn_ssl_srecv %d %p %p\n", __LINE__, pcb, p);

@@ -39,11 +39,11 @@ extern int8_t espconn_udp_server(struct espconn *espconn);
  * Description  : sent data for client or server
  * Parameters   : void *arg -- client or server to send
  *                uint8_t* psent -- Data to send
- *                uint16 length -- Length of data to send
+ *                uint16_t length -- Length of data to send
  * Returns      : none
 *******************************************************************************/
 
-extern void espconn_udp_sent(void *arg, uint8_t *psent, uint16 length);
+extern void espconn_udp_sent(void *arg, uint8_t *psent, uint16_t length);
 
 
 #endif /* __ESPCONN_UDP_H__ */

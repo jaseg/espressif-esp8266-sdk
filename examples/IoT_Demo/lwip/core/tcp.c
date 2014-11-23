@@ -99,7 +99,7 @@ struct tcp_pcb *tcp_tmp_pcb;
 
 /** Timer counter to handle calling slow-timer from tcp_tmr() */ 
 static uint8_t tcp_timer;
-static uint16 tcp_new_port(void);//����µ�tcp���ض˿�
+static uint16_t tcp_new_port(void);//����µ�tcp���ض˿�
 
 /**
  * Called periodically to dispatch TCP timers.
@@ -331,7 +331,7 @@ void
 tcp_abandon(struct tcp_pcb *pcb, int reset)
 {
   uint32_t seqno, ackno;
-  uint16 remote_port, local_port;
+  uint16_t remote_port, local_port;
   ip_addr_t remote_ip, local_ip;
 #if LWIP_CALLBACK_API  
   tcp_err_fn errf;
@@ -409,7 +409,7 @@ tcp_abort(struct tcp_pcb *pcb)
  *         ERR_OK if bound
  */
 err_t
-tcp_bind(struct tcp_pcb *pcb, ip_addr_t *ipaddr, uint16 port)
+tcp_bind(struct tcp_pcb *pcb, ip_addr_t *ipaddr, uint16_t port)
 {
   int i;
   int max_pcb_list = NUM_TCP_PCB_LISTS;
@@ -570,7 +570,7 @@ uint32_t tcp_update_rcv_ann_wnd(struct tcp_pcb *pcb)
       /* keep the right edge of window constant */
       uint32_t new_rcv_ann_wnd = pcb->rcv_ann_right_edge - pcb->rcv_nxt;
       LWIP_ASSERT("new_rcv_ann_wnd <= 0xffff", new_rcv_ann_wnd <= 0xffff);
-      pcb->rcv_ann_wnd = (uint16)new_rcv_ann_wnd;
+      pcb->rcv_ann_wnd = (uint16_t)new_rcv_ann_wnd;
     }
     return 0;
   }
@@ -585,7 +585,7 @@ uint32_t tcp_update_rcv_ann_wnd(struct tcp_pcb *pcb)
  * @param len the amount of bytes that have been read by the application
  */
 void
-tcp_recved(struct tcp_pcb *pcb, uint16 len)
+tcp_recved(struct tcp_pcb *pcb, uint16_t len)
 {
   int wnd_inflation;
 
@@ -627,7 +627,7 @@ tcp_new_port(void)
 #define TCP_LOCAL_PORT_RANGE_START 4096
 #define TCP_LOCAL_PORT_RANGE_END   0x7fff
 #endif
-  static uint16 port = TCP_LOCAL_PORT_RANGE_START;
+  static uint16_t port = TCP_LOCAL_PORT_RANGE_START;
   
  again:
   if (++port >= TCP_LOCAL_PORT_RANGE_END) {
@@ -657,12 +657,12 @@ tcp_new_port(void)
  *         other err_t values if connect request couldn't be sent
  */
 err_t
-tcp_connect(struct tcp_pcb *pcb, ip_addr_t *ipaddr, uint16 port,
+tcp_connect(struct tcp_pcb *pcb, ip_addr_t *ipaddr, uint16_t port,
       tcp_connected_fn connected)
 {
   err_t ret;
   uint32_t iss;
-  uint16 old_local_port;
+  uint16_t old_local_port;
 
   LWIP_ERROR("tcp_connect: can only connected from state CLOSED", pcb->state == CLOSED, return ERR_ISCONN);
 
@@ -762,7 +762,7 @@ void
 tcp_slowtmr(void)
 {
   struct tcp_pcb *pcb, *prev;
-  uint16 eff_wnd;
+  uint16_t eff_wnd;
   uint8_t pcb_remove;      /* flag if a PCB should be removed */
   uint8_t pcb_reset;       /* flag if a RST should be sent when removing */
   err_t err;
@@ -1492,9 +1492,9 @@ tcp_next_iss(void)
  * calculating the minimum of TCP_MSS and that netif's mtu (if set).
  */
 uint16
-tcp_eff_send_mss(uint16 sendmss, ip_addr_t *addr)
+tcp_eff_send_mss(uint16_t sendmss, ip_addr_t *addr)
 {
-  uint16 mss_s;
+  uint16_t mss_s;
   struct netif *outif;
 
   outif = ip_route(addr);

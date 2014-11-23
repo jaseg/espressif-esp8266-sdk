@@ -39,12 +39,12 @@ struct esp_platform_wait_timer_param {
 
 struct wait_param {
     uint8_t action[20][15];
-    uint16 action_number;
-    uint16 count;
+    uint16_t action_number;
+    uint16_t count;
     uint32_t min_time_backup;
 };
 
-void esp_platform_timer_action(struct esp_platform_wait_timer_param   *timer_wait_param, uint16 count);
+void esp_platform_timer_action(struct esp_platform_wait_timer_param   *timer_wait_param, uint16_t count);
 
 /******************************************************************************
  * FunctionName : split
@@ -52,7 +52,7 @@ void esp_platform_timer_action(struct esp_platform_wait_timer_param   *timer_wai
  * Parameters   : p1 , p2 ,splits[]
  * Returns      : the number of splits
 *******************************************************************************/
-uint16 ICACHE_FLASH_ATTR
+uint16_t ICACHE_FLASH_ATTR
 split(char *p1, char *p2, char *splits[])
 {
     int i = 0;
@@ -107,9 +107,9 @@ indexof(char *p1, char *p2, int start)
  * Returns      : none
 *******************************************************************************/
 void ICACHE_FLASH_ATTR
-esp_platform_find_min_time(struct esp_platform_wait_timer_param *timer_wait_param , uint16 count)
+esp_platform_find_min_time(struct esp_platform_wait_timer_param *timer_wait_param , uint16_t count)
 {
-    uint16 i = 0;
+    uint16_t i = 0;
     min_wait_second = 0xFFFFFFF;
 
     for (i = 0; i < count ; i++) {
@@ -126,7 +126,7 @@ esp_platform_find_min_time(struct esp_platform_wait_timer_param *timer_wait_para
  * Returns      : none
 *******************************************************************************/
 void ICACHE_FLASH_ATTR
-user_platform_timer_first_start(uint16 count)
+user_platform_timer_first_start(uint16_t count)
 {
     int i = 0;
     struct esp_platform_wait_timer_param timer_wait_param[100] = {0};
@@ -202,8 +202,8 @@ void ICACHE_FLASH_ATTR
 user_esp_platform_device_action(struct wait_param *pwait_action)
 {
     uint8_t i = 0;
-    uint16 count = pwait_action->count;
-    uint16 action_number = pwait_action->action_number;
+    uint16_t count = pwait_action->count;
+    uint16_t action_number = pwait_action->action_number;
 
     ESP_DBG("there is %d action at the same time\n", pwait_action->action_number);
 
@@ -264,10 +264,10 @@ user_esp_platform_wait_time_overflow_check(struct wait_param *pwait_action)
  * Returns      : none
 *******************************************************************************/
 void ICACHE_FLASH_ATTR
-esp_platform_timer_action(struct esp_platform_wait_timer_param *timer_wait_param, uint16 count)
+esp_platform_timer_action(struct esp_platform_wait_timer_param *timer_wait_param, uint16_t count)
 {
-    uint16 i = 0;
-    uint16 action_number;
+    uint16_t i = 0;
+    uint16_t action_number;
     struct wait_param pwait_action = {0};
 
     pwait_action.count = count;
@@ -333,7 +333,7 @@ user_platform_timer_start(char *pbuffer)
 
         char *split_buffer = (char *)os_zalloc(str_end - str_begin + 1);
         os_memcpy(split_buffer, pstr_start + str_begin, str_end - str_begin);
-        uint16 count = split(split_buffer , ";" , timer_splits);
+        uint16_t count = split(split_buffer , ";" , timer_splits);
         os_free(split_buffer);
         user_platform_timer_first_start(count);
     }

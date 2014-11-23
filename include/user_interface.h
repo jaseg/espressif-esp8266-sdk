@@ -45,7 +45,7 @@ typedef void (*upgrade_states_check_callback)(void * arg);
 
 struct upgrade_server_info {
     uint8_t ip[4];
-    uint16 port;
+    uint16_t port;
 
     uint8_t upgrade_flag;
 
@@ -98,12 +98,12 @@ void system_init_done_cb(init_done_cb_t cb);
 uint32_t system_rtc_clock_cali_proc(void);
 uint32_t system_get_rtc_time(void);
 
-uint8_t system_rtc_mem_read(uint8_t src_addr, void *des_addr, uint16 load_size);
-uint8_t system_rtc_mem_write(uint8_t des_addr, const void *src_addr, uint16 save_size);
+uint8_t system_rtc_mem_read(uint8_t src_addr, void *des_addr, uint16_t load_size);
+uint8_t system_rtc_mem_write(uint8_t des_addr, const void *src_addr, uint16_t save_size);
 
 void system_uart_swap(void);
 
-uint16 system_adc_read(void);
+uint16_t system_adc_read(void);
 
 #define NULL_MODE       0x00
 #define STATION_MODE    0x01
@@ -237,7 +237,7 @@ void wifi_status_led_install(uint8_t gpio_id, uint32_t gpio_name, uint8_t gpio_f
 
 void wifi_promiscuous_enable(uint8_t promiscuous);
 
-typedef void (* wifi_promiscuous_cb_t)(uint8_t *buf, uint16 len);
+typedef void (* wifi_promiscuous_cb_t)(uint8_t *buf, uint16_t len);
 
 void wifi_set_promiscuous_rx_cb(wifi_promiscuous_cb_t cb);
 

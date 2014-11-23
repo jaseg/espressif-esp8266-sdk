@@ -102,8 +102,8 @@ struct ip_pcb {
 #define SOF_BROADCAST     (uint8_t)0x20U  /* permit to send and to receive broadcast messages (see IP_SOF_BROADCAST option) */
 /*#define SOF_USELOOPBACK (uint8_t)0x40U     Unimplemented: bypass hardware when possible */
 #define SOF_LINGER        (uint8_t)0x80U  /* linger on close if data present */
-/*#define SOF_OOBINLINE   (uint16)0x0100U     Unimplemented: leave received OOB data in line */
-/*#define SOF_REUSEPORT   (uint16)0x0200U     Unimplemented: allow local address & port reuse */
+/*#define SOF_OOBINLINE   (uint16_t)0x0100U     Unimplemented: leave received OOB data in line */
+/*#define SOF_REUSEPORT   (uint16_t)0x0200U     Unimplemented: allow local address & port reuse */
 
 /* These flags are inherited (e.g. from a listen-pcb to a connection-pcb): */
 #define SOF_INHERITED   (SOF_REUSEADDR|SOF_KEEPALIVE|SOF_LINGER/*|SOF_DEBUG|SOF_DONTROUTE|SOF_OOBINLINE*/)
@@ -115,13 +115,13 @@ struct ip_pcb {
 PACK_STRUCT_BEGIN
 struct ip_hdr {
   /* version / header length / type of service */
-  PACK_STRUCT_FIELD(uint16 _v_hl_tos);
+  PACK_STRUCT_FIELD(uint16_t _v_hl_tos);
   /* total length */
-  PACK_STRUCT_FIELD(uint16 _len);
+  PACK_STRUCT_FIELD(uint16_t _len);
   /* identification */
-  PACK_STRUCT_FIELD(uint16 _id);
+  PACK_STRUCT_FIELD(uint16_t _id);
   /* fragment offset field */
-  PACK_STRUCT_FIELD(uint16 _offset);
+  PACK_STRUCT_FIELD(uint16_t _offset);
 #define IP_RF 0x8000        /* reserved fragment flag */
 #define IP_DF 0x4000        /* dont fragment flag */
 #define IP_MF 0x2000        /* more fragments flag */
@@ -131,7 +131,7 @@ struct ip_hdr {
   /* protocol*/
   PACK_STRUCT_FIELD(uint8_t _proto);
   /* checksum */
-  PACK_STRUCT_FIELD(uint16 _chksum);
+  PACK_STRUCT_FIELD(uint16_t _chksum);
   /* source and destination IP addresses */
   PACK_STRUCT_FIELD(ip_addr_p_t src);
   PACK_STRUCT_FIELD(ip_addr_p_t dest); 
@@ -185,7 +185,7 @@ err_t ip_output_hinted(struct pbuf *p, ip_addr_t *src, ip_addr_t *dest,
 #if IP_OPTIONS_SEND
 err_t ip_output_if_opt(struct pbuf *p, ip_addr_t *src, ip_addr_t *dest,
        uint8_t ttl, uint8_t tos, uint8_t proto, struct netif *netif, void *ip_options,
-       uint16 optlen)ICACHE_FLASH_ATTR;
+       uint16_t optlen)ICACHE_FLASH_ATTR;
 #endif /* IP_OPTIONS_SEND */
 /** Get the interface that received the current packet.
  * This function must only be called from a receive callback (udp_recv,

@@ -115,7 +115,7 @@ netio_recv(void *arg, struct tcp_pcb *pcb, struct pbuf *p, err_t err)
   uint8_t * data_ptr;
   uint32_t data_cntr;
   struct pbuf *q = p;
-  uint16 len;
+  uint16_t len;
 
   if (p != NULL) {
     tcp_recved(pcb, p->tot_len);
@@ -245,7 +245,7 @@ netio_recv(void *arg, struct tcp_pcb *pcb, struct pbuf *p, err_t err)
 }
 
 static err_t ICACHE_FLASH_ATTR
-netio_sent(void *arg, struct tcp_pcb *pcb, uint16 len)
+netio_sent(void *arg, struct tcp_pcb *pcb, uint16_t len)
 {
   struct netio_state *ns = arg;
   err_t err = ERR_OK;

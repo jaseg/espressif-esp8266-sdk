@@ -104,7 +104,7 @@ netbuf_delete(struct netbuf *buf)
  *         NULL if no memory could be allocated
  */
 void *
-netbuf_alloc(struct netbuf *buf, uint16 size)
+netbuf_alloc(struct netbuf *buf, uint16_t size)
 {
   LWIP_ERROR("netbuf_alloc: invalid buf", (buf != NULL), return NULL;);
 
@@ -147,7 +147,7 @@ netbuf_free(struct netbuf *buf)
  *         ERR_MEM if data couldn't be referenced due to lack of memory
  */
 err_t
-netbuf_ref(struct netbuf *buf, const void *dataptr, uint16 size)
+netbuf_ref(struct netbuf *buf, const void *dataptr, uint16_t size)
 {
   LWIP_ERROR("netbuf_ref: invalid buf", (buf != NULL), return ERR_ARG;);
   if (buf->p != NULL) {
@@ -185,12 +185,12 @@ netbuf_chain(struct netbuf *head, struct netbuf *tail)
  *
  * @param buf netbuf to get the data from
  * @param dataptr pointer to a void pointer where to store the data pointer
- * @param len pointer to an uint16 where the length of the data is stored
+ * @param len pointer to an uint16_t where the length of the data is stored
  * @return ERR_OK if the information was retreived,
  *         ERR_BUF on error.
  */
 err_t
-netbuf_data(struct netbuf *buf, void **dataptr, uint16 *len)
+netbuf_data(struct netbuf *buf, void **dataptr, uint16_t *len)
 {
   LWIP_ERROR("netbuf_data: invalid buf", (buf != NULL), return ERR_ARG;);
   LWIP_ERROR("netbuf_data: invalid dataptr", (dataptr != NULL), return ERR_ARG;);

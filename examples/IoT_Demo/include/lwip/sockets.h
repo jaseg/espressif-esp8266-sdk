@@ -51,7 +51,7 @@ extern "C" {
 struct sockaddr_in {
   uint8_t sin_len;
   uint8_t sin_family;
-  uint16 sin_port;
+  uint16_t sin_port;
   struct in_addr sin_addr;
   char sin_zero[8];
 };

@@ -75,7 +75,7 @@ struct eth_hdr {
 #endif
   PACK_STRUCT_FIELD(struct eth_addr dest);
   PACK_STRUCT_FIELD(struct eth_addr src);
-  PACK_STRUCT_FIELD(uint16 type);
+  PACK_STRUCT_FIELD(uint16_t type);
 } PACK_STRUCT_STRUCT;
 PACK_STRUCT_END
 #ifdef PACK_STRUCT_USE_INCLUDES
@@ -94,8 +94,8 @@ PACK_STRUCT_BEGIN
  * if 'type' in ethernet header is ETHTYPE_VLAN.
  * See IEEE802.Q */
 struct eth_vlan_hdr {
-  PACK_STRUCT_FIELD(uint16 tpid);
-  PACK_STRUCT_FIELD(uint16 prio_vid);
+  PACK_STRUCT_FIELD(uint16_t tpid);
+  PACK_STRUCT_FIELD(uint16_t prio_vid);
 } PACK_STRUCT_STRUCT;
 PACK_STRUCT_END
 #ifdef PACK_STRUCT_USE_INCLUDES
@@ -113,11 +113,11 @@ PACK_STRUCT_END
 PACK_STRUCT_BEGIN
 /** the ARP message, see RFC 826 ("Packet format") */
 struct etharp_hdr {
-  PACK_STRUCT_FIELD(uint16 hwtype);
-  PACK_STRUCT_FIELD(uint16 proto);
+  PACK_STRUCT_FIELD(uint16_t hwtype);
+  PACK_STRUCT_FIELD(uint16_t proto);
   PACK_STRUCT_FIELD(uint8_t  hwlen);
   PACK_STRUCT_FIELD(uint8_t  protolen);
-  PACK_STRUCT_FIELD(uint16 opcode);
+  PACK_STRUCT_FIELD(uint16_t opcode);
   PACK_STRUCT_FIELD(struct eth_addr shwaddr);
   PACK_STRUCT_FIELD(struct ip_addr2 sipaddr);
   PACK_STRUCT_FIELD(struct eth_addr dhwaddr);
@@ -205,7 +205,7 @@ err_t etharp_raw(struct netif *netif, const struct eth_addr *ethsrc_addr,
                  const struct eth_addr *ethdst_addr,
                  const struct eth_addr *hwsrc_addr, const ip_addr_t *ipsrc_addr,
                  const struct eth_addr *hwdst_addr, const ip_addr_t *ipdst_addr,
-                 const uint16 opcode)ICACHE_FLASH_ATTR;
+                 const uint16_t opcode)ICACHE_FLASH_ATTR;
 #endif /* LWIP_AUTOIP */
 
 #endif /* LWIP_ARP */
@@ -236,7 +236,7 @@ struct eth_hdr {
 #endif
   PACK_STRUCT_FIELD(struct eth_addr dest);
   PACK_STRUCT_FIELD(struct eth_addr src);
-  PACK_STRUCT_FIELD(uint16 type);
+  PACK_STRUCT_FIELD(uint16_t type);
 } PACK_STRUCT_STRUCT;
 
 #ifdef PACK_STRUCT_USE_INCLUDES

@@ -109,7 +109,7 @@ ip_addr_t current_iphdr_src;
 ip_addr_t current_iphdr_dest;
 
 /** The IP header ID of the next outgoing IP packet */
-static uint16 ip_id;
+static uint16_t ip_id;
 
 /**
  * Finds the appropriate network interface for a given IP address. It
@@ -290,8 +290,8 @@ ip_input(struct pbuf *p, struct netif *inp)
 {
   struct ip_hdr *iphdr;
   struct netif *netif;
-  uint16 iphdr_hlen;
-  uint16 iphdr_len;
+  uint16_t iphdr_hlen;
+  uint16_t iphdr_len;
 #if IP_ACCEPT_LINK_LAYER_ADDRESSING
   int check_ip_src=1;
 #endif /* IP_ACCEPT_LINK_LAYER_ADDRESSING */
@@ -632,7 +632,7 @@ ip_output_if(struct pbuf *p, ip_addr_t *src, ip_addr_t *dest,
  */
 err_t ip_output_if_opt(struct pbuf *p, ip_addr_t *src, ip_addr_t *dest,
        uint8_t ttl, uint8_t tos, uint8_t proto, struct netif *netif, void *ip_options,
-       uint16 optlen)
+       uint16_t optlen)
 {
 #endif /* IP_OPTIONS_SEND */
   struct ip_hdr *iphdr;
@@ -649,9 +649,9 @@ err_t ip_output_if_opt(struct pbuf *p, ip_addr_t *src, ip_addr_t *dest,
 
   /* Should the IP header be generated or is it already included in p? */
   if (dest != IP_HDRINCL) {
-    uint16 ip_hlen = IP_HLEN;
+    uint16_t ip_hlen = IP_HLEN;
 #if IP_OPTIONS_SEND
-    uint16 optlen_aligned = 0;
+    uint16_t optlen_aligned = 0;
     if (optlen != 0) {
 #if CHECKSUM_GEN_IP_INLINE
       int i;
@@ -673,7 +673,7 @@ err_t ip_output_if_opt(struct pbuf *p, ip_addr_t *src, ip_addr_t *dest,
       }
 #if CHECKSUM_GEN_IP_INLINE
       for (i = 0; i < optlen_aligned/2; i++) {
-        chk_sum += ((uint16*)p->payload)[i];
+        chk_sum += ((uint16_t*)p->payload)[i];
       }
 #endif /* CHECKSUM_GEN_IP_INLINE */
     }

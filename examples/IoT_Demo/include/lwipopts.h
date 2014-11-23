@@ -452,7 +452,7 @@
 
 /**
  * ETHARP_SUPPORT_VLAN==1: support receiving ethernet packets with VLAN header.
- * Additionally, you can define ETHARP_VLAN_CHECK to an uint16 VLAN ID to check.
+ * Additionally, you can define ETHARP_VLAN_CHECK to an uint16_t VLAN ID to check.
  * If ETHARP_VLAN_CHECK is defined, only VLAN-traffic for this VLAN is accepted.
  * If ETHARP_VLAN_CHECK is not defined, all traffic is accepted.
  */

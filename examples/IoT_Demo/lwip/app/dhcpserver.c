@@ -248,8 +248,8 @@ static void ICACHE_FLASH_ATTR send_offer(struct dhcps_msg *m)
         uint8_t *end;
 	    struct pbuf *p, *q;
 	    uint8_t *data;
-	    uint16 cnt=0;
-	    uint16 i;
+	    uint16_t cnt=0;
+	    uint16_t i;
 		err_t SendOffer_err_t;
         create_msg(m);
 
@@ -315,8 +315,8 @@ static void ICACHE_FLASH_ATTR send_nak(struct dhcps_msg *m)
     	uint8_t *end;
 	    struct pbuf *p, *q;
 	    uint8_t *data;
-	    uint16 cnt=0;
-	    uint16 i;
+	    uint16_t cnt=0;
+	    uint16_t i;
 		err_t SendNak_err_t;
         create_msg(m);
 
@@ -381,8 +381,8 @@ static void ICACHE_FLASH_ATTR send_ack(struct dhcps_msg *m)
 		uint8_t *end;
 	    struct pbuf *p, *q;
 	    uint8_t *data;
-	    uint16 cnt=0;
-	    uint16 i;
+	    uint16_t cnt=0;
+	    uint16_t i;
 		err_t SendAck_err_t;
         create_msg(m);
 
@@ -454,7 +454,7 @@ static uint8_t ICACHE_FLASH_ATTR parse_options(uint8_t *optptr, int16_t len)
         client.addr = *( (uint32_t *) &client_address);// Ҫ�����DHCP�ͻ��˵�IP
 
         uint8_t *end = optptr + len;
-        uint16 type = 0;
+        uint16_t type = 0;
 
         s.state = DHCPS_STATE_IDLE;
 
@@ -534,7 +534,7 @@ static uint8_t ICACHE_FLASH_ATTR parse_options(uint8_t *optptr, int16_t len)
 }
 ///////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////
-static int16_t ICACHE_FLASH_ATTR parse_msg(struct dhcps_msg *m, uint16 len)
+static int16_t ICACHE_FLASH_ATTR parse_msg(struct dhcps_msg *m, uint16_t len)
 {
 		if(os_memcmp((char *)m->options,
               (char *)magic_cookie,
@@ -672,12 +672,12 @@ static void ICACHE_FLASH_ATTR handle_dhcp(void *arg,
 									struct udp_pcb *pcb, 
 									struct pbuf *p, 
 									struct ip_addr *addr, 
-									uint16 port)
+									uint16_t port)
 {
 		
 		int16_t tlen;
-        uint16 i;
-	    uint16 dhcps_msg_cnt=0;
+        uint16_t i;
+	    uint16_t dhcps_msg_cnt=0;
 	    uint8_t *p_dhcps_msg = (uint8_t *)&msg_dhcps;
 	    uint8_t *data;
 

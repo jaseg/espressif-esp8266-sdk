@@ -173,7 +173,7 @@ free_entry(int i)
   /* and empty packet queue */
   if (arp_table[i].q != NULL) {
     /* remove all queued packets */
-    LWIP_DEBUGF(ETHARP_DEBUG, ("etharp_timer: freeing entry %"U16_F", packet queue %p.\n", (uint16)i, (void *)(arp_table[i].q)));
+    LWIP_DEBUGF(ETHARP_DEBUG, ("etharp_timer: freeing entry %"U16_F", packet queue %p.\n", (uint16_t)i, (void *)(arp_table[i].q)));
     free_etharp_q(arp_table[i].q);
     arp_table[i].q = NULL;
   }
@@ -219,7 +219,7 @@ etharp_tmr(void)
            (arp_table[i].ctime >= ARP_MAXPENDING))) {
         /* pending or stable entry has become old! */
         LWIP_DEBUGF(ETHARP_DEBUG, ("etharp_timer: expired %s entry %"U16_F".\n",
-             arp_table[i].state == ETHARP_STATE_STABLE ? "stable" : "pending", (uint16)i));
+             arp_table[i].state == ETHARP_STATE_STABLE ? "stable" : "pending", (uint16_t)i));
         /* clean up entries that have just been expired */
         free_entry(i);
       }
@@ -284,7 +284,7 @@ find_entry(ip_addr_t *ipaddr, uint8_t flags)
     uint8_t state = arp_table[i].state;
     /* no empty entry found yet and now we do find one? */
     if ((empty == ARP_TABLE_SIZE) && (state == ETHARP_STATE_EMPTY)) {
-      LWIP_DEBUGF(ETHARP_DEBUG, ("find_entry: found empty entry %"U16_F"\n", (uint16)i));
+      LWIP_DEBUGF(ETHARP_DEBUG, ("find_entry: found empty entry %"U16_F"\n", (uint16_t)i));
       /* remember first empty entry */
       empty = i;
     } else if (state != ETHARP_STATE_EMPTY) {
@@ -292,7 +292,7 @@ find_entry(ip_addr_t *ipaddr, uint8_t flags)
         state == ETHARP_STATE_PENDING || state == ETHARP_STATE_STABLE);
       /* if given, does IP address match IP address in ARP entry? */
       if (ipaddr && ip_addr_cmp(ipaddr, &arp_table[i].ipaddr)) {
-        LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE, ("find_entry: found matching entry %"U16_F"\n", (uint16)i));
+        LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE, ("find_entry: found matching entry %"U16_F"\n", (uint16_t)i));
         /* found exact IP address match, simply bail out */
         return i;
       }
@@ -350,25 +350,25 @@ find_entry(ip_addr_t *ipaddr, uint8_t flags)
   /* 1) empty entry available? */
   if (empty < ARP_TABLE_SIZE) {
     i = empty;
-    LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE, ("find_entry: selecting empty entry %"U16_F"\n", (uint16)i));
+    LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE, ("find_entry: selecting empty entry %"U16_F"\n", (uint16_t)i));
   } else {
     /* 2) found recyclable stable entry? */
     if (old_stable < ARP_TABLE_SIZE) {
       /* recycle oldest stable*/
       i = old_stable;
-      LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE, ("find_entry: selecting oldest stable entry %"U16_F"\n", (uint16)i));
+      LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE, ("find_entry: selecting oldest stable entry %"U16_F"\n", (uint16_t)i));
       /* no queued packets should exist on stable entries */
       LWIP_ASSERT("arp_table[i].q == NULL", arp_table[i].q == NULL);
     /* 3) found recyclable pending entry without queued packets? */
     } else if (old_pending < ARP_TABLE_SIZE) {
       /* recycle oldest pending */
       i = old_pending;
-      LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE, ("find_entry: selecting oldest pending entry %"U16_F" (without queue)\n", (uint16)i));
+      LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE, ("find_entry: selecting oldest pending entry %"U16_F" (without queue)\n", (uint16_t)i));
     /* 4) found recyclable pending entry with queued packets? */
     } else if (old_queue < ARP_TABLE_SIZE) {
       /* recycle oldest pending (queued packets are free in free_entry) */
       i = old_queue;
-      LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE, ("find_entry: selecting oldest pending entry %"U16_F", freeing packet queue %p\n", (uint16)i, (void *)(arp_table[i].q)));
+      LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE, ("find_entry: selecting oldest pending entry %"U16_F", freeing packet queue %p\n", (uint16_t)i, (void *)(arp_table[i].q)));
       /* no empty or recyclable entries found */
     } else {
       LWIP_DEBUGF(ETHARP_DEBUG | LWIP_DBG_TRACE, ("find_entry: no empty or recyclable entries found\n"));
@@ -1156,7 +1156,7 @@ etharp_raw(struct netif *netif, const struct eth_addr *ethsrc_addr,
            const struct eth_addr *ethdst_addr,
            const struct eth_addr *hwsrc_addr, const ip_addr_t *ipsrc_addr,
            const struct eth_addr *hwdst_addr, const ip_addr_t *ipdst_addr,
-           const uint16 opcode)
+           const uint16_t opcode)
 {
   struct pbuf *p;
   err_t result = ERR_OK;
@@ -1255,7 +1255,7 @@ err_t
 ethernet_input(struct pbuf *p, struct netif *netif)
 {
   struct eth_hdr* ethhdr;
-  uint16 type;
+  uint16_t type;
   int16_t ip_hdr_offset = SIZEOF_ETH_HDR;
 
   if (p->len <= SIZEOF_ETH_HDR) {

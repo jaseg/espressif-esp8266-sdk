@@ -110,7 +110,7 @@ typedef struct _comon_pkt{
 	int remote_port;
 	uint8_t remote_ip[4];
 	uint8_t *ptrbuf;
-	uint16 cntr;
+	uint16_t cntr;
 	int8_t  err;
 	uint32_t timeout;
 	uint32_t recv_check;
@@ -284,7 +284,7 @@ extern int8_t espconn_regist_sentcb(struct espconn *espconn, espconn_sent_callba
  * Returns      : none
 *******************************************************************************/
 
-extern int8_t espconn_sent(struct espconn *espconn, uint8_t *psent, uint16 length);
+extern int8_t espconn_sent(struct espconn *espconn, uint8_t *psent, uint16_t length);
 
 /******************************************************************************
  * FunctionName : espconn_regist_connectcb

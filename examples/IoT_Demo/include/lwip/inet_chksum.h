@@ -37,7 +37,7 @@
 #include "lwip/pbuf.h"
 #include "lwip/ip_addr.h"
 
-/** Swap the bytes in an uint16: much like htons() for little-endian */
+/** Swap the bytes in an uint16_t: much like htons() for little-endian */
 #ifndef SWAP_BYTES_IN_WORD
 #if LWIP_PLATFORM_BYTESWAP && (BYTE_ORDER == LITTLE_ENDIAN)
 /* little endian and PLATFORM_BYTESWAP defined */
@@ -48,14 +48,14 @@
 #endif /* LWIP_PLATFORM_BYTESWAP && (BYTE_ORDER == LITTLE_ENDIAN)*/
 #endif /* SWAP_BYTES_IN_WORD */
 
-/** Split an uint32_t in two uint16s and add them up */
+/** Split an uint32_t in two uint16_ts and add them up */
 #ifndef FOLD_U32T
 #define FOLD_U32T(u)          (((u) >> 16) + ((u) & 0x0000ffffUL))
 #endif
 
 #if LWIP_CHECKSUM_ON_COPY
 /** Function-like macro: same as MEMCPY but returns the checksum of copied data
-    as uint16 */
+    as uint16_t */
 #ifndef LWIP_CHKSUM_COPY
 #define LWIP_CHKSUM_COPY(dst, src, len) lwip_chksum_copy(dst, src, len)
 #ifndef LWIP_CHKSUM_COPY_ALGORITHM
@@ -70,16 +70,16 @@
 extern "C" {
 #endif
 
-uint16 inet_chksum(void *dataptr, uint16 len)ICACHE_FLASH_ATTR;
-uint16 inet_chksum_pbuf(struct pbuf *p)ICACHE_FLASH_ATTR;
-uint16 inet_chksum_pseudo(struct pbuf *p,
+uint16_t inet_chksum(void *dataptr, uint16_t len)ICACHE_FLASH_ATTR;
+uint16_t inet_chksum_pbuf(struct pbuf *p)ICACHE_FLASH_ATTR;
+uint16_t inet_chksum_pseudo(struct pbuf *p,
        ip_addr_t *src, ip_addr_t *dest,
-       uint8_t proto, uint16 proto_len)ICACHE_FLASH_ATTR;
-uint16 inet_chksum_pseudo_partial(struct pbuf *p,
+       uint8_t proto, uint16_t proto_len)ICACHE_FLASH_ATTR;
+uint16_t inet_chksum_pseudo_partial(struct pbuf *p,
        ip_addr_t *src, ip_addr_t *dest,
-       uint8_t proto, uint16 proto_len, uint16 chksum_len)ICACHE_FLASH_ATTR;
+       uint8_t proto, uint16_t proto_len, uint16_t chksum_len)ICACHE_FLASH_ATTR;
 #if LWIP_CHKSUM_COPY_ALGORITHM
-uint16 lwip_chksum_copy(void *dst, const void *src, uint16 len)ICACHE_FLASH_ATTR;
+uint16_t lwip_chksum_copy(void *dst, const void *src, uint16_t len)ICACHE_FLASH_ATTR;
 #endif /* LWIP_CHKSUM_COPY_ALGORITHM */
 
 #ifdef __cplusplus

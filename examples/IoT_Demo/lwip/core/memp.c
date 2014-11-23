@@ -126,17 +126,17 @@ static struct memp *memp_tab[MEMP_MAX];
 #if !MEM_USE_POOLS && !MEMP_MEM_MALLOC
 static
 #endif
-const uint16 memp_sizes[MEMP_MAX] = { //LWIP_MEM_ALIGN_SIZE
+const uint16_t memp_sizes[MEMP_MAX] = { //LWIP_MEM_ALIGN_SIZE
 #define LWIP_MEMPOOL(name,num,size,desc,attr)  LWIP_MEM_ALIGN_SIZE(size),
 #include "lwip/memp_std.h"
 };
 
-uint16 memp_sizes_test[1] = {PBUF_POOL_BUFSIZE,};
+uint16_t memp_sizes_test[1] = {PBUF_POOL_BUFSIZE,};
 
 #if !MEMP_MEM_MALLOC /* don't build if not configured for use in lwipopts.h */
 
 /** This array holds the number of elements in each pool. */
-static const uint16 memp_num[MEMP_MAX] = {
+static const uint16_t memp_num[MEMP_MAX] = {
 #define LWIP_MEMPOOL(name,num,size,desc,attr)  (num),
 #include "lwip/memp_std.h"
 };
@@ -217,9 +217,9 @@ static const char * memp_overflow_names[] = {
  * @param memp_type the pool p comes from
  */
 static void ICACHE_FLASH_ATTR
-memp_overflow_check_element_overflow(struct memp *p, uint16 memp_type)
+memp_overflow_check_element_overflow(struct memp *p, uint16_t memp_type)
 {
-  uint16 k;
+  uint16_t k;
   uint8_t *m;
 #if MEMP_SANITY_REGION_AFTER_ALIGNED > 0
   m = (uint8_t*)p + MEMP_SIZE + memp_sizes[memp_type];
@@ -250,9 +250,9 @@ memp_overflow_check_element_overflow(struct memp *p, uint16 memp_type)
  * @param memp_type the pool p comes from
  */
 static void ICACHE_FLASH_ATTR
-memp_overflow_check_element_underflow(struct memp *p, uint16 memp_type)
+memp_overflow_check_element_underflow(struct memp *p, uint16_t memp_type)
 {
-  uint16 k;
+  uint16_t k;
   uint8_t *m;
 #if MEMP_SANITY_REGION_BEFORE_ALIGNED > 0
   m = (uint8_t*)p + MEMP_SIZE - MEMP_SANITY_REGION_BEFORE_ALIGNED;
@@ -283,7 +283,7 @@ memp_overflow_check_element_underflow(struct memp *p, uint16 memp_type)
 static void ICACHE_FLASH_ATTR
 memp_overflow_check_all(void)
 {
-  uint16 i, j;
+  uint16_t i, j;
   struct memp *p;
 
   p = (struct memp *)LWIP_MEM_ALIGN(memp_memory);
@@ -310,7 +310,7 @@ memp_overflow_check_all(void)
 static void ICACHE_FLASH_ATTR
 memp_overflow_init(void)
 {
-  uint16 i, j;
+  uint16_t i, j;
   struct memp *p;
   uint8_t *m;
 
@@ -341,7 +341,7 @@ void
 memp_init(void)
 {
   struct memp *memp;
-  uint16 i, j;
+  uint16_t i, j;
 
   for (i = 0; i < MEMP_MAX; ++i) {
     MEMP_STATS_AVAIL(used, i, 0);

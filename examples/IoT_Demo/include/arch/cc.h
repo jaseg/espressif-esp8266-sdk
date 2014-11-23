@@ -51,7 +51,7 @@
 
 typedef unsigned   char    uint8_t;
 typedef signed     char    int8_t;
-typedef unsigned   short   uint16;
+typedef unsigned   short   uint16_t;
 typedef signed     short   int16_t;
 typedef unsigned   long    uint32_t;
 typedef signed     long    int32_t;
@@ -88,7 +88,7 @@ typedef unsigned long   mem_ptr_t;
 #define SYS_ARCH_UNPROTECT(x)
 
 #define LWIP_PLATFORM_BYTESWAP 1
-#define LWIP_PLATFORM_HTONS(_n)  ((uint16)((((_n) & 0xff) << 8) | (((_n) >> 8) & 0xff)))
+#define LWIP_PLATFORM_HTONS(_n)  ((uint16_t)((((_n) & 0xff) << 8) | (((_n) >> 8) & 0xff)))
 #define LWIP_PLATFORM_HTONL(_n)  ((uint32_t)( (((_n) & 0xff) << 24) | (((_n) & 0xff00) << 8) | (((_n) >> 8)  & 0xff00) | (((_n) >> 24) & 0xff) ))
 
 #if LWIP_RAW

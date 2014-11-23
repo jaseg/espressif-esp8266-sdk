@@ -30,7 +30,7 @@ extern int8_t espconn_secure_disconnect(struct espconn *espconn);
  * Returns      : none
 *******************************************************************************/
 
-extern int8_t espconn_secure_sent(struct espconn *espconn, uint8_t *psent, uint16 length);
+extern int8_t espconn_secure_sent(struct espconn *espconn, uint8_t *psent, uint16_t length);
 
 /******************************************************************************
  * FunctionName : espconn_secure_accept

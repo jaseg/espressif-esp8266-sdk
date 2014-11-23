@@ -103,7 +103,7 @@ recv_raw(void *arg, struct raw_pcb *pcb, struct pbuf *p,
     }
 
     if (q != NULL) {
-      uint16 len;
+      uint16_t len;
       buf = (struct netbuf *)memp_malloc(MEMP_NETBUF);
       if (buf == NULL) {
         pbuf_free(q);
@@ -142,11 +142,11 @@ recv_raw(void *arg, struct raw_pcb *pcb, struct pbuf *p,
  */
 static void
 recv_udp(void *arg, struct udp_pcb *pcb, struct pbuf *p,
-   ip_addr_t *addr, uint16 port)
+   ip_addr_t *addr, uint16_t port)
 {
   struct netbuf *buf;
   struct netconn *conn;
-  uint16 len;
+  uint16_t len;
 #if LWIP_SO_RCVBUF
   int recv_avail;
 #endif /* LWIP_SO_RCVBUF */
@@ -216,7 +216,7 @@ static err_t
 recv_tcp(void *arg, struct tcp_pcb *pcb, struct pbuf *p, err_t err)
 {
   struct netconn *conn;
-  uint16 len;
+  uint16_t len;
 
   LWIP_UNUSED_ARG(pcb);
   LWIP_ASSERT("recv_tcp must have a pcb argument", pcb != NULL);
@@ -310,7 +310,7 @@ poll_tcp(void *arg, struct tcp_pcb *pcb)
  * @see tcp.h (struct tcp_pcb.sent) for parameters and return value
  */
 static err_t
-sent_tcp(void *arg, struct tcp_pcb *pcb, uint16 len)
+sent_tcp(void *arg, struct tcp_pcb *pcb, uint16_t len)
 {
   struct netconn *conn = (struct netconn *)arg;
 
@@ -1174,7 +1174,7 @@ do_recv(struct api_msg_msg *msg)
       {
         uint32_t remaining = msg->msg.r.len;
         do {
-          uint16 recved = (remaining > 0xffff) ? 0xffff : (uint16)remaining;
+          uint16_t recved = (remaining > 0xffff) ? 0xffff : (uint16_t)remaining;
           tcp_recved(msg->conn->pcb.tcp, recved);
           remaining -= recved;
         }while(remaining != 0);
@@ -1200,7 +1200,7 @@ do_writemore(struct netconn *conn)
 {
   err_t err = ERR_OK;
   void *dataptr;
-  uint16 len, available;
+  uint16_t len, available;
   uint8_t write_finished = 0;
   size_t diff;
   uint8_t dontblock = netconn_is_nonblocking(conn) ||
@@ -1216,14 +1216,14 @@ do_writemore(struct netconn *conn)
 
   dataptr = (uint8_t*)conn->current_msg->msg.w.dataptr + conn->write_offset;
   diff = conn->current_msg->msg.w.len - conn->write_offset;
-  if (diff > 0xffffUL) { /* max_uint16 */
+  if (diff > 0xffffUL) { /* max_uint16_t */
     len = 0xffff;
 #if LWIP_TCPIP_CORE_LOCKING
     conn->flags |= NETCONN_FLAG_WRITE_DELAYED;
 #endif
     apiflags |= TCP_WRITE_FLAG_MORE;
   } else {
-    len = (uint16)diff;
+    len = (uint16_t)diff;
   }
   available = tcp_sndbuf(conn->pcb.tcp);
   if (available < len) {

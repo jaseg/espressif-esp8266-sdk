@@ -73,7 +73,7 @@ typedef struct ip_addr_packed ip_addr_p_t;
 #endif
 PACK_STRUCT_BEGIN
 struct ip_addr2 {
-  PACK_STRUCT_FIELD(uint16 addrw[2]);
+  PACK_STRUCT_FIELD(uint16_t addrw[2]);
 } PACK_STRUCT_STRUCT;
 PACK_STRUCT_END
 #ifdef PACK_STRUCT_USE_INCLUDES
@@ -153,7 +153,7 @@ extern const ip_addr_t ip_addr_broadcast;
 
 /** MEMCPY-like copying of IP addresses where addresses are known to be
  * 16-bit-aligned if the port is correctly configured (so a port could define
- * this to copying 2 uint16's) - no NULL-pointer-checking needed. */
+ * this to copying 2 uint16_t's) - no NULL-pointer-checking needed. */
 #ifndef IPADDR2_COPY
 #define IPADDR2_COPY(dest, src) SMEMCPY(dest, src, sizeof(ip_addr_t))
 #endif
@@ -221,12 +221,12 @@ uint8_t ip4_addr_netmask_valid(uint32_t netmask)ICACHE_FLASH_ATTR;
 #define ip4_addr2(ipaddr) (((uint8_t*)(ipaddr))[1])
 #define ip4_addr3(ipaddr) (((uint8_t*)(ipaddr))[2])
 #define ip4_addr4(ipaddr) (((uint8_t*)(ipaddr))[3])
-/* These are cast to uint16, with the intent that they are often arguments
+/* These are cast to uint16_t, with the intent that they are often arguments
  * to printf using the U16_F format from cc.h. */
-#define ip4_addr1_16(ipaddr) ((uint16)ip4_addr1(ipaddr))
-#define ip4_addr2_16(ipaddr) ((uint16)ip4_addr2(ipaddr))
-#define ip4_addr3_16(ipaddr) ((uint16)ip4_addr3(ipaddr))
-#define ip4_addr4_16(ipaddr) ((uint16)ip4_addr4(ipaddr))
+#define ip4_addr1_16(ipaddr) ((uint16_t)ip4_addr1(ipaddr))
+#define ip4_addr2_16(ipaddr) ((uint16_t)ip4_addr2(ipaddr))
+#define ip4_addr3_16(ipaddr) ((uint16_t)ip4_addr3(ipaddr))
+#define ip4_addr4_16(ipaddr) ((uint16_t)ip4_addr4(ipaddr))
 
 /** For backwards compatibility */
 #define ip_ntoa(ipaddr)  ipaddr_ntoa(ipaddr)

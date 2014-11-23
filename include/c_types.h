@@ -6,6 +6,8 @@
 #ifndef _C_TYPES_H_
 #define _C_TYPES_H_
 
+#include <stdint.h>
+
 #ifndef NULL
 #define NULL (void *)0
 #endif /* NULL */

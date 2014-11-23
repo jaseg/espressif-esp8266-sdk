@@ -64,7 +64,7 @@ static struct tcp_hdr *tcphdr;		//报文段中TCP首部
 static struct ip_hdr *iphdr;		//IP数据包首部
 static uint32_t seqno, ackno;		//TCP首部中序号字段与确认号字段
 static uint8_t flags;				//首部标志字段
-static uint16 tcplen;				//TCP报文长度
+static uint16_t tcplen;				//TCP报文长度
 
 static uint8_t recv_flags;			//当前报文处理结果
 static struct pbuf *recv_data;		//报文段数据pbuf
@@ -692,7 +692,7 @@ tcp_process(struct tcp_pcb *pcb)
       pcb->cwnd = ((pcb->cwnd == 1) ? (pcb->mss * 2) : pcb->mss);
       LWIP_ASSERT("pcb->snd_queuelen > 0", (pcb->snd_queuelen > 0));
       --pcb->snd_queuelen;
-      LWIP_DEBUGF(TCP_QLEN_DEBUG, ("tcp_process: SYN-SENT --queuelen %"U16_F"\n", (uint16)pcb->snd_queuelen));
+      LWIP_DEBUGF(TCP_QLEN_DEBUG, ("tcp_process: SYN-SENT --queuelen %"U16_F"\n", (uint16_t)pcb->snd_queuelen));
       rseg = pcb->unacked;
       pcb->unacked = rseg->next;
 
@@ -726,7 +726,7 @@ tcp_process(struct tcp_pcb *pcb)
     if (flags & TCP_ACK) {
       /* expected ACK number? */
       if (TCP_SEQ_BETWEEN(ackno, pcb->lastack+1, pcb->snd_nxt)) {
-        uint16 old_cwnd;
+        uint16_t old_cwnd;
         pcb->state = ESTABLISHED;
         LWIP_DEBUGF(TCP_DEBUG, ("TCP connection established %"U16_F" -> %"U16_F".\n", inseg.tcphdr->src, inseg.tcphdr->dest));
 #if LWIP_CALLBACK_API
@@ -865,7 +865,7 @@ tcp_oos_insert_segment(struct tcp_seg *cseg, struct tcp_seg *next)
     if (next &&
         TCP_SEQ_GT(seqno + cseg->len, next->tcphdr->seqno)) {
       /* We need to trim the incoming segment. */
-      cseg->len = (uint16)(next->tcphdr->seqno - seqno);
+      cseg->len = (uint16_t)(next->tcphdr->seqno - seqno);
       pbuf_realloc(cseg->p, cseg->len);
     }
   }
@@ -896,7 +896,7 @@ tcp_receive(struct tcp_pcb *pcb)
   int32_t off;
   int16_t m;
   uint32_t right_wnd_edge;
-  uint16 new_tot_len;
+  uint16_t new_tot_len;
   int found_dupack = 0;
 
   if (flags & TCP_ACK) {//报文包含ACK
@@ -965,7 +965,7 @@ tcp_receive(struct tcp_pcb *pcb)
               if (pcb->dupacks > 3) {
                 /* Inflate the congestion window, but not if it means that
                    the value overflows. */
-                if ((uint16)(pcb->cwnd + pcb->mss) > pcb->cwnd) {
+                if ((uint16_t)(pcb->cwnd + pcb->mss) > pcb->cwnd) {
                   pcb->cwnd += pcb->mss;
                 }
               } else if (pcb->dupacks == 3) {//是重复ACK
@@ -996,7 +996,7 @@ tcp_receive(struct tcp_pcb *pcb)
       pcb->rto = (pcb->sa >> 3) + pcb->sv;
 
       /* Update the send buffer space. Diff between the two can never exceed 64K? */
-      pcb->acked = (uint16)(ackno - pcb->lastack);
+      pcb->acked = (uint16_t)(ackno - pcb->lastack);
 
       pcb->snd_buf += pcb->acked;
 
@@ -1008,12 +1008,12 @@ tcp_receive(struct tcp_pcb *pcb)
          ssthresh). */
       if (pcb->state >= ESTABLISHED) {//状态为建立连接标志
         if (pcb->cwnd < pcb->ssthresh) {
-          if ((uint16)(pcb->cwnd + pcb->mss) > pcb->cwnd) {
+          if ((uint16_t)(pcb->cwnd + pcb->mss) > pcb->cwnd) {
             pcb->cwnd += pcb->mss;
           }
           LWIP_DEBUGF(TCP_CWND_DEBUG, ("tcp_receive: slow start cwnd %"U16_F"\n", pcb->cwnd));
         } else {
-          uint16 new_cwnd = (pcb->cwnd + pcb->mss * pcb->mss / pcb->cwnd);
+          uint16_t new_cwnd = (pcb->cwnd + pcb->mss * pcb->mss / pcb->cwnd);
           if (new_cwnd > pcb->cwnd) {
             pcb->cwnd = new_cwnd;
           }
@@ -1042,7 +1042,7 @@ tcp_receive(struct tcp_pcb *pcb)
         next = pcb->unacked;//pcb unacked标志
         pcb->unacked = pcb->unacked->next;//pcb unacked 下一个标志
 
-        LWIP_DEBUGF(TCP_QLEN_DEBUG, ("tcp_receive: queuelen %"U16_F" ... ", (uint16)pcb->snd_queuelen));
+        LWIP_DEBUGF(TCP_QLEN_DEBUG, ("tcp_receive: queuelen %"U16_F" ... ", (uint16_t)pcb->snd_queuelen));
         LWIP_ASSERT("pcb->snd_queuelen >= pbuf_clen(next->p)", (pcb->snd_queuelen >= pbuf_clen(next->p)));
         /* Prevent ACK for FIN to generate a sent event */
         if ((pcb->acked != 0) && ((TCPH_FLAGS(next->tcphdr) & TCP_FIN) != 0)) {
@@ -1052,7 +1052,7 @@ tcp_receive(struct tcp_pcb *pcb)
         pcb->snd_queuelen -= pbuf_clen(next->p);//计算链表里面的pbufs数量 
         tcp_seg_free(next);//释放tcp段
 
-        LWIP_DEBUGF(TCP_QLEN_DEBUG, ("%"U16_F" (after freeing unacked)\n", (uint16)pcb->snd_queuelen));
+        LWIP_DEBUGF(TCP_QLEN_DEBUG, ("%"U16_F" (after freeing unacked)\n", (uint16_t)pcb->snd_queuelen));
         if (pcb->snd_queuelen != 0) {
           LWIP_ASSERT("tcp_receive: valid queue length", pcb->unacked != NULL ||
                       pcb->unsent != NULL);
@@ -1088,7 +1088,7 @@ tcp_receive(struct tcp_pcb *pcb)
 
       next = pcb->unsent;//pcb未发送标志 
       pcb->unsent = pcb->unsent->next;//未发送的下一个
-      LWIP_DEBUGF(TCP_QLEN_DEBUG, ("tcp_receive: queuelen %"U16_F" ... ", (uint16)pcb->snd_queuelen));
+      LWIP_DEBUGF(TCP_QLEN_DEBUG, ("tcp_receive: queuelen %"U16_F" ... ", (uint16_t)pcb->snd_queuelen));
       LWIP_ASSERT("pcb->snd_queuelen >= pbuf_clen(next->p)", (pcb->snd_queuelen >= pbuf_clen(next->p)));
       /* Prevent ACK for FIN to generate a sent event */
       if ((pcb->acked != 0) && ((TCPH_FLAGS(next->tcphdr) & TCP_FIN) != 0)) {
@@ -1096,7 +1096,7 @@ tcp_receive(struct tcp_pcb *pcb)
       }
       pcb->snd_queuelen -= pbuf_clen(next->p);//链表中pbuf的个数
       tcp_seg_free(next);//释放段
-      LWIP_DEBUGF(TCP_QLEN_DEBUG, ("%"U16_F" (after freeing unsent)\n", (uint16)pcb->snd_queuelen));
+      LWIP_DEBUGF(TCP_QLEN_DEBUG, ("%"U16_F" (after freeing unsent)\n", (uint16_t)pcb->snd_queuelen));
       if (pcb->snd_queuelen != 0) {//发送序列长度
         LWIP_ASSERT("tcp_receive: valid queue length",
           pcb->unacked != NULL || pcb->unsent != NULL);
@@ -1195,7 +1195,7 @@ tcp_receive(struct tcp_pcb *pcb)
       LWIP_ASSERT("insane offset!", (off < 0x7fff));
       if (inseg.p->len < off) {
         LWIP_ASSERT("pbuf too short!", (((int32_t)inseg.p->tot_len) >= off));
-        new_tot_len = (uint16)(inseg.p->tot_len - off);
+        new_tot_len = (uint16_t)(inseg.p->tot_len - off);
         while (p->len < off) {
           off -= p->len;
           /* KJM following line changed (with addition of new_tot_len var)
@@ -1215,7 +1215,7 @@ tcp_receive(struct tcp_pcb *pcb)
           LWIP_ASSERT("pbuf_header failed", 0);
         }
       }
-      inseg.len -= (uint16)(pcb->rcv_nxt - seqno);
+      inseg.len -= (uint16_t)(pcb->rcv_nxt - seqno);
       inseg.tcphdr->seqno = seqno = pcb->rcv_nxt;
     }
     else {
@@ -1301,7 +1301,7 @@ tcp_receive(struct tcp_pcb *pcb)
                 TCP_SEQ_GT(seqno + tcplen,
                            next->tcphdr->seqno)) {
               /* inseg cannot have FIN here (already processed above) */
-              inseg.len = (uint16)(next->tcphdr->seqno - seqno);
+              inseg.len = (uint16_t)(next->tcphdr->seqno - seqno);
               if (TCPH_FLAGS(inseg.tcphdr) & TCP_SYN) {
                 inseg.len -= 1;
               }
@@ -1461,7 +1461,7 @@ tcp_receive(struct tcp_pcb *pcb)
                   if (cseg != NULL) {
                     if (TCP_SEQ_GT(prev->tcphdr->seqno + prev->len, seqno)) {
                       /* We need to trim the prev segment. */
-                      prev->len = (uint16)(seqno - prev->tcphdr->seqno);
+                      prev->len = (uint16_t)(seqno - prev->tcphdr->seqno);
                       pbuf_realloc(prev->p, prev->len);
                     }
                     prev->next = cseg;
@@ -1483,7 +1483,7 @@ tcp_receive(struct tcp_pcb *pcb)
                 if (next->next != NULL) {
                   if (TCP_SEQ_GT(next->tcphdr->seqno + next->len, seqno)) {
                     /* We need to trim the last segment. */
-                    next->len = (uint16)(seqno - next->tcphdr->seqno);
+                    next->len = (uint16_t)(seqno - next->tcphdr->seqno);
                     pbuf_realloc(next->p, next->len);
                   }
                   /* check if the remote side overruns our receive window */
@@ -1540,8 +1540,8 @@ tcp_receive(struct tcp_pcb *pcb)
 static void
 tcp_parseopt(struct tcp_pcb *pcb)
 {
-  uint16 c, max_c;
-  uint16 mss;
+  uint16_t c, max_c;
+  uint16_t mss;
   uint8_t *opts, opt;
 #if LWIP_TCP_TIMESTAMPS
   uint32_t tsval;

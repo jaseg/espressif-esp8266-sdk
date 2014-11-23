@@ -151,13 +151,13 @@ uart0_rx_intr_handler(void *para)
  * FunctionName : uart0_tx_buffer
  * Description  : use uart0 to transfer buffer
  * Parameters   : uint8_t *buf - point to send buffer
- *                uint16 len - buffer len
+ *                uint16_t len - buffer len
  * Returns      :
 *******************************************************************************/
 void ICACHE_FLASH_ATTR
-uart0_tx_buffer(uint8_t *buf, uint16 len)
+uart0_tx_buffer(uint8_t *buf, uint16_t len)
 {
-    uint16 i;
+    uint16_t i;
 
     for (i = 0; i < len; i++) {
         uart_tx_one_char(buf[i]);

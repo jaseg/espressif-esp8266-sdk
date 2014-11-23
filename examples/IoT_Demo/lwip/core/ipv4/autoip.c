@@ -224,7 +224,7 @@ autoip_create_addr(struct netif *netif, ip_addr_t *ipaddr)
   
   LWIP_DEBUGF(AUTOIP_DEBUG | LWIP_DBG_TRACE | LWIP_DBG_STATE,
     ("autoip_create_addr(): tried_llipaddr=%"U16_F", %"U16_F".%"U16_F".%"U16_F".%"U16_F"\n",
-    (uint16)(netif->autoip->tried_llipaddr), ip4_addr1_16(ipaddr), ip4_addr2_16(ipaddr),
+    (uint16_t)(netif->autoip->tried_llipaddr), ip4_addr1_16(ipaddr), ip4_addr2_16(ipaddr),
     ip4_addr3_16(ipaddr), ip4_addr4_16(ipaddr)));
 }
 
@@ -267,7 +267,7 @@ autoip_bind(struct netif *netif)
 
   LWIP_DEBUGF(AUTOIP_DEBUG | LWIP_DBG_TRACE,
     ("autoip_bind(netif=%p) %c%c%"U16_F" %"U16_F".%"U16_F".%"U16_F".%"U16_F"\n",
-    (void*)netif, netif->name[0], netif->name[1], (uint16)netif->num,
+    (void*)netif, netif->name[0], netif->name[1], (uint16_t)netif->num,
     ip4_addr1_16(&autoip->llipaddr), ip4_addr2_16(&autoip->llipaddr),
     ip4_addr3_16(&autoip->llipaddr), ip4_addr4_16(&autoip->llipaddr)));
 
@@ -308,7 +308,7 @@ autoip_start(struct netif *netif)
 
   LWIP_DEBUGF(AUTOIP_DEBUG | LWIP_DBG_TRACE | LWIP_DBG_STATE,
     ("autoip_start(netif=%p) %c%c%"U16_F"\n", (void*)netif, netif->name[0],
-    netif->name[1], (uint16)netif->num));
+    netif->name[1], (uint16_t)netif->num));
   if(autoip == NULL) {
     /* no AutoIP client attached yet? */
     LWIP_DEBUGF(AUTOIP_DEBUG | LWIP_DBG_TRACE,
@@ -353,7 +353,7 @@ autoip_start_probing(struct netif *netif)
    * choosen out of 0 to PROBE_WAIT seconds.
    * compliant to RFC 3927 Section 2.2.1
    */
-  autoip->ttw = (uint16)(LWIP_AUTOIP_RAND(netif) % (PROBE_WAIT * AUTOIP_TICKS_PER_SECOND));
+  autoip->ttw = (uint16_t)(LWIP_AUTOIP_RAND(netif) % (PROBE_WAIT * AUTOIP_TICKS_PER_SECOND));
 
   /*
    * if we tried more then MAX_CONFLICTS we must limit our rate for
@@ -410,7 +410,7 @@ autoip_tmr()
 
       LWIP_DEBUGF(AUTOIP_DEBUG | LWIP_DBG_TRACE,
         ("autoip_tmr() AutoIP-State: %"U16_F", ttw=%"U16_F"\n",
-        (uint16)(netif->autoip->state), netif->autoip->ttw));
+        (uint16_t)(netif->autoip->state), netif->autoip->ttw));
 
       switch(netif->autoip->state) {
         case AUTOIP_STATE_PROBING:
@@ -431,7 +431,7 @@ autoip_tmr()
                 ("autoip_tmr() PROBING Sent Probe\n"));
               netif->autoip->sent_num++;
               /* calculate time to wait to next probe */
-              netif->autoip->ttw = (uint16)((LWIP_AUTOIP_RAND(netif) %
+              netif->autoip->ttw = (uint16_t)((LWIP_AUTOIP_RAND(netif) %
                 ((PROBE_MAX - PROBE_MIN) * AUTOIP_TICKS_PER_SECOND) ) +
                 PROBE_MIN * AUTOIP_TICKS_PER_SECOND);
             }

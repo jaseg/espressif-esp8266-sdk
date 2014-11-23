@@ -81,7 +81,7 @@ struct igmp_group {
   /** current state of the group */
   uint8_t               group_state;
   /** timer for reporting, negative is OFF */
-  uint16              timer;
+  uint16_t              timer;
   /** counter of simultaneous uses */
   uint8_t               use;
 };

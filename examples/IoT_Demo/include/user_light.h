@@ -15,7 +15,7 @@
 #define LIGHE_LEVEL     3
 
 struct light_saved_param {
-    uint16 pwm_freq;
+    uint16_t pwm_freq;
     uint8_t  pwm_duty[PWM_CHANNEL];
     uint8_t  pad[6-PWM_CHANNEL];
 };
@@ -23,8 +23,8 @@ struct light_saved_param {
 void user_light_init(void);
 uint8_t user_light_get_duty(uint8_t channel);
 void user_light_set_duty(uint8_t duty, uint8_t channel);
-uint16 user_light_get_freq(void);
-void user_light_set_freq(uint16 freq);
+uint16_t user_light_get_freq(void);
+void user_light_set_freq(uint16_t freq);
 
 #endif
 

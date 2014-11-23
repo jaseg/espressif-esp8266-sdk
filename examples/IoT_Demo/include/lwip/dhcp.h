@@ -45,10 +45,10 @@ struct dhcp
 
   struct pbuf *p_out; /* pbuf of outcoming msg */
   struct dhcp_msg *msg_out; /* outgoing msg */
-  uint16 options_out_len; /* outgoing msg options length */
-  uint16 request_timeout; /* #ticks with period DHCP_FINE_TIMER_SECS for request timeout */
-  uint16 t1_timeout;  /* #ticks with period DHCP_COARSE_TIMER_SECS for renewal time */
-  uint16 t2_timeout;  /* #ticks with period DHCP_COARSE_TIMER_SECS for rebind time */
+  uint16_t options_out_len; /* outgoing msg options length */
+  uint16_t request_timeout; /* #ticks with period DHCP_FINE_TIMER_SECS for request timeout */
+  uint16_t t1_timeout;  /* #ticks with period DHCP_COARSE_TIMER_SECS for renewal time */
+  uint16_t t2_timeout;  /* #ticks with period DHCP_COARSE_TIMER_SECS for rebind time */
   ip_addr_t server_ip_addr; /* dhcp server address that offered this lease */
   ip_addr_t offered_ip_addr;
   ip_addr_t offered_sn_mask;
@@ -79,8 +79,8 @@ struct dhcp_msg
   PACK_STRUCT_FIELD(uint8_t hlen);
   PACK_STRUCT_FIELD(uint8_t hops);
   PACK_STRUCT_FIELD(uint32_t xid);
-  PACK_STRUCT_FIELD(uint16 secs);
-  PACK_STRUCT_FIELD(uint16 flags);
+  PACK_STRUCT_FIELD(uint16_t secs);
+  PACK_STRUCT_FIELD(uint16_t flags);
   PACK_STRUCT_FIELD(ip_addr_p_t ciaddr);
   PACK_STRUCT_FIELD(ip_addr_p_t yiaddr);
   PACK_STRUCT_FIELD(ip_addr_p_t siaddr);

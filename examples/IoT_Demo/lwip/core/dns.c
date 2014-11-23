@@ -128,13 +128,13 @@
 PACK_STRUCT_BEGIN
 /** DNS message header */
 struct dns_hdr {
-  PACK_STRUCT_FIELD(uint16 id);
+  PACK_STRUCT_FIELD(uint16_t id);
   PACK_STRUCT_FIELD(uint8_t flags1);
   PACK_STRUCT_FIELD(uint8_t flags2);
-  PACK_STRUCT_FIELD(uint16 numquestions);
-  PACK_STRUCT_FIELD(uint16 numanswers);
-  PACK_STRUCT_FIELD(uint16 numauthrr);
-  PACK_STRUCT_FIELD(uint16 numextrarr);
+  PACK_STRUCT_FIELD(uint16_t numquestions);
+  PACK_STRUCT_FIELD(uint16_t numanswers);
+  PACK_STRUCT_FIELD(uint16_t numauthrr);
+  PACK_STRUCT_FIELD(uint16_t numextrarr);
 } PACK_STRUCT_STRUCT;
 PACK_STRUCT_END
 #ifdef PACK_STRUCT_USE_INCLUDES
@@ -147,8 +147,8 @@ PACK_STRUCT_END
 struct dns_query {
   /* DNS query record starts with either a domain name or a pointer
      to a name already present somewhere in the packet. */
-  uint16 type;
-  uint16 cls;
+  uint16_t type;
+  uint16_t cls;
 };
 #define SIZEOF_DNS_QUERY 4
 
@@ -157,10 +157,10 @@ struct dns_query {
 struct dns_answer {
   /* DNS answer record starts with either a domain name or a pointer
      to a name already present somewhere in the packet. */
-  uint16 type;
-  uint16 cls;
+  uint16_t type;
+  uint16_t cls;
   uint32_t ttl;
-  uint16 len;
+  uint16_t len;
 };
 #define SIZEOF_DNS_ANSWER 10
 
@@ -208,7 +208,7 @@ static void dns_init_local();
 
 
 /* forward declarations */
-static void dns_recv(void *s, struct udp_pcb *pcb, struct pbuf *p, ip_addr_t *addr, uint16 port);
+static void dns_recv(void *s, struct udp_pcb *pcb, struct pbuf *p, ip_addr_t *addr, uint16_t port);
 static void dns_check_entries(void);
 
 /*-----------------------------------------------------------------------------
@@ -568,7 +568,7 @@ dns_send(uint8_t numdns, const char* name, uint8_t id)
   uint8_t n;
 
   LWIP_DEBUGF(DNS_DEBUG, ("dns_send: dns_servers[%"U16_F"] \"%s\": request\n",
-              (uint16)(numdns), name));
+              (uint16_t)(numdns), name));
   LWIP_ASSERT("dns server out of array", numdns < DNS_MAX_SERVERS);
   LWIP_ASSERT("dns server has no IP address set", !ip_addr_isany(&dns_servers[numdns]));
 
@@ -607,7 +607,7 @@ dns_send(uint8_t numdns, const char* name, uint8_t id)
     SMEMCPY(query, &qry, SIZEOF_DNS_QUERY);
 
     /* resize pbuf to the exact dns query */
-    pbuf_realloc(p, (uint16)((query + SIZEOF_DNS_QUERY) - ((char*)(p->payload))));
+    pbuf_realloc(p, (uint16_t)((query + SIZEOF_DNS_QUERY) - ((char*)(p->payload))));
 
     /* connect to the server for faster receiving */
     udp_connect(dns_pcb, &dns_servers[numdns], DNS_SERVER_PORT);
@@ -730,14 +730,14 @@ dns_check_entries(void)
  * @params see udp.h
  */
 static void ICACHE_FLASH_ATTR
-dns_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, ip_addr_t *addr, uint16 port)
+dns_recv(void *arg, struct udp_pcb *pcb, struct pbuf *p, ip_addr_t *addr, uint16_t port)
 {
-  uint16 i;
+  uint16_t i;
   char *pHostname;
   struct dns_hdr *hdr;
   struct dns_answer ans;
   struct dns_table_entry *pEntry;
-  uint16 nquestions, nanswers;
+  uint16_t nquestions, nanswers;
 
   LWIP_UNUSED_ARG(arg);
   LWIP_UNUSED_ARG(pcb);
@@ -895,7 +895,7 @@ dns_enqueue(const char *name, dns_found_callback found, void *callback_arg)
   }
 
   /* use this entry */
-  LWIP_DEBUGF(DNS_DEBUG, ("dns_enqueue: \"%s\": use DNS entry %"U16_F"\n", name, (uint16)(i)));
+  LWIP_DEBUGF(DNS_DEBUG, ("dns_enqueue: \"%s\": use DNS entry %"U16_F"\n", name, (uint16_t)(i)));
 
   /* fill the entry */
   pEntry->state = DNS_STATE_NEW;

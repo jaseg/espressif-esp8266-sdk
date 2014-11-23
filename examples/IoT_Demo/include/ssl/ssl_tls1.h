@@ -157,14 +157,14 @@ typedef struct
     uint8_t master_secret[SSL_SECRET_SIZE];
     uint8_t client_random[SSL_RANDOM_SIZE]; /* client's random sequence */
     uint8_t server_random[SSL_RANDOM_SIZE]; /* server's random sequence */
-    uint16 bm_proc_index;
+    uint16_t bm_proc_index;
 } DISPOSABLE_CTX;
 
 struct _SSL
 {
     uint32_t flag;
-    uint16 need_bytes;
-    uint16 got_bytes;
+    uint16_t need_bytes;
+    uint16_t got_bytes;
     uint8_t record_type;
     uint8_t cipher;
     uint8_t sess_id_size;
@@ -181,13 +181,13 @@ struct _SSL
     void *decrypt_ctx;
     uint8_t bm_all_data[RT_MAX_PLAIN_LENGTH+RT_EXTRA];
     uint8_t *bm_data;
-    uint16 bm_index;
-    uint16 bm_read_index;
+    uint16_t bm_index;
+    uint16_t bm_read_index;
     struct _SSL *next;                  /* doubly linked list */
     struct _SSL *prev;
     struct _SSL_CTX *ssl_ctx;           /* back reference to a clnt/svr ctx */
 #ifndef CONFIG_SSL_SKELETON_MODE
-    uint16 session_index;
+    uint16_t session_index;
     SSL_SESSION *session;
 #endif
 #ifdef CONFIG_SSL_CERT_VERIFICATION
@@ -216,7 +216,7 @@ struct _SSL_CTX
     SSL *tail;
     SSL_CERT certs[CONFIG_SSL_MAX_CERTS];
 #ifndef CONFIG_SSL_SKELETON_MODE
-    uint16 num_sessions;
+    uint16_t num_sessions;
     SSL_SESSION **ssl_sessions;
 #endif
 #ifdef CONFIG_SSL_CTX_MUTEXING

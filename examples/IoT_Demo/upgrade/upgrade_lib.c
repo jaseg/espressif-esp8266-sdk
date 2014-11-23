@@ -32,7 +32,7 @@ extern SpiFlashChip *flashchip;
  * Returns      :
 *******************************************************************************/
 static uint8_t ICACHE_FLASH_ATTR
-system_upgrade_internal(struct upgrade_param *upgrade, uint8_t *data, uint16 len)
+system_upgrade_internal(struct upgrade_param *upgrade, uint8_t *data, uint16_t len)
 {
     uint8_t ret = 0;
     if(data == NULL || len == 0)
@@ -87,7 +87,7 @@ system_upgrade_internal(struct upgrade_param *upgrade, uint8_t *data, uint16 len
  * Returns      :
 *******************************************************************************/
 static uint8_t ICACHE_FLASH_ATTR
-system_upgrade(uint8_t *data, uint16 len)
+system_upgrade(uint8_t *data, uint16_t len)
 {
     uint8_t ret;
 

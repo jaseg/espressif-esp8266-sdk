@@ -128,7 +128,7 @@ struct netconn;
 struct api_msg_msg;
 
 /** A callback prototype to inform about events for a netconn */
-typedef void (* netconn_callback)(struct netconn *, enum netconn_evt, uint16 len);
+typedef void (* netconn_callback)(struct netconn *, enum netconn_evt, uint16_t len);
 
 /** A netconn descriptor */
 struct netconn {
@@ -214,12 +214,12 @@ err_t   netconn_delete(struct netconn *conn);
 #define netconn_type(conn) (conn->type)
 
 err_t   netconn_getaddr(struct netconn *conn, ip_addr_t *addr,
-                        uint16 *port, uint8_t local);
+                        uint16_t *port, uint8_t local);
 #define netconn_peer(c,i,p) netconn_getaddr(c,i,p,0)
 #define netconn_addr(c,i,p) netconn_getaddr(c,i,p,1)
 
-err_t   netconn_bind(struct netconn *conn, ip_addr_t *addr, uint16 port);
-err_t   netconn_connect(struct netconn *conn, ip_addr_t *addr, uint16 port);
+err_t   netconn_bind(struct netconn *conn, ip_addr_t *addr, uint16_t port);
+err_t   netconn_connect(struct netconn *conn, ip_addr_t *addr, uint16_t port);
 err_t   netconn_disconnect (struct netconn *conn);
 err_t   netconn_listen_with_backlog(struct netconn *conn, uint8_t backlog);
 #define netconn_listen(conn) netconn_listen_with_backlog(conn, TCP_DEFAULT_LISTEN_BACKLOG)
@@ -228,7 +228,7 @@ err_t   netconn_recv(struct netconn *conn, struct netbuf **new_buf);
 err_t   netconn_recv_tcp_pbuf(struct netconn *conn, struct pbuf **new_buf);
 void    netconn_recved(struct netconn *conn, uint32_t length);
 err_t   netconn_sendto(struct netconn *conn, struct netbuf *buf,
-                       ip_addr_t *addr, uint16 port);
+                       ip_addr_t *addr, uint16_t port);
 err_t   netconn_send(struct netconn *conn, struct netbuf *buf);
 err_t   netconn_write(struct netconn *conn, const void *dataptr, size_t size,
                       uint8_t apiflags);

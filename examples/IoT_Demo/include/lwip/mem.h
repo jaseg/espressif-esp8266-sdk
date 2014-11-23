@@ -93,7 +93,7 @@ typedef size_t mem_size_t;
 typedef uint32_t mem_size_t;
 #define MEM_SIZE_F U32_F
 #else
-typedef uint16 mem_size_t;
+typedef uint16_t mem_size_t;
 #define MEM_SIZE_F U16_F
 #endif /* MEM_SIZE > 64000 */
 

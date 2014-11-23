@@ -51,7 +51,7 @@
 
 struct jsontree_context {
     struct jsontree_value *values[JSONTREE_MAX_DEPTH];
-    uint16 index[JSONTREE_MAX_DEPTH];
+    uint16_t index[JSONTREE_MAX_DEPTH];
     int (* putchar)(int);
     uint8_t depth;
     uint8_t path;

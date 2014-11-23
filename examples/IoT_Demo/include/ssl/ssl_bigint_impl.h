@@ -49,7 +49,7 @@
 #define COMP_BYTE_SIZE      1   /**< Number of bytes in a component. */
 #define COMP_NUM_NIBBLES    2   /**< Used For diagnostics only. */
 typedef uint8_t comp;	        /**< A single precision component. */
-typedef uint16 long_comp;     /**< A double precision component. */
+typedef uint16_t long_comp;     /**< A double precision component. */
 typedef int16_t slong_comp;     /**< A signed double precision component. */
 #elif defined(CONFIG_INTEGER_16BIT)
 #define COMP_RADIX          65536U       /**< Max component + 1 */
@@ -57,7 +57,7 @@ typedef int16_t slong_comp;     /**< A signed double precision component. */
 #define COMP_BIT_SIZE       16  /**< Number of bits in a component. */
 #define COMP_BYTE_SIZE      2   /**< Number of bytes in a component. */
 #define COMP_NUM_NIBBLES    4   /**< Used For diagnostics only. */
-typedef uint16 comp;	        /**< A single precision component. */
+typedef uint16_t comp;	        /**< A single precision component. */
 typedef uint32_t long_comp;     /**< A double precision component. */
 typedef int32_t slong_comp;     /**< A signed double precision component. */
 #else /* regular 32 bit */

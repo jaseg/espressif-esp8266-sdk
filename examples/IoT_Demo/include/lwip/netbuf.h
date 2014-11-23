@@ -48,12 +48,12 @@ extern "C" {
 struct netbuf {
   struct pbuf *p, *ptr;
   ip_addr_t addr;
-  uint16 port;
+  uint16_t port;
 #if LWIP_NETBUF_RECVINFO || LWIP_CHECKSUM_ON_COPY
 #if LWIP_CHECKSUM_ON_COPY
   uint8_t flags;
 #endif /* LWIP_CHECKSUM_ON_COPY */
-  uint16 toport_chksum;
+  uint16_t toport_chksum;
 #if LWIP_NETBUF_RECVINFO
   ip_addr_t toaddr;
 #endif /* LWIP_NETBUF_RECVINFO */
@@ -63,15 +63,15 @@ struct netbuf {
 /* Network buffer functions: */
 struct netbuf *   netbuf_new      (void)ICACHE_FLASH_ATTR;
 void              netbuf_delete   (struct netbuf *buf)ICACHE_FLASH_ATTR;
-void *            netbuf_alloc    (struct netbuf *buf, uint16 size)ICACHE_FLASH_ATTR;
+void *            netbuf_alloc    (struct netbuf *buf, uint16_t size)ICACHE_FLASH_ATTR;
 void              netbuf_free     (struct netbuf *buf)ICACHE_FLASH_ATTR;
 err_t             netbuf_ref      (struct netbuf *buf,
-                                   const void *dataptr, uint16 size)ICACHE_FLASH_ATTR;
+                                   const void *dataptr, uint16_t size)ICACHE_FLASH_ATTR;
 void              netbuf_chain    (struct netbuf *head,
            struct netbuf *tail)ICACHE_FLASH_ATTR;
 
 err_t             netbuf_data     (struct netbuf *buf,
-                                   void **dataptr, uint16 *len)ICACHE_FLASH_ATTR;
+                                   void **dataptr, uint16_t *len)ICACHE_FLASH_ATTR;
 int8_t              netbuf_next     (struct netbuf *buf)ICACHE_FLASH_ATTR;
 void              netbuf_first    (struct netbuf *buf)ICACHE_FLASH_ATTR;
 

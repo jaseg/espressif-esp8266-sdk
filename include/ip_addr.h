@@ -47,10 +47,10 @@ struct ip_info {
 #define ip4_addr3(ipaddr) (((uint8_t*)(ipaddr))[2])
 #define ip4_addr4(ipaddr) (((uint8_t*)(ipaddr))[3])
 
-#define ip4_addr1_16(ipaddr) ((uint16)ip4_addr1(ipaddr))
-#define ip4_addr2_16(ipaddr) ((uint16)ip4_addr2(ipaddr))
-#define ip4_addr3_16(ipaddr) ((uint16)ip4_addr3(ipaddr))
-#define ip4_addr4_16(ipaddr) ((uint16)ip4_addr4(ipaddr))
+#define ip4_addr1_16(ipaddr) ((uint16_t)ip4_addr1(ipaddr))
+#define ip4_addr2_16(ipaddr) ((uint16_t)ip4_addr2(ipaddr))
+#define ip4_addr3_16(ipaddr) ((uint16_t)ip4_addr3(ipaddr))
+#define ip4_addr4_16(ipaddr) ((uint16_t)ip4_addr4(ipaddr))
 
 uint32_t ipaddr_addr(const char *cp);
 

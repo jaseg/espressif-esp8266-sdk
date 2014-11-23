@@ -76,12 +76,12 @@ struct api_msg_msg {
     /** used for do_bind and do_connect */
     struct {
       ip_addr_t *ipaddr;
-      uint16 port;
+      uint16_t port;
     } bc;
     /** used for do_getaddr */
     struct {
       ip_addr_t *ipaddr;
-      uint16 *port;
+      uint16_t *port;
       uint8_t local;
     } ad;
     /** used for do_write */

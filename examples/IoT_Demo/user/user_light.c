@@ -53,9 +53,9 @@ user_light_set_duty(uint8_t duty, uint8_t channel)
  * FunctionName : user_light_get_freq
  * Description  : get pwm frequency
  * Parameters   : NONE
- * Returns      : uint16 : pwm frequency
+ * Returns      : uint16_t : pwm frequency
 *******************************************************************************/
-uint16 ICACHE_FLASH_ATTR
+uint16_t ICACHE_FLASH_ATTR
 user_light_get_freq(void)
 {
     return light_param.pwm_freq;
@@ -64,11 +64,11 @@ user_light_get_freq(void)
 /******************************************************************************
  * FunctionName : user_light_set_duty
  * Description  : set pwm frequency
- * Parameters   : uint16 freq : 100hz typically
+ * Parameters   : uint16_t freq : 100hz typically
  * Returns      : NONE
 *******************************************************************************/
 void ICACHE_FLASH_ATTR
-user_light_set_freq(uint16 freq)
+user_light_set_freq(uint16_t freq)
 {
     if (freq != light_param.pwm_freq) {
         pwm_set_freq(freq);

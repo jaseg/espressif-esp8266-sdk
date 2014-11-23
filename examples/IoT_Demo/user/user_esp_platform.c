@@ -331,8 +331,8 @@ user_esp_platform_set_info(struct espconn *pconn, uint8_t *pbuffer)
     char *pdata = NULL;
     char *pbuf = NULL;
     char recvbuf[10];
-    uint16 length = 0;
-    uint16 data = 0;
+    uint16_t length = 0;
+    uint16_t data = 0;
     pstr = (char *)os_strstr(pbuffer, "\"path\": \"/v1/datastreams/light/datapoint/\"");
 
     if (pstr != NULL) {
@@ -550,7 +550,7 @@ user_esp_platform_sent(struct espconn *pespconn)
 #if HUMITURE_SUB_DEVICE
         else {
 #if 0
-            uint16 tp, rh;
+            uint16_t tp, rh;
             uint8_t data[4];
 
             if (user_mvh3004_read_th(data)) {
@@ -559,7 +559,7 @@ user_esp_platform_sent(struct espconn *pespconn)
             }
 
 #else
-            uint16 tp, rh;
+            uint16_t tp, rh;
             uint8_t *data;
             uint32_t tp_t, rh_t;
             data = (uint8_t *)user_mvh3004_get_poweron_th();

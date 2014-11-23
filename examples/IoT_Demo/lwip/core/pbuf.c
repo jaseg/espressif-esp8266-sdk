@@ -188,10 +188,10 @@ pbuf_pool_is_empty(void)
  * is the first pbuf of a pbuf chain.
  */
 struct pbuf *
-pbuf_alloc(pbuf_layer layer, uint16 length, pbuf_type type)
+pbuf_alloc(pbuf_layer layer, uint16_t length, pbuf_type type)
 {
   struct pbuf *p, *q, *r;
-  uint16 offset;
+  uint16_t offset;
   int32_t rem_len; /* remaining length */
   LWIP_DEBUGF(PBUF_DEBUG | LWIP_DBG_TRACE, ("pbuf_alloc(length=%"U16_F")\n", length));
 
@@ -298,10 +298,10 @@ pbuf_alloc(pbuf_layer layer, uint16 length, pbuf_type type)
       /* make previous pbuf point to this pbuf */
       r->next = q;
       /* set total length of this pbuf and next in chain */
-      LWIP_ASSERT("rem_len < max_uint16", rem_len < 0xffff);
-      q->tot_len = (uint16)rem_len;
+      LWIP_ASSERT("rem_len < max_uint16_t", rem_len < 0xffff);
+      q->tot_len = (uint16_t)rem_len;
       /* this pbuf length is pool size, unless smaller sized tail */
-      q->len = LWIP_MIN((uint16)rem_len, PBUF_POOL_BUFSIZE_ALIGNED);
+      q->len = LWIP_MIN((uint16_t)rem_len, PBUF_POOL_BUFSIZE_ALIGNED);
       q->payload = (void *)((uint8_t *)q + SIZEOF_STRUCT_PBUF);
       LWIP_ASSERT("pbuf_alloc: pbuf q->payload properly aligned",
               ((mem_ptr_t)q->payload % MEM_ALIGNMENT) == 0);
@@ -381,10 +381,10 @@ pbuf_alloc(pbuf_layer layer, uint16 length, pbuf_type type)
  *        big enough to hold 'length' plus the header size
  */
 struct pbuf*
-pbuf_alloced_custom(pbuf_layer l, uint16 length, pbuf_type type, struct pbuf_custom *p,
-                    void *payload_mem, uint16 payload_mem_len)
+pbuf_alloced_custom(pbuf_layer l, uint16_t length, pbuf_type type, struct pbuf_custom *p,
+                    void *payload_mem, uint16_t payload_mem_len)
 {
-  uint16 offset;
+  uint16_t offset;
   LWIP_DEBUGF(PBUF_DEBUG | LWIP_DBG_TRACE, ("pbuf_alloced_custom(length=%"U16_F")\n", length));
 
   /* determine header offset */
@@ -444,10 +444,10 @@ pbuf_alloced_custom(pbuf_layer l, uint16 length, pbuf_type type, struct pbuf_cus
  * @note Despite its name, pbuf_realloc cannot grow the size of a pbuf (chain).
  */
 void
-pbuf_realloc(struct pbuf *p, uint16 new_len)
+pbuf_realloc(struct pbuf *p, uint16_t new_len)
 {
   struct pbuf *q;
-  uint16 rem_len; /* remaining length */
+  uint16_t rem_len; /* remaining length */
   int32_t grow;
 
   LWIP_ASSERT("pbuf_realloc: p != NULL", p != NULL);
@@ -474,8 +474,8 @@ pbuf_realloc(struct pbuf *p, uint16 new_len)
     /* decrease remaining length by pbuf length */
     rem_len -= q->len;
     /* decrease total length indicator */
-    LWIP_ASSERT("grow < max_uint16", grow < 0xffff);
-    q->tot_len += (uint16)grow;
+    LWIP_ASSERT("grow < max_uint16_t", grow < 0xffff);
+    q->tot_len += (uint16_t)grow;
     /* proceed to next pbuf in chain */
     q = q->next;
     LWIP_ASSERT("pbuf_realloc: q != NULL", q != NULL);
@@ -487,7 +487,7 @@ pbuf_realloc(struct pbuf *p, uint16 new_len)
   /* (other types merely adjust their length fields */
   if ((q->type == PBUF_RAM) && (rem_len != q->len)) {
     /* reallocate and adjust the length of the pbuf that will be split */
-    q = (struct pbuf *)mem_trim(q, (uint16)((uint8_t *)q->payload - (uint8_t *)q) + rem_len);
+    q = (struct pbuf *)mem_trim(q, (uint16_t)((uint8_t *)q->payload - (uint8_t *)q) + rem_len);
     LWIP_ASSERT("mem_trim returned q == NULL", q != NULL);
   }
   /* adjust length fields for new last pbuf */
@@ -527,9 +527,9 @@ pbuf_realloc(struct pbuf *p, uint16 new_len)
 uint8_t
 pbuf_header(struct pbuf *p, int16_t header_size_increment)
 {
-  uint16 type;
+  uint16_t type;
   void *payload;
-  uint16 increment_magnitude;
+  uint16_t increment_magnitude;
 
   LWIP_ASSERT("p != NULL", p != NULL);
   if ((header_size_increment == 0) || (p == NULL)) {
@@ -639,7 +639,7 @@ pbuf_header(struct pbuf *p, int16_t header_size_increment)
 uint8_t
 pbuf_free(struct pbuf *p)
 {
-  uint16 type;
+  uint16_t type;
   struct pbuf *q;
   uint8_t count;
 
@@ -666,7 +666,7 @@ pbuf_free(struct pbuf *p)
   /* de-allocate all consecutive pbufs from the head of the chain that
    * obtain a zero reference count after decrementing*/
   while (p != NULL) {
-    uint16 ref;
+    uint16_t ref;
     SYS_ARCH_DECL_PROTECT(old_level);
     /* Since decrementing ref cannot be guaranteed to be a single machine operation
      * we must protect it. We put the new ref into a local variable to prevent
@@ -884,7 +884,7 @@ pbuf_dechain(struct pbuf *p)
 err_t
 pbuf_copy(struct pbuf *p_to, struct pbuf *p_from)
 {
-  uint16 offset_to=0, offset_from=0, len;
+  uint16_t offset_to=0, offset_from=0, len;
 
   LWIP_DEBUGF(PBUF_DEBUG | LWIP_DBG_TRACE, ("pbuf_copy(%p, %p)\n",
     (void*)p_to, (void*)p_from));
@@ -948,12 +948,12 @@ pbuf_copy(struct pbuf *p_to, struct pbuf *p_from)
  * @return the number of bytes copied, or 0 on failure
  */
 uint16
-pbuf_copy_partial(struct pbuf *buf, void *dataptr, uint16 len, uint16 offset)
+pbuf_copy_partial(struct pbuf *buf, void *dataptr, uint16_t len, uint16_t offset)
 {
   struct pbuf *p;
-  uint16 left;
-  uint16 buf_copy_len;
-  uint16 copied_total = 0;
+  uint16_t left;
+  uint16_t buf_copy_len;
+  uint16_t copied_total = 0;
 
   LWIP_ERROR("pbuf_copy_partial: invalid buf", (buf != NULL), return 0;);
   LWIP_ERROR("pbuf_copy_partial: invalid dataptr", (dataptr != NULL), return 0;);
@@ -996,12 +996,12 @@ pbuf_copy_partial(struct pbuf *buf, void *dataptr, uint16 len, uint16 offset)
  * @return ERR_OK if successful, ERR_MEM if the pbuf is not big enough
  */
 err_t
-pbuf_take(struct pbuf *buf, const void *dataptr, uint16 len)
+pbuf_take(struct pbuf *buf, const void *dataptr, uint16_t len)
 {
   struct pbuf *p;
-  uint16 buf_copy_len;
-  uint16 total_copy_len = len;
-  uint16 copied_total = 0;
+  uint16_t buf_copy_len;
+  uint16_t total_copy_len = len;
+  uint16_t copied_total = 0;
 
   LWIP_ERROR("pbuf_take: invalid buf", (buf != NULL), return 0;);
   LWIP_ERROR("pbuf_take: invalid dataptr", (dataptr != NULL), return 0;);
@@ -1072,11 +1072,11 @@ pbuf_coalesce(struct pbuf *p, pbuf_layer layer)
  *         within the (first) pbuf (no pbuf queues!)
  */
 err_t
-pbuf_fill_chksum(struct pbuf *p, uint16 start_offset, const void *dataptr,
-                 uint16 len, uint16 *chksum)
+pbuf_fill_chksum(struct pbuf *p, uint16_t start_offset, const void *dataptr,
+                 uint16_t len, uint16_t *chksum)
 {
   uint32_t acc;
-  uint16 copy_chksum;
+  uint16_t copy_chksum;
   char *dst_ptr;
   LWIP_ASSERT("p != NULL", p != NULL);
   LWIP_ASSERT("dataptr != NULL", dataptr != NULL);
@@ -1107,9 +1107,9 @@ pbuf_fill_chksum(struct pbuf *p, uint16 start_offset, const void *dataptr,
  * @return byte at an offset into p OR ZERO IF 'offset' >= p->tot_len
  */
 uint8_t
-pbuf_get_at(struct pbuf* p, uint16 offset)
+pbuf_get_at(struct pbuf* p, uint16_t offset)
 {
-  uint16 copy_from = offset;
+  uint16_t copy_from = offset;
   struct pbuf* q = p;
 
   /* get the correct pbuf */
@@ -1134,9 +1134,9 @@ pbuf_get_at(struct pbuf* p, uint16 offset)
  *         (0xffff if p is too short, diffoffset+1 otherwise)
  */
 uint16
-pbuf_memcmp(struct pbuf* p, uint16 offset, const void* s2, uint16 n)
+pbuf_memcmp(struct pbuf* p, uint16_t offset, const void* s2, uint16_t n)
 {
-  uint16 start = offset;
+  uint16_t start = offset;
   struct pbuf* q = p;
 
   /* get the correct pbuf */
@@ -1146,7 +1146,7 @@ pbuf_memcmp(struct pbuf* p, uint16 offset, const void* s2, uint16 n)
   }
   /* return requested data if pbuf is OK */
   if ((q != NULL) && (q->len > start)) {
-    uint16 i;
+    uint16_t i;
     for(i = 0; i < n; i++) {
       uint8_t a = pbuf_get_at(q, start + i);
       uint8_t b = ((uint8_t*)s2)[i];
@@ -1170,13 +1170,13 @@ pbuf_memcmp(struct pbuf* p, uint16 offset, const void* s2, uint16 n)
  * @return 0xFFFF if substr was not found in p or the index where it was found
  */
 uint16
-pbuf_memfind(struct pbuf* p, const void* mem, uint16 mem_len, uint16 start_offset)
+pbuf_memfind(struct pbuf* p, const void* mem, uint16_t mem_len, uint16_t start_offset)
 {
-  uint16 i;
-  uint16 max = p->tot_len - mem_len;
+  uint16_t i;
+  uint16_t max = p->tot_len - mem_len;
   if (p->tot_len >= mem_len + start_offset) {
     for(i = start_offset; i <= max; ) {
-      uint16 plus = pbuf_memcmp(p, i, mem, mem_len);
+      uint16_t plus = pbuf_memcmp(p, i, mem, mem_len);
       if (plus == 0) {
         return i;
       } else {
@@ -1208,5 +1208,5 @@ pbuf_strstr(struct pbuf* p, const char* substr)
   if (substr_len >= 0xFFFF) {
     return 0xFFFF;
   }
-  return pbuf_memfind(p, substr, (uint16)substr_len, 0);
+  return pbuf_memfind(p, substr, (uint16_t)substr_len, 0);
 }

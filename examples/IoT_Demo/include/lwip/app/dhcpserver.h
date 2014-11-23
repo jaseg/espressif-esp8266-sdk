@@ -9,7 +9,7 @@ typedef struct dhcps_state{
 typedef struct dhcps_msg {
         uint8_t op, htype, hlen, hops;
         uint8_t xid[4];
-        uint16 secs, flags;
+        uint16_t secs, flags;
         uint8_t ciaddr[4];
         uint8_t yiaddr[4];
         uint8_t siaddr[4];

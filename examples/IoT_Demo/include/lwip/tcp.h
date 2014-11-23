@@ -85,7 +85,7 @@ typedef err_t (*tcp_recv_fn)(void *arg, struct tcp_pcb *tpcb,
  *            callback function!
  */
 typedef err_t (*tcp_sent_fn)(void *arg, struct tcp_pcb *tpcb,
-                              uint16 len);
+                              uint16_t len);
 
 /** Function prototype for tcp poll callback functions. Called periodically as
  * specified by @see tcp_poll.
@@ -162,7 +162,7 @@ enum tcp_state {
   /* the accept callback for listen- and normal pcbs, if LWIP_CALLBACK_API */ \
   DEF_ACCEPT_CALLBACK \
   /* ports are in host byte order */ \
-  uint16 local_port
+  uint16_t local_port
 
 
 /* the TCP protocol control block */
@@ -173,7 +173,7 @@ struct tcp_pcb {
   TCP_PCB_COMMON(struct tcp_pcb);
 
   /* ports are in host byte order */
-  uint16 remote_port;
+  uint16_t remote_port;
   
   uint8_t flags;
 #define TF_ACK_DELAY   ((uint8_t)0x01U)   /* Delayed ACK. */
@@ -189,8 +189,8 @@ struct tcp_pcb {
      as we have to do some math with them */
   /* receiver variables */
   uint32_t rcv_nxt;   /* next seqno expected */
-  uint16 rcv_wnd;   /* receiver window available */
-  uint16 rcv_ann_wnd; /* receiver window to announce */
+  uint16_t rcv_wnd;   /* receiver window available */
+  uint16_t rcv_ann_wnd; /* receiver window to announce */
   uint32_t rcv_ann_right_edge; /* announced right edge of window */
 
   /* Timers */
@@ -200,7 +200,7 @@ struct tcp_pcb {
   /* Retransmission timer. */
   int16_t rtime;
   
-  uint16 mss;   /* maximum segment size */
+  uint16_t mss;   /* maximum segment size */
   
   /* RTT (round trip time) estimation variables */
   uint32_t rttest; /* RTT estimate in 500ms ticks */
@@ -215,25 +215,25 @@ struct tcp_pcb {
   uint8_t dupacks;
   
   /* congestion avoidance/control variables */
-  uint16 cwnd;  
-  uint16 ssthresh;
+  uint16_t cwnd;  
+  uint16_t ssthresh;
 
   /* sender variables */
   uint32_t snd_nxt;   /* next new seqno to be sent */
-  uint16 snd_wnd;   /* sender window */
+  uint16_t snd_wnd;   /* sender window */
   uint32_t snd_wl1, snd_wl2; /* Sequence and acknowledgement numbers of last
                              window update. */
   uint32_t snd_lbb;       /* Sequence number of next byte to be buffered. */
 
-  uint16 acked;
+  uint16_t acked;
   
-  uint16 snd_buf;   /* Available buffer space for sending (in bytes). */
+  uint16_t snd_buf;   /* Available buffer space for sending (in bytes). */
 #define TCP_SNDQUEUELEN_OVERFLOW (0xffff-3)
-  uint16 snd_queuelen; /* Available buffer space for sending (in tcp_segs). */
+  uint16_t snd_queuelen; /* Available buffer space for sending (in tcp_segs). */
 
 #if TCP_OVERSIZE
   /* Extra bytes available at the end of the last pbuf in unsent. */
-  uint16 unsent_oversize;
+  uint16_t unsent_oversize;
 #endif /* TCP_OVERSIZE */ 
 
   /* These are ordered by sequence number: */
@@ -305,7 +305,7 @@ enum lwip_event {
 err_t lwip_tcp_event(void *arg, struct tcp_pcb *pcb,
          enum lwip_event,
          struct pbuf *p,
-         uint16 size,
+         uint16_t size,
          err_t err);
 
 #endif /* LWIP_EVENT_API */
@@ -336,11 +336,11 @@ void             tcp_err     (struct tcp_pcb *pcb, tcp_err_fn err)ICACHE_FLASH_A
                                                pcb->state == LISTEN)
 #endif /* TCP_LISTEN_BACKLOG */
 
-void             tcp_recved  (struct tcp_pcb *pcb, uint16 len)ICACHE_FLASH_ATTR;
+void             tcp_recved  (struct tcp_pcb *pcb, uint16_t len)ICACHE_FLASH_ATTR;
 err_t            tcp_bind    (struct tcp_pcb *pcb, ip_addr_t *ipaddr,
-                              uint16 port)ICACHE_FLASH_ATTR;
+                              uint16_t port)ICACHE_FLASH_ATTR;
 err_t            tcp_connect (struct tcp_pcb *pcb, ip_addr_t *ipaddr,
-                              uint16 port, tcp_connected_fn connected)ICACHE_FLASH_ATTR;
+                              uint16_t port, tcp_connected_fn connected)ICACHE_FLASH_ATTR;
 
 struct tcp_pcb * tcp_listen_with_backlog(struct tcp_pcb *pcb, uint8_t backlog)ICACHE_FLASH_ATTR;
 #define          tcp_listen(pcb) tcp_listen_with_backlog(pcb, TCP_DEFAULT_LISTEN_BACKLOG)
@@ -353,7 +353,7 @@ err_t            tcp_shutdown(struct tcp_pcb *pcb, int shut_rx, int shut_tx)ICAC
 #define TCP_WRITE_FLAG_COPY 0x01
 #define TCP_WRITE_FLAG_MORE 0x02
 
-err_t            tcp_write   (struct tcp_pcb *pcb, const void *dataptr, uint16 len,
+err_t            tcp_write   (struct tcp_pcb *pcb, const void *dataptr, uint16_t len,
                               uint8_t apiflags)ICACHE_FLASH_ATTR;
 
 void             tcp_setprio (struct tcp_pcb *pcb, uint8_t prio)ICACHE_FLASH_ATTR;

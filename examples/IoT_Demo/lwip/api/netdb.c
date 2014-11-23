@@ -321,7 +321,7 @@ lwip_getaddrinfo(const char *nodename, const char *servname,
   inet_addr_from_ipaddr(&sa->sin_addr, &addr);
   sa->sin_family = AF_INET;
   sa->sin_len = sizeof(struct sockaddr_in);
-  sa->sin_port = htons((uint16)port_nr);
+  sa->sin_port = htons((uint16_t)port_nr);
 
   /* set up addrinfo */
   ai->ai_family = AF_INET;

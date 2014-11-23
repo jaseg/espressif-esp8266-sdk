@@ -69,8 +69,8 @@ extern "C" {
 
 typedef struct aes_key_st 
 {
-    uint16 rounds;
-    uint16 key_size;
+    uint16_t rounds;
+    uint16_t key_size;
     uint32_t ks[(AES_MAXROUNDS+1)*8];
     uint8_t iv[AES_IV_SIZE];
 } AES_CTX;
@@ -115,7 +115,7 @@ typedef struct
     uint32_t Intermediate_Hash[SHA1_SIZE/4]; /* Message Digest */
     uint32_t Length_Low;            /* Message length in bits */
     uint32_t Length_High;           /* Message length in bits */
-    uint16 Message_Block_Index;   /* Index into message block array   */
+    uint16_t Message_Block_Index;   /* Index into message block array   */
     uint8_t Message_Block[64];      /* 512-bit message blocks */
 } SHA1_CTX;
 
@@ -209,7 +209,7 @@ bigint *RSA_private(const RSA_CTX *c, bigint *bi_msg);
 bigint *RSA_sign_verify(BI_CTX *ctx, const uint8_t *sig, int sig_len,
         bigint *modulus, bigint *pub_exp);
 bigint *RSA_public(const RSA_CTX * c, bigint *bi_msg);
-int RSA_encrypt(const RSA_CTX *ctx, const uint8_t *in_data, uint16 in_len, 
+int RSA_encrypt(const RSA_CTX *ctx, const uint8_t *in_data, uint16_t in_len, 
         uint8_t *out_data, int is_signing);
 void RSA_print(const RSA_CTX *ctx);
 #endif

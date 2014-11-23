@@ -78,7 +78,7 @@ struct obj_def
   /* ASN type for this object */
   uint8_t asn_type;
   /* value length (host length) */
-  uint16 v_len;
+  uint16_t v_len;
   /* length of instance part of supplied object identifier */
   uint8_t  id_inst_len;
   /* instance part of supplied object identifier */
@@ -109,15 +109,15 @@ struct mib_node
   void (*get_object_def)(uint8_t ident_len, int32_t *ident, struct obj_def *od);
   /** returns object value for the given object identifier,
      @note the caller must allocate at least len bytes for the value */
-  void (*get_value)(struct obj_def *od, uint16 len, void *value);
+  void (*get_value)(struct obj_def *od, uint16_t len, void *value);
   /** tests length and/or range BEFORE setting */
-  uint8_t (*set_test)(struct obj_def *od, uint16 len, void *value);
+  uint8_t (*set_test)(struct obj_def *od, uint16_t len, void *value);
   /** sets object value, only to be called when set_test()  */
-  void (*set_value)(struct obj_def *od, uint16 len, void *value);  
+  void (*set_value)(struct obj_def *od, uint16_t len, void *value);  
   /** One out of MIB_NODE_AR, MIB_NODE_LR or MIB_NODE_EX */
   uint8_t node_type;
   /* array or max list length */
-  uint16 maxlength;
+  uint16_t maxlength;
 };
 
 /** derived node for scalars .0 index */
@@ -129,12 +129,12 @@ struct mib_array_node
 {
   /* inherited "base class" members */
   void (*get_object_def)(uint8_t ident_len, int32_t *ident, struct obj_def *od);
-  void (*get_value)(struct obj_def *od, uint16 len, void *value);
-  uint8_t (*set_test)(struct obj_def *od, uint16 len, void *value);
-  void (*set_value)(struct obj_def *od, uint16 len, void *value);
+  void (*get_value)(struct obj_def *od, uint16_t len, void *value);
+  uint8_t (*set_test)(struct obj_def *od, uint16_t len, void *value);
+  void (*set_value)(struct obj_def *od, uint16_t len, void *value);
 
   uint8_t node_type;
-  uint16 maxlength;
+  uint16_t maxlength;
 
   /* additional struct members */
   const int32_t *objid;
@@ -147,12 +147,12 @@ struct mib_ram_array_node
 {
   /* inherited "base class" members */
   void (*get_object_def)(uint8_t ident_len, int32_t *ident, struct obj_def *od);
-  void (*get_value)(struct obj_def *od, uint16 len, void *value);
-  uint8_t (*set_test)(struct obj_def *od, uint16 len, void *value);
-  void (*set_value)(struct obj_def *od, uint16 len, void *value);
+  void (*get_value)(struct obj_def *od, uint16_t len, void *value);
+  uint8_t (*set_test)(struct obj_def *od, uint16_t len, void *value);
+  void (*set_value)(struct obj_def *od, uint16_t len, void *value);
 
   uint8_t node_type;
-  uint16 maxlength;
+  uint16_t maxlength;
 
   /* aditional struct members */
   int32_t *objid;
@@ -173,18 +173,18 @@ struct mib_list_rootnode
 {
   /* inherited "base class" members */
   void (*get_object_def)(uint8_t ident_len, int32_t *ident, struct obj_def *od);
-  void (*get_value)(struct obj_def *od, uint16 len, void *value);
-  uint8_t (*set_test)(struct obj_def *od, uint16 len, void *value);
-  void (*set_value)(struct obj_def *od, uint16 len, void *value);
+  void (*get_value)(struct obj_def *od, uint16_t len, void *value);
+  uint8_t (*set_test)(struct obj_def *od, uint16_t len, void *value);
+  void (*set_value)(struct obj_def *od, uint16_t len, void *value);
 
   uint8_t node_type;
-  uint16 maxlength;
+  uint16_t maxlength;
 
   /* additional struct members */
   struct mib_list_node *head;
   struct mib_list_node *tail;
   /* counts list nodes in list  */
-  uint16 count;
+  uint16_t count;
 };
 
 /** derived node, has access functions for mib object in external memory or device
@@ -193,12 +193,12 @@ struct mib_external_node
 {
   /* inherited "base class" members */
   void (*get_object_def)(uint8_t ident_len, int32_t *ident, struct obj_def *od);
-  void (*get_value)(struct obj_def *od, uint16 len, void *value);
-  uint8_t (*set_test)(struct obj_def *od, uint16 len, void *value);
-  void (*set_value)(struct obj_def *od, uint16 len, void *value);
+  void (*get_value)(struct obj_def *od, uint16_t len, void *value);
+  uint8_t (*set_test)(struct obj_def *od, uint16_t len, void *value);
+  void (*set_value)(struct obj_def *od, uint16_t len, void *value);
 
   uint8_t node_type;
-  uint16 maxlength;
+  uint16_t maxlength;
 
   /* additional struct members */
   /** points to an external (in memory) record of some sort of addressing
@@ -207,22 +207,22 @@ struct mib_external_node
   /** tree levels under this node */
   uint8_t tree_levels;
   /** number of objects at this level */
-  uint16 (*level_length)(void* addr_inf, uint8_t level);
+  uint16_t (*level_length)(void* addr_inf, uint8_t level);
   /** compares object sub identifier with external id
       return zero when equal, nonzero when unequal */
-  int32_t (*ident_cmp)(void* addr_inf, uint8_t level, uint16 idx, int32_t sub_id);
-  void (*get_objid)(void* addr_inf, uint8_t level, uint16 idx, int32_t *sub_id);
+  int32_t (*ident_cmp)(void* addr_inf, uint8_t level, uint16_t idx, int32_t sub_id);
+  void (*get_objid)(void* addr_inf, uint8_t level, uint16_t idx, int32_t *sub_id);
 
   /** async Questions */
   void (*get_object_def_q)(void* addr_inf, uint8_t rid, uint8_t ident_len, int32_t *ident);
   void (*get_value_q)(uint8_t rid, struct obj_def *od);
   void (*set_test_q)(uint8_t rid, struct obj_def *od);
-  void (*set_value_q)(uint8_t rid, struct obj_def *od, uint16 len, void *value);
+  void (*set_value_q)(uint8_t rid, struct obj_def *od, uint16_t len, void *value);
   /** async Answers */
   void (*get_object_def_a)(uint8_t rid, uint8_t ident_len, int32_t *ident, struct obj_def *od);
-  void (*get_value_a)(uint8_t rid, struct obj_def *od, uint16 len, void *value);
-  uint8_t (*set_test_a)(uint8_t rid, struct obj_def *od, uint16 len, void *value);
-  void (*set_value_a)(uint8_t rid, struct obj_def *od, uint16 len, void *value);
+  void (*get_value_a)(uint8_t rid, struct obj_def *od, uint16_t len, void *value);
+  uint8_t (*set_test_a)(uint8_t rid, struct obj_def *od, uint16_t len, void *value);
+  void (*set_value_a)(uint8_t rid, struct obj_def *od, uint16_t len, void *value);
   /** async Panic Close (agent returns error reply, 
       e.g. used for external transaction cleanup) */
   void (*get_object_def_pc)(uint8_t rid, uint8_t ident_len, int32_t *ident);
@@ -236,9 +236,9 @@ extern const struct mib_array_node internet;
 
 /** dummy function pointers for non-leaf MIB nodes from mib2.c */
 void noleafs_get_object_def(uint8_t ident_len, int32_t *ident, struct obj_def *od);
-void noleafs_get_value(struct obj_def *od, uint16 len, void *value);
-uint8_t noleafs_set_test(struct obj_def *od, uint16 len, void *value);
-void noleafs_set_value(struct obj_def *od, uint16 len, void *value);
+void noleafs_get_value(struct obj_def *od, uint16_t len, void *value);
+uint8_t noleafs_set_test(struct obj_def *od, uint16_t len, void *value);
+void noleafs_set_value(struct obj_def *od, uint16_t len, void *value);
 
 void snmp_oidtoip(int32_t *ident, ip_addr_t *ip);
 void snmp_iptooid(ip_addr_t *ip, int32_t *ident);

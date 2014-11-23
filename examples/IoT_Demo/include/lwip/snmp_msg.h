@@ -102,11 +102,11 @@ struct snmp_varbind
   /* encoding object value length length */
   uint8_t vlenlen;
   /* encoding varbind seq length */
-  uint16 seqlen;
+  uint16_t seqlen;
   /* encoding object identifier length */
-  uint16 olen;
+  uint16_t olen;
   /* encoding object value length */
-  uint16 vlen;
+  uint16_t vlen;
 };
 
 struct snmp_varbind_root
@@ -118,7 +118,7 @@ struct snmp_varbind_root
   /* encoding varbind-list seq length length */
   uint8_t seqlenlen;
   /* encoding varbind-list seq length */
-  uint16 seqlen;
+  uint16_t seqlen;
 };
 
 /** output response message header length fields */
@@ -140,19 +140,19 @@ struct snmp_resp_header_lengths
   uint8_t seqlenlen;
 
   /* encoding error-index length */
-  uint16 erridxlen;
+  uint16_t erridxlen;
   /* encoding error-status length */
-  uint16 errstatlen;
+  uint16_t errstatlen;
   /* encoding request id length */
-  uint16 ridlen;
+  uint16_t ridlen;
   /* encoding pdu length */
-  uint16 pdulen;
+  uint16_t pdulen;
   /* encoding community length */
-  uint16 comlen;
+  uint16_t comlen;
   /* encoding version length */
-  uint16 verlen;
+  uint16_t verlen;
   /* encoding sequence length */
-  uint16 seqlen;
+  uint16_t seqlen;
 };
 
 /** output response message header length fields */
@@ -178,23 +178,23 @@ struct snmp_trap_header_lengths
   uint8_t seqlenlen;
 
   /* encoding timestamp length */
-  uint16 tslen;
+  uint16_t tslen;
   /* encoding specific-trap length */
-  uint16 strplen;
+  uint16_t strplen;
   /* encoding generic-trap length */
-  uint16 gtrplen;
+  uint16_t gtrplen;
   /* encoding agent-addr length */
-  uint16 aaddrlen;
+  uint16_t aaddrlen;
   /* encoding enterprise-id length */
-  uint16 eidlen;
+  uint16_t eidlen;
   /* encoding pdu length */
-  uint16 pdulen;
+  uint16_t pdulen;
   /* encoding community length */
-  uint16 comlen;
+  uint16_t comlen;
   /* encoding version length */
-  uint16 verlen;
+  uint16_t verlen;
   /* encoding sequence length */
-  uint16 seqlen;
+  uint16_t seqlen;
 };
 
 /* Accepting new SNMP messages. */
@@ -225,7 +225,7 @@ struct snmp_msg_pstat
   /* source IP address */
   ip_addr_t sip;
   /* source UDP port */
-  uint16 sp;
+  uint16_t sp;
   /* request type */
   uint8_t rt;
   /* request ID */

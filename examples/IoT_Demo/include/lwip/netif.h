@@ -179,7 +179,7 @@ struct netif {
   char*  hostname;
 #endif /* LWIP_NETIF_HOSTNAME */
   /** maximum transfer unit (in bytes) 该接口允许的最大数据包长度，多是1500*/
-  uint16 mtu;
+  uint16_t mtu;
   /** number of bytes used in hwaddr该接口物理地址长度 */
   uint8_t hwaddr_len;
   /** link level hardware address of this interface 该接口物理地址*/
@@ -220,7 +220,7 @@ struct netif {
   struct pbuf *loop_first;//第一个
   struct pbuf *loop_last;//最后一个
 #if LWIP_LOOPBACK_MAX_PBUFS
-  uint16 loop_cnt_current;
+  uint16_t loop_cnt_current;
 #endif /* LWIP_LOOPBACK_MAX_PBUFS */
 #endif /* ENABLE_LOOPBACK */
 };

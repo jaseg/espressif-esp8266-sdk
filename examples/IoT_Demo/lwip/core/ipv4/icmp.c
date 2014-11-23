@@ -91,7 +91,7 @@ icmp_input(struct pbuf *p, struct netif *inp)
 
   iphdr = (struct ip_hdr *)p->payload;
   hlen = IPH_HL(iphdr) * 4;
-  if (pbuf_header(p, -hlen) || (p->tot_len < sizeof(uint16)*2)) {
+  if (pbuf_header(p, -hlen) || (p->tot_len < sizeof(uint16_t)*2)) {
     LWIP_DEBUGF(ICMP_DEBUG, ("icmp_input: short ICMP (%"U16_F" bytes) received\n", p->tot_len));
     goto lenerr;
   }

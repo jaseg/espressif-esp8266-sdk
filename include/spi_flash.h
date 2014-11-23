@@ -23,7 +23,7 @@ typedef struct{
 
 #define SPI_FLASH_SEC_SIZE      4096
 
-SpiFlashOpResult spi_flash_erase_sector(uint16 sec);
+SpiFlashOpResult spi_flash_erase_sector(uint16_t sec);
 SpiFlashOpResult spi_flash_write(uint32_t des_addr, uint32_t *src_addr, uint32_t size);
 SpiFlashOpResult spi_flash_read(uint32_t src_addr, uint32_t *des_addr, uint32_t size);
 

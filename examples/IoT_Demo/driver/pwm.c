@@ -30,7 +30,7 @@ static uint8_t pwm_timer_down = 1;
 
 static uint8_t pwm_current_channel = 0;
 
-static uint16 pwm_gpio = 0;
+static uint16_t pwm_gpio = 0;
 
 //XXX: 0xffffffff/(80000000/16)=35A
 #define US_TO_RTC_TIMER_TICKS(t)          \
@@ -182,11 +182,11 @@ pwm_set_duty(uint8_t duty, uint8_t channel)
 /******************************************************************************
  * FunctionName : pwm_set_freq
  * Description  : set pwm frequency
- * Parameters   : uint16 freq : 100hz typically
+ * Parameters   : uint16_t freq : 100hz typically
  * Returns      : NONE
 *******************************************************************************/
 void ICACHE_FLASH_ATTR
-pwm_set_freq(uint16 freq)
+pwm_set_freq(uint16_t freq)
 {
     if (freq > 500) {
         pwm.freq = 500;
@@ -202,12 +202,12 @@ pwm_set_freq(uint16 freq)
 /******************************************************************************
  * FunctionName : pwm_set_freq_duty
  * Description  : set pwm frequency and each channel's duty
- * Parameters   : uint16 freq : 100hz typically
+ * Parameters   : uint16_t freq : 100hz typically
  *                uint8_t *duty : each channel's duty
  * Returns      : NONE
 *******************************************************************************/
 static void ICACHE_FLASH_ATTR
-pwm_set_freq_duty(uint16 freq, uint8_t *duty)
+pwm_set_freq_duty(uint16_t freq, uint8_t *duty)
 {
     uint8_t i;
 
@@ -234,9 +234,9 @@ pwm_get_duty(uint8_t channel)
  * FunctionName : pwm_get_freq
  * Description  : get pwm frequency
  * Parameters   : NONE
- * Returns      : uint16 : pwm frequency
+ * Returns      : uint16_t : pwm frequency
 *******************************************************************************/
-uint16 ICACHE_FLASH_ATTR
+uint16_t ICACHE_FLASH_ATTR
 pwm_get_freq(void)
 {
     return pwm.freq;
@@ -283,12 +283,12 @@ pwm_tim1_intr_handler(void)
 /******************************************************************************
  * FunctionName : pwm_init
  * Description  : pwm gpio, params and timer initialization
- * Parameters   : uint16 freq : pwm freq param
+ * Parameters   : uint16_t freq : pwm freq param
  *                uint8_t *duty : each channel's duty
  * Returns      : NONE
 *******************************************************************************/
 void ICACHE_FLASH_ATTR
-pwm_init(uint16 freq, uint8_t *duty)
+pwm_init(uint16_t freq, uint8_t *duty)
 {
     uint8_t i;
 

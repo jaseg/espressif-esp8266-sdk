@@ -11,8 +11,8 @@
 
 
 void ping_init(void)ICACHE_FLASH_ATTR;
-void inline set_ping_length(uint16 ping_length)ICACHE_FLASH_ATTR;
-uint16 inline get_ping_length()ICACHE_FLASH_ATTR;
+void inline set_ping_length(uint16_t ping_length)ICACHE_FLASH_ATTR;
+uint16_t inline get_ping_length()ICACHE_FLASH_ATTR;
 
 #if !PING_USE_SOCKETS
 void ping_send_now(void)ICACHE_FLASH_ATTR;

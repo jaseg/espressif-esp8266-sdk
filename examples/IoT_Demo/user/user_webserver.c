@@ -36,7 +36,7 @@ static struct softap_config *ap_conf;
 //struct lewei_login_info *login_info;
 static scaninfo *pscaninfo;
 
-extern uint16 scannum;
+extern uint16_t scannum;
 
 /******************************************************************************
  * FunctionName : device_get
@@ -245,7 +245,7 @@ light_status_set(struct jsontree_context *js_ctx, struct jsonparse_state *parser
                 //                os_printf("B: %d \n",status);
                 user_light_set_duty(status, LIGHT_BLUE);
             } else if (jsonparse_strcmp_value(parser, "freq") == 0) {
-                uint16 status;
+                uint16_t status;
                 jsonparse_next(parser);
                 jsonparse_next(parser);
                 status = jsonparse_get_value_as_int(parser);
@@ -727,13 +727,13 @@ parse_url(char *precv, URL_Frame *purl_frame)
 
 static char *precvbuffer;
 static uint32_t dat_sumlength = 0;
-static bool save_data(char *precv, uint16 length)
+static bool save_data(char *precv, uint16_t length)
 {
     bool flag = false;
     char length_buf[10] = {0};
     char *ptemp = NULL;
     char *pdata = NULL;
-    uint16 headlength = 0;
+    uint16_t headlength = 0;
     static uint32_t totallength = 0;
 
     ptemp = (char *)os_strstr(precv, "\r\n\r\n");
@@ -858,7 +858,7 @@ restart_10ms_cb(void *arg)
 static void ICACHE_FLASH_ATTR
 data_send(void *arg, bool responseOK, char *psend)
 {
-    uint16 length = 0;
+    uint16_t length = 0;
     char *pbuf = NULL;
     char httphead[256];
     struct espconn *ptrespconn = arg;

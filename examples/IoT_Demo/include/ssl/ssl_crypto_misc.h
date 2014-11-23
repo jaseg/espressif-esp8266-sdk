@@ -72,7 +72,7 @@ struct _x509_ctx
     time_t not_before;
     time_t not_after;
     uint8_t *signature;
-    uint16 sig_len;
+    uint16_t sig_len;
     uint8_t sig_type;
     RSA_CTX *rsa_ctx;
     bigint *digest;
