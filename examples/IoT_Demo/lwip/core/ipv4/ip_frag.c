@@ -91,8 +91,8 @@
 PACK_STRUCT_BEGIN
 struct ip_reass_helper {
   PACK_STRUCT_FIELD(struct pbuf *next_pbuf);
-  PACK_STRUCT_FIELD(u16_t start);
-  PACK_STRUCT_FIELD(u16_t end);
+  PACK_STRUCT_FIELD(uint16 start);
+  PACK_STRUCT_FIELD(uint16 end);
 } PACK_STRUCT_STRUCT;
 PACK_STRUCT_END
 #ifdef PACK_STRUCT_USE_INCLUDES
@@ -106,7 +106,7 @@ PACK_STRUCT_END
 
 /* global variables */
 static struct ip_reassdata *reassdatagrams;
-static u16_t ip_reass_pbufcount;
+static uint16 ip_reass_pbufcount;
 
 /* function prototypes */
 static void ip_reass_dequeue_datagram(struct ip_reassdata *ipr, struct ip_reassdata *prev)ICACHE_FLASH_ATTR;
@@ -129,7 +129,7 @@ ip_reass_tmr(void)
      * clean up the incomplete fragment assembly */
     if (r->timer > 0) {
       r->timer--;
-      LWIP_DEBUGF(IP_REASS_DEBUG, ("ip_reass_tmr: timer dec %"U16_F"\n",(u16_t)r->timer));
+      LWIP_DEBUGF(IP_REASS_DEBUG, ("ip_reass_tmr: timer dec %"U16_F"\n",(uint16)r->timer));
       prev = r;
       r = r->next;
     } else {
@@ -157,8 +157,8 @@ ip_reass_tmr(void)
 static int
 ip_reass_free_complete_datagram(struct ip_reassdata *ipr, struct ip_reassdata *prev)
 {
-  u16_t pbufs_freed = 0;
-  u8_t clen;
+  uint16 pbufs_freed = 0;
+  uint8_t clen;
   struct pbuf *p;
   struct ip_reass_helper *iprh;
 
@@ -332,7 +332,7 @@ ip_reass_chain_frag_into_datagram_and_validate(struct ip_reassdata *ipr, struct 
 {
   struct ip_reass_helper *iprh, *iprh_tmp, *iprh_prev=NULL;
   struct pbuf *q;
-  u16_t offset,len;
+  uint16 offset,len;
   struct ip_hdr *fraghdr;
   int valid = 1;
 
@@ -479,8 +479,8 @@ ip_reass(struct pbuf *p)
   struct ip_hdr *fraghdr;
   struct ip_reassdata *ipr;
   struct ip_reass_helper *iprh;
-  u16_t offset, len;
-  u8_t clen;
+  uint16 offset, len;
+  uint8_t clen;
   struct ip_reassdata *ipr_prev = NULL;
 
   IPFRAG_STATS_INC(ip_frag.recv);
@@ -615,7 +615,7 @@ nullreturn:
 
 #if IP_FRAG
 #if IP_FRAG_USES_STATIC_BUF
-static u8_t buf[LWIP_MEM_ALIGN_SIZE(IP_FRAG_MAX_MTU + MEM_ALIGNMENT - 1)];
+static uint8_t buf[LWIP_MEM_ALIGN_SIZE(IP_FRAG_MAX_MTU + MEM_ALIGNMENT - 1)];
 #else /* IP_FRAG_USES_STATIC_BUF */
 
 #if !LWIP_NETIF_TX_SINGLE_PBUF
@@ -676,16 +676,16 @@ ip_frag(struct pbuf *p, struct netif *netif, ip_addr_t *dest)
   struct ip_hdr *original_iphdr;
 #endif
   struct ip_hdr *iphdr;
-  u16_t nfb;
-  u16_t left, cop;
-  u16_t mtu = netif->mtu;
-  u16_t ofo, omf;
-  u16_t last;
-  u16_t poff = IP_HLEN;
-  u16_t tmp;
+  uint16 nfb;
+  uint16 left, cop;
+  uint16 mtu = netif->mtu;
+  uint16 ofo, omf;
+  uint16 last;
+  uint16 poff = IP_HLEN;
+  uint16 tmp;
 #if !IP_FRAG_USES_STATIC_BUF && !LWIP_NETIF_TX_SINGLE_PBUF
-  u16_t newpbuflen = 0;
-  u16_t left_to_copy;
+  uint16 newpbuflen = 0;
+  uint16 left_to_copy;
 #endif
 
   /* Get a RAM based MTU sized pbuf */
@@ -732,7 +732,7 @@ ip_frag(struct pbuf *p, struct netif *netif, ip_addr_t *dest)
     cop = last ? left : nfb * 8;
 
 #if IP_FRAG_USES_STATIC_BUF
-    poff += pbuf_copy_partial(p, (u8_t*)iphdr + IP_HLEN, cop, poff);
+    poff += pbuf_copy_partial(p, (uint8_t*)iphdr + IP_HLEN, cop, poff);
 #else /* IP_FRAG_USES_STATIC_BUF */
 #if LWIP_NETIF_TX_SINGLE_PBUF
     rambuf = pbuf_alloc(PBUF_IP, cop, PBUF_RAM);
@@ -766,7 +766,7 @@ ip_frag(struct pbuf *p, struct netif *netif, ip_addr_t *dest)
     iphdr = (struct ip_hdr *)rambuf->payload;
 
     /* Can just adjust p directly for needed offset. */
-    p->payload = (u8_t *)p->payload + poff;
+    p->payload = (uint8_t *)p->payload + poff;
     p->len -= poff;
 
     left_to_copy = cop;

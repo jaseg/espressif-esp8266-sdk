@@ -87,9 +87,9 @@ udp_input(struct pbuf *p, struct netif *inp)
   struct udp_pcb *pcb, *prev;
   struct udp_pcb *uncon_pcb;
   struct ip_hdr *iphdr;
-  u16_t src, dest;
-  u8_t local_match;
-  u8_t broadcast;
+  uint16 src, dest;
+  uint8_t local_match;
+  uint8_t broadcast;
 
   PERF_START;
 
@@ -99,7 +99,7 @@ udp_input(struct pbuf *p, struct netif *inp)
 
   /* Check minimum length (IP header + UDP header)
    * and move payload pointer to UDP header */
-  if (p->tot_len < (IPH_HL(iphdr) * 4 + UDP_HLEN) || pbuf_header(p, -(s16_t)(IPH_HL(iphdr) * 4))) {
+  if (p->tot_len < (IPH_HL(iphdr) * 4 + UDP_HLEN) || pbuf_header(p, -(int16_t)(IPH_HL(iphdr) * 4))) {
     /* drop short packets */
     LWIP_DEBUGF(UDP_DEBUG,
                 ("udp_input: short UDP datagram (%"U16_F" bytes) discarded\n", p->tot_len));
@@ -221,7 +221,7 @@ udp_input(struct pbuf *p, struct netif *inp)
     if (IPH_PROTO(iphdr) == IP_PROTO_UDPLITE) {
       /* Do the UDP Lite checksum */
 #if CHECKSUM_CHECK_UDP
-      u16_t chklen = ntohs(udphdr->len);
+      uint16 chklen = ntohs(udphdr->len);
       if (chklen < sizeof(struct udp_hdr)) {
         if (chklen == 0) {
           /* For UDP-Lite, checksum length of 0 means checksum
@@ -282,7 +282,7 @@ udp_input(struct pbuf *p, struct netif *inp)
         /* pass broadcast- or multicast packets to all multicast pcbs
            if SOF_REUSEADDR is set on the first match */
         struct udp_pcb *mpcb;
-        u8_t p_header_changed = 0;
+        uint8_t p_header_changed = 0;
         for (mpcb = udp_pcbs; mpcb != NULL; mpcb = mpcb->next) {
           if (mpcb != pcb) {
             /* compare PCB local addr+port to UDP destination addr+port */
@@ -302,7 +302,7 @@ udp_input(struct pbuf *p, struct netif *inp)
                 struct pbuf *q;
                 /* for that, move payload to IP header again */
                 if (p_header_changed == 0) {
-                  pbuf_header(p, (s16_t)((IPH_HL(iphdr) * 4) + UDP_HLEN));
+                  pbuf_header(p, (int16_t)((IPH_HL(iphdr) * 4) + UDP_HLEN));
                   p_header_changed = 1;
                 }
                 q = pbuf_alloc(PBUF_RAW, p->tot_len, PBUF_RAM);
@@ -310,7 +310,7 @@ udp_input(struct pbuf *p, struct netif *inp)
                   err_t err = pbuf_copy(q, p);
                   if (err == ERR_OK) {
                     /* move payload to UDP data */
-                    pbuf_header(q, -(s16_t)((IPH_HL(iphdr) * 4) + UDP_HLEN));
+                    pbuf_header(q, -(int16_t)((IPH_HL(iphdr) * 4) + UDP_HLEN));
                     mpcb->recv(mpcb->recv_arg, mpcb, q, ip_current_src_addr(), src);
                   }
                 }
@@ -320,7 +320,7 @@ udp_input(struct pbuf *p, struct netif *inp)
         }
         if (p_header_changed) {
           /* and move payload to UDP data again */
-          pbuf_header(p, -(s16_t)((IPH_HL(iphdr) * 4) + UDP_HLEN));
+          pbuf_header(p, -(int16_t)((IPH_HL(iphdr) * 4) + UDP_HLEN));
         }
       }
 #endif /* SO_REUSE && SO_REUSE_RXTOALL */
@@ -389,7 +389,7 @@ udp_send(struct udp_pcb *pcb, struct pbuf *p)
  */
 err_t ICACHE_FLASH_ATTR
 udp_send_chksum(struct udp_pcb *pcb, struct pbuf *p,
-                u8_t have_chksum, u16_t chksum)
+                uint8_t have_chksum, uint16 chksum)
 {
   /* send to the packet using remote ip and port stored in the pcb */
   return udp_sendto_chksum(pcb, p, &pcb->remote_ip, pcb->remote_port,
@@ -416,7 +416,7 @@ udp_send_chksum(struct udp_pcb *pcb, struct pbuf *p,
  */
 err_t ICACHE_FLASH_ATTR
 udp_sendto(struct udp_pcb *pcb, struct pbuf *p,
-  ip_addr_t *dst_ip, u16_t dst_port)
+  ip_addr_t *dst_ip, uint16 dst_port)
 {
 #if LWIP_CHECKSUM_ON_COPY
   return udp_sendto_chksum(pcb, p, dst_ip, dst_port, 0, 0);
@@ -425,7 +425,7 @@ udp_sendto(struct udp_pcb *pcb, struct pbuf *p,
 /** Same as udp_sendto(), but with checksum */
 err_t ICACHE_FLASH_ATTR
 udp_sendto_chksum(struct udp_pcb *pcb, struct pbuf *p, ip_addr_t *dst_ip,
-                  u16_t dst_port, u8_t have_chksum, u16_t chksum)
+                  uint16 dst_port, uint8_t have_chksum, uint16 chksum)
 {
 #endif /* LWIP_CHECKSUM_ON_COPY */
   struct netif *netif;
@@ -474,7 +474,7 @@ udp_sendto_chksum(struct udp_pcb *pcb, struct pbuf *p, ip_addr_t *dst_ip,
  */
 err_t ICACHE_FLASH_ATTR
 udp_sendto_if(struct udp_pcb *pcb, struct pbuf *p,
-  ip_addr_t *dst_ip, u16_t dst_port, struct netif *netif)
+  ip_addr_t *dst_ip, uint16 dst_port, struct netif *netif)
 {
 #if LWIP_CHECKSUM_ON_COPY
   return udp_sendto_if_chksum(pcb, p, dst_ip, dst_port, netif, 0, 0);
@@ -483,8 +483,8 @@ udp_sendto_if(struct udp_pcb *pcb, struct pbuf *p,
 /** Same as udp_sendto_if(), but with checksum */
 err_t ICACHE_FLASH_ATTR
 udp_sendto_if_chksum(struct udp_pcb *pcb, struct pbuf *p, ip_addr_t *dst_ip,
-                     u16_t dst_port, struct netif *netif, u8_t have_chksum,
-                     u16_t chksum)
+                     uint16 dst_port, struct netif *netif, uint8_t have_chksum,
+                     uint16 chksum)
 {
 #endif /* LWIP_CHECKSUM_ON_COPY */
   struct udp_hdr *udphdr;
@@ -576,7 +576,7 @@ udp_sendto_if_chksum(struct udp_pcb *pcb, struct pbuf *p, ip_addr_t *dst_ip,
 #if LWIP_UDPLITE
   /* UDP Lite protocol? */
   if (pcb->flags & UDP_FLAGS_UDPLITE) {
-    u16_t chklen, chklen_hdr;
+    uint16 chklen, chklen_hdr;
     LWIP_DEBUGF(UDP_DEBUG, ("udp_send: UDP LITE packet length %"U16_F"\n", q->tot_len));
     /* set UDP message length in UDP header */
     chklen_hdr = chklen = pcb->chksum_len_tx;
@@ -603,8 +603,8 @@ udp_sendto_if_chksum(struct udp_pcb *pcb, struct pbuf *p, ip_addr_t *dst_ip,
 #else /* !LWIP_CHECKSUM_ON_COPY */
       (have_chksum ? UDP_HLEN : chklen));
     if (have_chksum) {
-      u32_t acc;
-      acc = udphdr->chksum + (u16_t)~(chksum);
+      uint32_t acc;
+      acc = udphdr->chksum + (uint16)~(chksum);
       udphdr->chksum = FOLD_U32T(acc);
     }
 #endif /* !LWIP_CHECKSUM_ON_COPY */
@@ -631,13 +631,13 @@ udp_sendto_if_chksum(struct udp_pcb *pcb, struct pbuf *p, ip_addr_t *dst_ip,
     /* calculate checksum */
 #if CHECKSUM_GEN_UDP
     if ((pcb->flags & UDP_FLAGS_NOCHKSUM) == 0) {
-      u16_t udpchksum;
+      uint16 udpchksum;
 #if LWIP_CHECKSUM_ON_COPY
       if (have_chksum) {
-        u32_t acc;
+        uint32_t acc;
         udpchksum = inet_chksum_pseudo_partial(q, src_ip, dst_ip, IP_PROTO_UDP,
           q->tot_len, UDP_HLEN);
-        acc = udpchksum + (u16_t)~(chksum);
+        acc = udpchksum + (uint16)~(chksum);
         udpchksum = FOLD_U32T(acc);
       } else
 #endif /* LWIP_CHECKSUM_ON_COPY */
@@ -698,10 +698,10 @@ udp_sendto_if_chksum(struct udp_pcb *pcb, struct pbuf *p, ip_addr_t *dst_ip,
  * @see udp_disconnect()
  */
 err_t ICACHE_FLASH_ATTR
-udp_bind(struct udp_pcb *pcb, ip_addr_t *ipaddr, u16_t port)
+udp_bind(struct udp_pcb *pcb, ip_addr_t *ipaddr, uint16 port)
 {
   struct udp_pcb *ipcb;
-  u8_t rebind;
+  uint8_t rebind;
 
   LWIP_DEBUGF(UDP_DEBUG | LWIP_DBG_TRACE, ("udp_bind(ipaddr = "));
   ip_addr_debug_print(UDP_DEBUG, ipaddr);
@@ -801,7 +801,7 @@ udp_bind(struct udp_pcb *pcb, ip_addr_t *ipaddr, u16_t port)
  * @see udp_disconnect()
  */
 err_t ICACHE_FLASH_ATTR
-udp_connect(struct udp_pcb *pcb, ip_addr_t *ipaddr, u16_t port)
+udp_connect(struct udp_pcb *pcb, ip_addr_t *ipaddr, uint16 port)
 {
   struct udp_pcb *ipcb;
 

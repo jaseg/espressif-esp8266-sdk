@@ -53,10 +53,10 @@ extern "C" {
 #endif
 PACK_STRUCT_BEGIN
 struct udp_hdr {
-  PACK_STRUCT_FIELD(u16_t src);
-  PACK_STRUCT_FIELD(u16_t dest);  /* src/dest UDP ports */
-  PACK_STRUCT_FIELD(u16_t len);
-  PACK_STRUCT_FIELD(u16_t chksum);
+  PACK_STRUCT_FIELD(uint16 src);
+  PACK_STRUCT_FIELD(uint16 dest);  /* src/dest UDP ports */
+  PACK_STRUCT_FIELD(uint16 len);
+  PACK_STRUCT_FIELD(uint16 chksum);
 } PACK_STRUCT_STRUCT;
 PACK_STRUCT_END
 #ifdef PACK_STRUCT_USE_INCLUDES
@@ -85,7 +85,7 @@ struct udp_pcb;
  * @param port the remote port from which the packet was received
  */
 typedef void (*udp_recv_fn)(void *arg, struct udp_pcb *pcb, struct pbuf *p,
-    ip_addr_t *addr, u16_t port);
+    ip_addr_t *addr, uint16 port);
 
 
 struct udp_pcb {
@@ -96,9 +96,9 @@ struct udp_pcb {
 
   struct udp_pcb *next;
 
-  u8_t flags;
+  uint8_t flags;
   /** ports are in host byte order */
-  u16_t local_port, remote_port;
+  uint16 local_port, remote_port;
 
 #if LWIP_IGMP
   /** outgoing network interface for multicast packets */
@@ -107,7 +107,7 @@ struct udp_pcb {
 
 #if LWIP_UDPLITE
   /** used for UDP_LITE only */
-  u16_t chksum_len_rx, chksum_len_tx;
+  uint16 chksum_len_rx, chksum_len_tx;
 #endif /* LWIP_UDPLITE */
 
   /** receive callback function */
@@ -123,29 +123,29 @@ extern struct udp_pcb *udp_pcbs;
 struct udp_pcb * udp_new        (void)ICACHE_FLASH_ATTR;
 void             udp_remove     (struct udp_pcb *pcb)ICACHE_FLASH_ATTR;
 err_t            udp_bind       (struct udp_pcb *pcb, ip_addr_t *ipaddr,
-                                 u16_t port)ICACHE_FLASH_ATTR;
+                                 uint16 port)ICACHE_FLASH_ATTR;
 err_t            udp_connect    (struct udp_pcb *pcb, ip_addr_t *ipaddr,
-                                 u16_t port)ICACHE_FLASH_ATTR;
+                                 uint16 port)ICACHE_FLASH_ATTR;
 void             udp_disconnect (struct udp_pcb *pcb)ICACHE_FLASH_ATTR;
 void             udp_recv       (struct udp_pcb *pcb, udp_recv_fn recv,
                                  void *recv_arg)ICACHE_FLASH_ATTR;
 err_t            udp_sendto_if  (struct udp_pcb *pcb, struct pbuf *p,
-                                 ip_addr_t *dst_ip, u16_t dst_port,
+                                 ip_addr_t *dst_ip, uint16 dst_port,
                                  struct netif *netif)ICACHE_FLASH_ATTR;
 err_t            udp_sendto     (struct udp_pcb *pcb, struct pbuf *p,
-                                 ip_addr_t *dst_ip, u16_t dst_port)ICACHE_FLASH_ATTR;
+                                 ip_addr_t *dst_ip, uint16 dst_port)ICACHE_FLASH_ATTR;
 err_t            udp_send       (struct udp_pcb *pcb, struct pbuf *p)ICACHE_FLASH_ATTR;
 
 #if LWIP_CHECKSUM_ON_COPY
 err_t            udp_sendto_if_chksum(struct udp_pcb *pcb, struct pbuf *p,
-                                 ip_addr_t *dst_ip, u16_t dst_port,
-                                 struct netif *netif, u8_t have_chksum,
-                                 u16_t chksum)ICACHE_FLASH_ATTR;
+                                 ip_addr_t *dst_ip, uint16 dst_port,
+                                 struct netif *netif, uint8_t have_chksum,
+                                 uint16 chksum)ICACHE_FLASH_ATTR;
 err_t            udp_sendto_chksum(struct udp_pcb *pcb, struct pbuf *p,
-                                 ip_addr_t *dst_ip, u16_t dst_port,
-                                 u8_t have_chksum, u16_t chksum)ICACHE_FLASH_ATTR;
+                                 ip_addr_t *dst_ip, uint16 dst_port,
+                                 uint8_t have_chksum, uint16 chksum)ICACHE_FLASH_ATTR;
 err_t            udp_send_chksum(struct udp_pcb *pcb, struct pbuf *p,
-                                 u8_t have_chksum, u16_t chksum)ICACHE_FLASH_ATTR;
+                                 uint8_t have_chksum, uint16 chksum)ICACHE_FLASH_ATTR;
 #endif /* LWIP_CHECKSUM_ON_COPY */
 
 #define          udp_flags(pcb) ((pcb)->flags)

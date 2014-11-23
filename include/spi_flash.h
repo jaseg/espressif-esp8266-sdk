@@ -13,18 +13,18 @@ typedef enum {
 } SpiFlashOpResult;
 
 typedef struct{
-	uint32	deviceId;
-	uint32	chip_size;    // chip size in byte
-	uint32	block_size;
-	uint32  sector_size;
-	uint32  page_size;
-	uint32  status_mask;
+	uint32_t	deviceId;
+	uint32_t	chip_size;    // chip size in byte
+	uint32_t	block_size;
+	uint32_t  sector_size;
+	uint32_t  page_size;
+	uint32_t  status_mask;
 } SpiFlashChip;
 
 #define SPI_FLASH_SEC_SIZE      4096
 
 SpiFlashOpResult spi_flash_erase_sector(uint16 sec);
-SpiFlashOpResult spi_flash_write(uint32 des_addr, uint32 *src_addr, uint32 size);
-SpiFlashOpResult spi_flash_read(uint32 src_addr, uint32 *des_addr, uint32 size);
+SpiFlashOpResult spi_flash_write(uint32_t des_addr, uint32_t *src_addr, uint32_t size);
+SpiFlashOpResult spi_flash_read(uint32_t src_addr, uint32_t *des_addr, uint32_t size);
 
 #endif

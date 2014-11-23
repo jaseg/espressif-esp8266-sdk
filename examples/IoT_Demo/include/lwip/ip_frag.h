@@ -55,9 +55,9 @@ struct ip_reassdata {
   struct ip_reassdata *next;
   struct pbuf *p;
   struct ip_hdr iphdr;
-  u16_t datagram_len;
-  u8_t flags;
-  u8_t timer;
+  uint16 datagram_len;
+  uint8_t flags;
+  uint8_t timer;
 };
 
 void ip_reass_init(void)ICACHE_FLASH_ATTR;

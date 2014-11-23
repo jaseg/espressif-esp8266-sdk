@@ -49,12 +49,12 @@
 #endif
 
 
-typedef unsigned   char    u8_t;
-typedef signed     char    s8_t;
-typedef unsigned   short   u16_t;
-typedef signed     short   s16_t;
-typedef unsigned   long    u32_t;
-typedef signed     long    s32_t;
+typedef unsigned   char    uint8_t;
+typedef signed     char    int8_t;
+typedef unsigned   short   uint16;
+typedef signed     short   int16_t;
+typedef unsigned   long    uint32_t;
+typedef signed     long    int32_t;
 typedef unsigned long   mem_ptr_t;
 
 #define S16_F "d"
@@ -88,29 +88,29 @@ typedef unsigned long   mem_ptr_t;
 #define SYS_ARCH_UNPROTECT(x)
 
 #define LWIP_PLATFORM_BYTESWAP 1
-#define LWIP_PLATFORM_HTONS(_n)  ((u16_t)((((_n) & 0xff) << 8) | (((_n) >> 8) & 0xff)))
-#define LWIP_PLATFORM_HTONL(_n)  ((u32_t)( (((_n) & 0xff) << 24) | (((_n) & 0xff00) << 8) | (((_n) >> 8)  & 0xff00) | (((_n) >> 24) & 0xff) ))
+#define LWIP_PLATFORM_HTONS(_n)  ((uint16)((((_n) & 0xff) << 8) | (((_n) >> 8) & 0xff)))
+#define LWIP_PLATFORM_HTONL(_n)  ((uint32_t)( (((_n) & 0xff) << 24) | (((_n) & 0xff00) << 8) | (((_n) >> 8)  & 0xff00) | (((_n) >> 24) & 0xff) ))
 
 #if LWIP_RAW
-extern u8_t memp_memory_RAW_PCB_base[];
+extern uint8_t memp_memory_RAW_PCB_base[];
 #endif /* LWIP_RAW */
 
 #if LWIP_UDP
-extern u8_t memp_memory_UDP_PCB_base[];
+extern uint8_t memp_memory_UDP_PCB_base[];
 #endif /* LWIP_UDP */
 
 #if LWIP_TCP
-extern u8_t memp_memory_TCP_PCB_base[];
-extern u8_t memp_memory_TCP_PCB_LISTEN_base[];
-extern u8_t memp_memory_TCP_SEG_base[] SHMEM_ATTR;
+extern uint8_t memp_memory_TCP_PCB_base[];
+extern uint8_t memp_memory_TCP_PCB_LISTEN_base[];
+extern uint8_t memp_memory_TCP_SEG_base[] SHMEM_ATTR;
 #endif /* LWIP_TCP */
 
 #if (!NO_SYS || (NO_SYS && !NO_SYS_NO_TIMERS)) /* LWIP_TIMERS */
-extern u8_t memp_memory_SYS_TIMEOUT_base[];
+extern uint8_t memp_memory_SYS_TIMEOUT_base[];
 #endif /* LWIP_TIMERS */
 
-extern u8_t memp_memory_PBUF_base[];
-extern u8_t memp_memory_PBUF_POOL_base[];
+extern uint8_t memp_memory_PBUF_base[];
+extern uint8_t memp_memory_PBUF_POOL_base[];
 
 
 

@@ -19,11 +19,11 @@
 #endif
 
 LOCAL struct espconn *upgrade_conn;
-LOCAL uint8 *pbuf;
+LOCAL uint8_t *pbuf;
 LOCAL os_timer_t upgrade_10s;
 LOCAL os_timer_t upgrade_timer;
-LOCAL uint32 totallength = 0;
-LOCAL uint32 sumlength = 0;
+LOCAL uint32_t totallength = 0;
+LOCAL uint32_t sumlength = 0;
 
 /******************************************************************************
  * FunctionName : upgrade_disconcb

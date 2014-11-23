@@ -55,20 +55,20 @@ static void ICACHE_FLASH_ATTR espconn_data_sent(void *arg)
  * FunctionName : espconn_udp_sent
  * Description  : sent data for client or server
  * Parameters   : void *arg -- client or server to send
- * 				  uint8* psent -- Data to send
+ * 				  uint8_t* psent -- Data to send
  *                uint16 length -- Length of data to send
  * Returns      : none
 *******************************************************************************/
 void ICACHE_FLASH_ATTR
-espconn_udp_sent(void *arg, uint8 *psent, uint16 length)
+espconn_udp_sent(void *arg, uint8_t *psent, uint16 length)
 {
     espconn_msg *pudp_sent = arg;
     struct udp_pcb *upcb = pudp_sent->pcommon.pcb;
     struct pbuf *p, *q;
-    u8_t *data = NULL;
-    u16_t cnt = 0;
-    u16_t datalen = 0;
-    u16_t i = 0;
+    uint8_t *data = NULL;
+    uint16 cnt = 0;
+    uint16 datalen = 0;
+    uint16 i = 0;
     err_t err;
     LWIP_DEBUGF(ESPCONN_UDP_DEBUG, ("espconn_udp_sent %d %d %p\n", __LINE__, length, upcb));
 
@@ -89,11 +89,11 @@ espconn_udp_sent(void *arg, uint8 *psent, uint16 length)
         q = p;
 
         while (q != NULL) {
-            data = (u8_t *)q->payload;
+            data = (uint8_t *)q->payload;
             LWIP_DEBUGF(ESPCONN_UDP_DEBUG, ("espconn_udp_sent %d %p\n", __LINE__, data));
 
             for (i = 0; i < q->len; i++) {
-                data[i] = ((u8_t *) psent)[cnt++];
+                data[i] = ((uint8_t *) psent)[cnt++];
             }
 
             q = q->next;
@@ -133,12 +133,12 @@ espconn_udp_sent(void *arg, uint8 *psent, uint16 length)
 *******************************************************************************/
 static void ICACHE_FLASH_ATTR
 espconn_udp_recv(void *arg, struct udp_pcb *upcb, struct pbuf *p,
-                 struct ip_addr *addr, u16_t port)
+                 struct ip_addr *addr, uint16 port)
 {
     espconn_msg *precv = arg;
     struct pbuf *q = NULL;
-    u8_t *pdata = NULL;
-    u16_t length = 0;
+    uint8_t *pdata = NULL;
+    uint16 length = 0;
     struct ip_info ipconfig;
 
     LWIP_DEBUGF(ESPCONN_UDP_DEBUG, ("espconn_udp_server_recv %d %p\n", __LINE__, upcb));
@@ -174,7 +174,7 @@ espconn_udp_recv(void *arg, struct udp_pcb *upcb, struct pbuf *p,
         q = p;
 
         while (q != NULL) {
-            pdata = (u8_t *)os_zalloc(q ->len + 1);
+            pdata = (uint8_t *)os_zalloc(q ->len + 1);
             length = pbuf_copy_partial(q, pdata, q ->len, 0);
 
             LWIP_DEBUGF(ESPCONN_UDP_DEBUG, ("espconn_udp_server_recv %d %x\n", __LINE__, length));
@@ -226,7 +226,7 @@ void ICACHE_FLASH_ATTR espconn_udp_disconnect(espconn_msg *pdiscon)
  * Parameters   : pespconn -- the espconn used to build server
  * Returns      : none
 *******************************************************************************/
-sint8 ICACHE_FLASH_ATTR
+int8_t ICACHE_FLASH_ATTR
 espconn_udp_server(struct espconn *pespconn)
 {
     struct udp_pcb *upcb = NULL;
@@ -259,7 +259,7 @@ espconn_udp_server(struct espconn *pespconn)
  * 				  multicast_ip -- multicast ip given by user
  * Returns      : none
 *******************************************************************************/
-sint8 ICACHE_FLASH_ATTR
+int8_t ICACHE_FLASH_ATTR
 espconn_igmp_leave(ip_addr_t *host_ip, ip_addr_t *multicast_ip)
 {
     if (igmp_leavegroup(host_ip, multicast_ip) != ERR_OK) {
@@ -277,7 +277,7 @@ espconn_igmp_leave(ip_addr_t *host_ip, ip_addr_t *multicast_ip)
  * 				  multicast_ip -- multicast ip given by user
  * Returns      : none
 *******************************************************************************/
-sint8 ICACHE_FLASH_ATTR
+int8_t ICACHE_FLASH_ATTR
 espconn_igmp_join(ip_addr_t *host_ip, ip_addr_t *multicast_ip)
 {
     if (igmp_joingroup(host_ip, multicast_ip) != ERR_OK) {

@@ -64,13 +64,13 @@ void             tcp_fasttmr (void)ICACHE_FLASH_ATTR;
 /* Only used by IP to pass a TCP segment to TCP: */
 void             tcp_input   (struct pbuf *p, struct netif *inp)ICACHE_FLASH_ATTR;
 /* Used within the TCP code only: */
-struct tcp_pcb * tcp_alloc   (u8_t prio)ICACHE_FLASH_ATTR;
+struct tcp_pcb * tcp_alloc   (uint8_t prio)ICACHE_FLASH_ATTR;
 void             tcp_abandon (struct tcp_pcb *pcb, int reset)ICACHE_FLASH_ATTR;
 err_t            tcp_send_empty_ack(struct tcp_pcb *pcb)ICACHE_FLASH_ATTR;
 void             tcp_rexmit  (struct tcp_pcb *pcb)ICACHE_FLASH_ATTR;
 void             tcp_rexmit_rto  (struct tcp_pcb *pcb)ICACHE_FLASH_ATTR;
 void             tcp_rexmit_fast (struct tcp_pcb *pcb)ICACHE_FLASH_ATTR;
-u32_t            tcp_update_rcv_ann_wnd(struct tcp_pcb *pcb)ICACHE_FLASH_ATTR;
+uint32_t            tcp_update_rcv_ann_wnd(struct tcp_pcb *pcb)ICACHE_FLASH_ATTR;
 
 /**
  * This is the Nagle algorithm: try to combine user data to send as few TCP
@@ -89,10 +89,10 @@ u32_t            tcp_update_rcv_ann_wnd(struct tcp_pcb *pcb)ICACHE_FLASH_ATTR;
 #define tcp_output_nagle(tpcb) (tcp_do_output_nagle(tpcb) ? tcp_output(tpcb) : ERR_OK)
 
 
-#define TCP_SEQ_LT(a,b)     ((s32_t)((a)-(b)) < 0)
-#define TCP_SEQ_LEQ(a,b)    ((s32_t)((a)-(b)) <= 0)
-#define TCP_SEQ_GT(a,b)     ((s32_t)((a)-(b)) > 0)
-#define TCP_SEQ_GEQ(a,b)    ((s32_t)((a)-(b)) >= 0)
+#define TCP_SEQ_LT(a,b)     ((int32_t)((a)-(b)) < 0)
+#define TCP_SEQ_LEQ(a,b)    ((int32_t)((a)-(b)) <= 0)
+#define TCP_SEQ_GT(a,b)     ((int32_t)((a)-(b)) > 0)
+#define TCP_SEQ_GEQ(a,b)    ((int32_t)((a)-(b)) >= 0)
 /* is b<=a<=c? */
 #if 0 /* see bug #10548 */
 #define TCP_SEQ_BETWEEN(a,b,c) ((c)-(b) >= (a)-(b))
@@ -156,14 +156,14 @@ u32_t            tcp_update_rcv_ann_wnd(struct tcp_pcb *pcb)ICACHE_FLASH_ATTR;
 #endif
 PACK_STRUCT_BEGIN
 struct tcp_hdr {
-  PACK_STRUCT_FIELD(u16_t src);				//源端口
-  PACK_STRUCT_FIELD(u16_t dest);				//目的端口
-  PACK_STRUCT_FIELD(u32_t seqno);			//序号
-  PACK_STRUCT_FIELD(u32_t ackno);			//应答序号
-  PACK_STRUCT_FIELD(u16_t _hdrlen_rsvd_flags);//首部长度+保留位+标志位
-  PACK_STRUCT_FIELD(u16_t wnd);				//窗口大小
-  PACK_STRUCT_FIELD(u16_t chksum);			//校验和
-  PACK_STRUCT_FIELD(u16_t urgp);				//紧急指针
+  PACK_STRUCT_FIELD(uint16 src);				//源端口
+  PACK_STRUCT_FIELD(uint16 dest);				//目的端口
+  PACK_STRUCT_FIELD(uint32_t seqno);			//序号
+  PACK_STRUCT_FIELD(uint32_t ackno);			//应答序号
+  PACK_STRUCT_FIELD(uint16 _hdrlen_rsvd_flags);//首部长度+保留位+标志位
+  PACK_STRUCT_FIELD(uint16 wnd);				//窗口大小
+  PACK_STRUCT_FIELD(uint16 chksum);			//校验和
+  PACK_STRUCT_FIELD(uint16 urgp);				//紧急指针
 } PACK_STRUCT_STRUCT;
 PACK_STRUCT_END
 #ifdef PACK_STRUCT_USE_INCLUDES
@@ -176,7 +176,7 @@ PACK_STRUCT_END
 
 #define TCPH_OFFSET_SET(phdr, offset) (phdr)->_hdrlen_rsvd_flags = htons(((offset) << 8) | TCPH_FLAGS(phdr))
 #define TCPH_HDRLEN_SET(phdr, len) (phdr)->_hdrlen_rsvd_flags = htons(((len) << 12) | TCPH_FLAGS(phdr))
-#define TCPH_FLAGS_SET(phdr, flags) (phdr)->_hdrlen_rsvd_flags = (((phdr)->_hdrlen_rsvd_flags & PP_HTONS((u16_t)(~(u16_t)(TCP_FLAGS)))) | htons(flags))
+#define TCPH_FLAGS_SET(phdr, flags) (phdr)->_hdrlen_rsvd_flags = (((phdr)->_hdrlen_rsvd_flags & PP_HTONS((uint16)(~(uint16)(TCP_FLAGS)))) | htons(flags))
 #define TCPH_HDRLEN_FLAGS_SET(phdr, len, flags) (phdr)->_hdrlen_rsvd_flags = htons(((len) << 12) | (flags))
 
 #define TCPH_SET_FLAG(phdr, flags ) (phdr)->_hdrlen_rsvd_flags = ((phdr)->_hdrlen_rsvd_flags | htons(flags))
@@ -186,9 +186,9 @@ PACK_STRUCT_END
 
 /** Flags used on input processing, not on pcb->flags
 */
-#define TF_RESET     (u8_t)0x08U   /* Connection was reset. */
-#define TF_CLOSED    (u8_t)0x10U   /* Connection was sucessfully closed. */
-#define TF_GOT_FIN   (u8_t)0x20U   /* Connection was closed by the remote end. */
+#define TF_RESET     (uint8_t)0x08U   /* Connection was reset. */
+#define TF_CLOSED    (uint8_t)0x10U   /* Connection was sucessfully closed. */
+#define TF_GOT_FIN   (uint8_t)0x20U   /* Connection was closed by the remote end. */
 
 
 #if LWIP_EVENT_API
@@ -279,20 +279,20 @@ struct tcp_seg {
   struct tcp_seg *next;    /* used when putting segements on a queue */
   struct pbuf *p;          /* buffer containing data + TCP header */
   void *dataptr;           /* pointer to the TCP data in the pbuf */
-  u16_t len;               /* the TCP length of this segment */
+  uint16 len;               /* the TCP length of this segment */
 #if TCP_OVERSIZE_DBGCHECK
-  u16_t oversize_left;     /* Extra bytes available at the end of the last
+  uint16 oversize_left;     /* Extra bytes available at the end of the last
                               pbuf in unsent (used for asserting vs.
                               tcp_pcb.unsent_oversized only) */
 #endif /* TCP_OVERSIZE_DBGCHECK */ 
 #if TCP_CHECKSUM_ON_COPY
-  u16_t chksum;
-  u8_t  chksum_swapped;
+  uint16 chksum;
+  uint8_t  chksum_swapped;
 #endif /* TCP_CHECKSUM_ON_COPY */
-  u8_t  flags;
-#define TF_SEG_OPTS_MSS         (u8_t)0x01U /* Include MSS option. */
-#define TF_SEG_OPTS_TS          (u8_t)0x02U /* Include timestamp option. */
-#define TF_SEG_DATA_CHECKSUMMED (u8_t)0x04U /* ALL data (not the header) is
+  uint8_t  flags;
+#define TF_SEG_OPTS_MSS         (uint8_t)0x01U /* Include MSS option. */
+#define TF_SEG_OPTS_TS          (uint8_t)0x02U /* Include timestamp option. */
+#define TF_SEG_DATA_CHECKSUMMED (uint8_t)0x04U /* ALL data (not the header) is
                                                checksummed into 'chksum' */
   struct tcp_hdr *tcphdr;  /* the TCP header */
 };
@@ -301,15 +301,15 @@ struct tcp_seg {
   (flags & TF_SEG_OPTS_MSS ? 4  : 0) +          \
   (flags & TF_SEG_OPTS_TS  ? 12 : 0)
 
-/** This returns a TCP header option for MSS in an u32_t */
-#define TCP_BUILD_MSS_OPTION(x) (x) = PP_HTONL(((u32_t)2 << 24) |          \
-                                               ((u32_t)4 << 16) |          \
-                                               (((u32_t)TCP_MSS / 256) << 8) | \
+/** This returns a TCP header option for MSS in an uint32_t */
+#define TCP_BUILD_MSS_OPTION(x) (x) = PP_HTONL(((uint32_t)2 << 24) |          \
+                                               ((uint32_t)4 << 16) |          \
+                                               (((uint32_t)TCP_MSS / 256) << 8) | \
                                                (TCP_MSS & 255))
 
 /* Global variables: */
 extern struct tcp_pcb *tcp_input_pcb;
-extern u32_t tcp_ticks;
+extern uint32_t tcp_ticks;
 
 /* The TCP PCB lists. */
 union tcp_listen_pcbs_t { /* List of all TCP PCBs in LISTEN state. */
@@ -423,21 +423,21 @@ struct tcp_seg *tcp_seg_copy(struct tcp_seg *seg)ICACHE_FLASH_ATTR;
   } while (0)
 
 err_t tcp_send_fin(struct tcp_pcb *pcb)ICACHE_FLASH_ATTR;
-err_t tcp_enqueue_flags(struct tcp_pcb *pcb, u8_t flags)ICACHE_FLASH_ATTR;
+err_t tcp_enqueue_flags(struct tcp_pcb *pcb, uint8_t flags)ICACHE_FLASH_ATTR;
 
 void tcp_rexmit_seg(struct tcp_pcb *pcb, struct tcp_seg *seg)ICACHE_FLASH_ATTR;
 
-void tcp_rst(u32_t seqno, u32_t ackno,
+void tcp_rst(uint32_t seqno, uint32_t ackno,
        ip_addr_t *local_ip, ip_addr_t *remote_ip,
-       u16_t local_port, u16_t remote_port)ICACHE_FLASH_ATTR;
+       uint16 local_port, uint16 remote_port)ICACHE_FLASH_ATTR;
 
-u32_t tcp_next_iss(void)ICACHE_FLASH_ATTR;
+uint32_t tcp_next_iss(void)ICACHE_FLASH_ATTR;
 
 void tcp_keepalive(struct tcp_pcb *pcb)ICACHE_FLASH_ATTR;
 void tcp_zero_window_probe(struct tcp_pcb *pcb)ICACHE_FLASH_ATTR;
 
 #if TCP_CALCULATE_EFF_SEND_MSS
-u16_t tcp_eff_send_mss(u16_t sendmss, ip_addr_t *addr)ICACHE_FLASH_ATTR;
+uint16 tcp_eff_send_mss(uint16 sendmss, ip_addr_t *addr)ICACHE_FLASH_ATTR;
 #endif /* TCP_CALCULATE_EFF_SEND_MSS */
 
 #if LWIP_CALLBACK_API
@@ -446,10 +446,10 @@ err_t tcp_recv_null(void *arg, struct tcp_pcb *pcb, struct pbuf *p, err_t err)IC
 
 #if TCP_DEBUG || TCP_INPUT_DEBUG || TCP_OUTPUT_DEBUG
 void tcp_debug_print(struct tcp_hdr *tcphdr)ICACHE_FLASH_ATTR;
-void tcp_debug_print_flags(u8_t flags)ICACHE_FLASH_ATTR;
+void tcp_debug_print_flags(uint8_t flags)ICACHE_FLASH_ATTR;
 void tcp_debug_print_state(enum tcp_state s)ICACHE_FLASH_ATTR;
 void tcp_debug_print_pcbs(void)ICACHE_FLASH_ATTR;
-s16_t tcp_pcbs_sane(void)ICACHE_FLASH_ATTR;
+int16_t tcp_pcbs_sane(void)ICACHE_FLASH_ATTR;
 #else
 #  define tcp_debug_print(tcphdr)
 #  define tcp_debug_print_flags(flags)

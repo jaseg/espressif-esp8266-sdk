@@ -95,7 +95,7 @@ err_t tcpip_netifapi_lock(struct netifapi_msg *netifapimsg);
 #endif /* LWIP_TCPIP_CORE_LOCKING */
 #endif /* LWIP_NETIF_API */
 
-err_t tcpip_callback_with_block(tcpip_callback_fn function, void *ctx, u8_t block);
+err_t tcpip_callback_with_block(tcpip_callback_fn function, void *ctx, uint8_t block);
 #define tcpip_callback(f, ctx)              tcpip_callback_with_block(f, ctx, 1)
 
 /* free pbufs or heap memory from another context without blocking */
@@ -103,7 +103,7 @@ err_t pbuf_free_callback(struct pbuf *p);
 err_t mem_free_callback(void *m);
 
 #if LWIP_TCPIP_TIMEOUT
-err_t tcpip_timeout(u32_t msecs, sys_timeout_handler h, void *arg);
+err_t tcpip_timeout(uint32_t msecs, sys_timeout_handler h, void *arg);
 err_t tcpip_untimeout(sys_timeout_handler h, void *arg);
 #endif /* LWIP_TCPIP_TIMEOUT */
 
@@ -142,7 +142,7 @@ struct tcpip_msg {
     } cb;
 #if LWIP_TCPIP_TIMEOUT
     struct {
-      u32_t msecs;
+      uint32_t msecs;
       sys_timeout_handler h;
       void *arg;
     } tmo;

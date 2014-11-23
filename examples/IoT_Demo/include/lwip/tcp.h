@@ -85,7 +85,7 @@ typedef err_t (*tcp_recv_fn)(void *arg, struct tcp_pcb *tpcb,
  *            callback function!
  */
 typedef err_t (*tcp_sent_fn)(void *arg, struct tcp_pcb *tpcb,
-                              u16_t len);
+                              uint16 len);
 
 /** Function prototype for tcp poll callback functions. Called periodically as
  * specified by @see tcp_poll.
@@ -157,12 +157,12 @@ enum tcp_state {
 #define TCP_PCB_COMMON(type) \
   type *next; /* for the linked list */ \
   enum tcp_state state; /* TCP state */ \
-  u8_t prio; \
+  uint8_t prio; \
   void *callback_arg; \
   /* the accept callback for listen- and normal pcbs, if LWIP_CALLBACK_API */ \
   DEF_ACCEPT_CALLBACK \
   /* ports are in host byte order */ \
-  u16_t local_port
+  uint16 local_port
 
 
 /* the TCP protocol control block */
@@ -173,67 +173,67 @@ struct tcp_pcb {
   TCP_PCB_COMMON(struct tcp_pcb);
 
   /* ports are in host byte order */
-  u16_t remote_port;
+  uint16 remote_port;
   
-  u8_t flags;
-#define TF_ACK_DELAY   ((u8_t)0x01U)   /* Delayed ACK. */
-#define TF_ACK_NOW     ((u8_t)0x02U)   /* Immediate ACK. */
-#define TF_INFR        ((u8_t)0x04U)   /* In fast recovery. */
-#define TF_TIMESTAMP   ((u8_t)0x08U)   /* Timestamp option enabled */
-#define TF_RXCLOSED    ((u8_t)0x10U)   /* rx closed by tcp_shutdown */
-#define TF_FIN         ((u8_t)0x20U)   /* Connection was closed locally (FIN segment enqueued). */
-#define TF_NODELAY     ((u8_t)0x40U)   /* Disable Nagle algorithm */
-#define TF_NAGLEMEMERR ((u8_t)0x80U)   /* nagle enabled, memerr, try to output to prevent delayed ACK to happen */
+  uint8_t flags;
+#define TF_ACK_DELAY   ((uint8_t)0x01U)   /* Delayed ACK. */
+#define TF_ACK_NOW     ((uint8_t)0x02U)   /* Immediate ACK. */
+#define TF_INFR        ((uint8_t)0x04U)   /* In fast recovery. */
+#define TF_TIMESTAMP   ((uint8_t)0x08U)   /* Timestamp option enabled */
+#define TF_RXCLOSED    ((uint8_t)0x10U)   /* rx closed by tcp_shutdown */
+#define TF_FIN         ((uint8_t)0x20U)   /* Connection was closed locally (FIN segment enqueued). */
+#define TF_NODELAY     ((uint8_t)0x40U)   /* Disable Nagle algorithm */
+#define TF_NAGLEMEMERR ((uint8_t)0x80U)   /* nagle enabled, memerr, try to output to prevent delayed ACK to happen */
 
   /* the rest of the fields are in host byte order
      as we have to do some math with them */
   /* receiver variables */
-  u32_t rcv_nxt;   /* next seqno expected */
-  u16_t rcv_wnd;   /* receiver window available */
-  u16_t rcv_ann_wnd; /* receiver window to announce */
-  u32_t rcv_ann_right_edge; /* announced right edge of window */
+  uint32_t rcv_nxt;   /* next seqno expected */
+  uint16 rcv_wnd;   /* receiver window available */
+  uint16 rcv_ann_wnd; /* receiver window to announce */
+  uint32_t rcv_ann_right_edge; /* announced right edge of window */
 
   /* Timers */
-  u32_t tmr;
-  u8_t polltmr, pollinterval;
+  uint32_t tmr;
+  uint8_t polltmr, pollinterval;
   
   /* Retransmission timer. */
-  s16_t rtime;
+  int16_t rtime;
   
-  u16_t mss;   /* maximum segment size */
+  uint16 mss;   /* maximum segment size */
   
   /* RTT (round trip time) estimation variables */
-  u32_t rttest; /* RTT estimate in 500ms ticks */
-  u32_t rtseq;  /* sequence number being timed */
-  s16_t sa, sv; /* @todo document this */
+  uint32_t rttest; /* RTT estimate in 500ms ticks */
+  uint32_t rtseq;  /* sequence number being timed */
+  int16_t sa, sv; /* @todo document this */
 
-  s16_t rto;    /* retransmission time-out */
-  u8_t nrtx;    /* number of retransmissions */
+  int16_t rto;    /* retransmission time-out */
+  uint8_t nrtx;    /* number of retransmissions */
 
   /* fast retransmit/recovery */
-  u32_t lastack; /* Highest acknowledged seqno. */
-  u8_t dupacks;
+  uint32_t lastack; /* Highest acknowledged seqno. */
+  uint8_t dupacks;
   
   /* congestion avoidance/control variables */
-  u16_t cwnd;  
-  u16_t ssthresh;
+  uint16 cwnd;  
+  uint16 ssthresh;
 
   /* sender variables */
-  u32_t snd_nxt;   /* next new seqno to be sent */
-  u16_t snd_wnd;   /* sender window */
-  u32_t snd_wl1, snd_wl2; /* Sequence and acknowledgement numbers of last
+  uint32_t snd_nxt;   /* next new seqno to be sent */
+  uint16 snd_wnd;   /* sender window */
+  uint32_t snd_wl1, snd_wl2; /* Sequence and acknowledgement numbers of last
                              window update. */
-  u32_t snd_lbb;       /* Sequence number of next byte to be buffered. */
+  uint32_t snd_lbb;       /* Sequence number of next byte to be buffered. */
 
-  u16_t acked;
+  uint16 acked;
   
-  u16_t snd_buf;   /* Available buffer space for sending (in bytes). */
+  uint16 snd_buf;   /* Available buffer space for sending (in bytes). */
 #define TCP_SNDQUEUELEN_OVERFLOW (0xffff-3)
-  u16_t snd_queuelen; /* Available buffer space for sending (in tcp_segs). */
+  uint16 snd_queuelen; /* Available buffer space for sending (in tcp_segs). */
 
 #if TCP_OVERSIZE
   /* Extra bytes available at the end of the last pbuf in unsent. */
-  u16_t unsent_oversize;
+  uint16 unsent_oversize;
 #endif /* TCP_OVERSIZE */ 
 
   /* These are ordered by sequence number: */
@@ -259,24 +259,24 @@ struct tcp_pcb {
 #endif /* LWIP_CALLBACK_API */
 
 #if LWIP_TCP_TIMESTAMPS
-  u32_t ts_lastacksent;
-  u32_t ts_recent;
+  uint32_t ts_lastacksent;
+  uint32_t ts_recent;
 #endif /* LWIP_TCP_TIMESTAMPS */
 
   /* idle time before KEEPALIVE is sent */
-  u32_t keep_idle;
+  uint32_t keep_idle;
 #if LWIP_TCP_KEEPALIVE
-  u32_t keep_intvl;
-  u32_t keep_cnt;
+  uint32_t keep_intvl;
+  uint32_t keep_cnt;
 #endif /* LWIP_TCP_KEEPALIVE */
   
   /* Persist timer counter */
-  u32_t persist_cnt;
+  uint32_t persist_cnt;
   /* Persist timer back-off */
-  u8_t persist_backoff;
+  uint8_t persist_backoff;
 
   /* KEEPALIVE counter */
-  u8_t keep_cnt_sent;
+  uint8_t keep_cnt_sent;
 };
 
 struct tcp_pcb_listen {  
@@ -286,8 +286,8 @@ struct tcp_pcb_listen {
   TCP_PCB_COMMON(struct tcp_pcb_listen);
 
 #if TCP_LISTEN_BACKLOG
-  u8_t backlog;
-  u8_t accepts_pending;
+  uint8_t backlog;
+  uint8_t accepts_pending;
 #endif /* TCP_LISTEN_BACKLOG */
 };
 
@@ -305,7 +305,7 @@ enum lwip_event {
 err_t lwip_tcp_event(void *arg, struct tcp_pcb *pcb,
          enum lwip_event,
          struct pbuf *p,
-         u16_t size,
+         uint16 size,
          err_t err);
 
 #endif /* LWIP_EVENT_API */
@@ -317,7 +317,7 @@ void             tcp_arg     (struct tcp_pcb *pcb, void *arg) ICACHE_FLASH_ATTR;
 void             tcp_accept  (struct tcp_pcb *pcb, tcp_accept_fn accept) ICACHE_FLASH_ATTR;
 void             tcp_recv    (struct tcp_pcb *pcb, tcp_recv_fn recv) ICACHE_FLASH_ATTR;
 void             tcp_sent    (struct tcp_pcb *pcb, tcp_sent_fn sent)ICACHE_FLASH_ATTR;
-void             tcp_poll    (struct tcp_pcb *pcb, tcp_poll_fn poll, u8_t interval)ICACHE_FLASH_ATTR;
+void             tcp_poll    (struct tcp_pcb *pcb, tcp_poll_fn poll, uint8_t interval)ICACHE_FLASH_ATTR;
 void             tcp_err     (struct tcp_pcb *pcb, tcp_err_fn err)ICACHE_FLASH_ATTR;
 
 #define          tcp_mss(pcb)             (((pcb)->flags & TF_TIMESTAMP) ? ((pcb)->mss - 12)  : (pcb)->mss)
@@ -336,13 +336,13 @@ void             tcp_err     (struct tcp_pcb *pcb, tcp_err_fn err)ICACHE_FLASH_A
                                                pcb->state == LISTEN)
 #endif /* TCP_LISTEN_BACKLOG */
 
-void             tcp_recved  (struct tcp_pcb *pcb, u16_t len)ICACHE_FLASH_ATTR;
+void             tcp_recved  (struct tcp_pcb *pcb, uint16 len)ICACHE_FLASH_ATTR;
 err_t            tcp_bind    (struct tcp_pcb *pcb, ip_addr_t *ipaddr,
-                              u16_t port)ICACHE_FLASH_ATTR;
+                              uint16 port)ICACHE_FLASH_ATTR;
 err_t            tcp_connect (struct tcp_pcb *pcb, ip_addr_t *ipaddr,
-                              u16_t port, tcp_connected_fn connected)ICACHE_FLASH_ATTR;
+                              uint16 port, tcp_connected_fn connected)ICACHE_FLASH_ATTR;
 
-struct tcp_pcb * tcp_listen_with_backlog(struct tcp_pcb *pcb, u8_t backlog)ICACHE_FLASH_ATTR;
+struct tcp_pcb * tcp_listen_with_backlog(struct tcp_pcb *pcb, uint8_t backlog)ICACHE_FLASH_ATTR;
 #define          tcp_listen(pcb) tcp_listen_with_backlog(pcb, TCP_DEFAULT_LISTEN_BACKLOG)
 
 void             tcp_abort (struct tcp_pcb *pcb)ICACHE_FLASH_ATTR;
@@ -353,10 +353,10 @@ err_t            tcp_shutdown(struct tcp_pcb *pcb, int shut_rx, int shut_tx)ICAC
 #define TCP_WRITE_FLAG_COPY 0x01
 #define TCP_WRITE_FLAG_MORE 0x02
 
-err_t            tcp_write   (struct tcp_pcb *pcb, const void *dataptr, u16_t len,
-                              u8_t apiflags)ICACHE_FLASH_ATTR;
+err_t            tcp_write   (struct tcp_pcb *pcb, const void *dataptr, uint16 len,
+                              uint8_t apiflags)ICACHE_FLASH_ATTR;
 
-void             tcp_setprio (struct tcp_pcb *pcb, u8_t prio)ICACHE_FLASH_ATTR;
+void             tcp_setprio (struct tcp_pcb *pcb, uint8_t prio)ICACHE_FLASH_ATTR;
 
 #define TCP_PRIO_MIN    1
 #define TCP_PRIO_NORMAL 64

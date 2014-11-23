@@ -51,7 +51,7 @@
  * @param ms number of milliseconds to sleep
  */
 void
-sys_msleep(u32_t ms)
+sys_msleep(uint32_t ms)
 {
   if (ms > 0) {
     sys_sem_t delaysem;

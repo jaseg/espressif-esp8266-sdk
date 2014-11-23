@@ -42,7 +42,7 @@ extern "C" {
 
 /** For compatibility with BSD code */
 struct in_addr {
-  u32_t s_addr;
+  uint32_t s_addr;
 };
 
 /** 255.255.255.255 */
@@ -89,9 +89,9 @@ struct in_addr {
 
 #define IN_LOOPBACKNET      IP_LOOPBACKNET
 
-#define inet_addr_from_ipaddr(target_inaddr, source_ipaddr) ((target_inaddr)->s_addr = ip4_addr_get_u32(source_ipaddr))
-#define inet_addr_to_ipaddr(target_ipaddr, source_inaddr)   (ip4_addr_set_u32(target_ipaddr, (source_inaddr)->s_addr))
-/* ATTENTION: the next define only works because both s_addr and ip_addr_t are an u32_t effectively! */
+#define inet_addr_from_ipaddr(target_inaddr, source_ipaddr) ((target_inaddr)->s_addr = ip4_addr_get_uint32_t(source_ipaddr))
+#define inet_addr_to_ipaddr(target_ipaddr, source_inaddr)   (ip4_addr_set_uint32_t(target_ipaddr, (source_inaddr)->s_addr))
+/* ATTENTION: the next define only works because both s_addr and ip_addr_t are an uint32_t effectively! */
 #define inet_addr_to_ipaddr_p(target_ipaddr_p, source_inaddr)   ((target_ipaddr_p) = (ip_addr_t*)&((source_inaddr)->s_addr))
 
 /* directly map this to the lwip internal functions */

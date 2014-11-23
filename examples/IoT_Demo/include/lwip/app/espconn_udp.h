@@ -14,7 +14,7 @@
  * Returns      : none
 *******************************************************************************/
 
-extern sint8 espconn_udp_client(struct espconn *pespconn);
+extern int8_t espconn_udp_client(struct espconn *pespconn);
 
 /******************************************************************************
  * FunctionName : espconn_udp_disconnect
@@ -32,18 +32,18 @@ extern void espconn_udp_disconnect(espconn_msg *pdiscon);
  * Returns      : none
 *******************************************************************************/
 
-extern sint8 espconn_udp_server(struct espconn *espconn);
+extern int8_t espconn_udp_server(struct espconn *espconn);
 
 /******************************************************************************
  * FunctionName : espconn_udp_sent
  * Description  : sent data for client or server
  * Parameters   : void *arg -- client or server to send
- *                uint8* psent -- Data to send
+ *                uint8_t* psent -- Data to send
  *                uint16 length -- Length of data to send
  * Returns      : none
 *******************************************************************************/
 
-extern void espconn_udp_sent(void *arg, uint8 *psent, uint16 length);
+extern void espconn_udp_sent(void *arg, uint8_t *psent, uint16 length);
 
 
 #endif /* __ESPCONN_UDP_H__ */

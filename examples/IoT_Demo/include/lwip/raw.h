@@ -57,7 +57,7 @@ struct raw_pcb;
  * If returning 1, the callback is responsible for freeing the pbuf
  * if it's not used any more.
  */
-typedef u8_t (*raw_recv_fn)(void *arg, struct raw_pcb *pcb, struct pbuf *p,
+typedef uint8_t (*raw_recv_fn)(void *arg, struct raw_pcb *pcb, struct pbuf *p,
     ip_addr_t *addr);
 
 struct raw_pcb {
@@ -66,7 +66,7 @@ struct raw_pcb {
 
   struct raw_pcb *next;
 
-  u8_t protocol;
+  uint8_t protocol;
 
   /** receive callback function */
   raw_recv_fn recv;
@@ -76,7 +76,7 @@ struct raw_pcb {
 
 /* The following functions is the application layer interface to the
    RAW code. */
-struct raw_pcb * raw_new        (u8_t proto)ICACHE_FLASH_ATTR;
+struct raw_pcb * raw_new        (uint8_t proto)ICACHE_FLASH_ATTR;
 void             raw_remove     (struct raw_pcb *pcb)ICACHE_FLASH_ATTR;
 err_t            raw_bind       (struct raw_pcb *pcb, ip_addr_t *ipaddr)ICACHE_FLASH_ATTR;
 err_t            raw_connect    (struct raw_pcb *pcb, ip_addr_t *ipaddr)ICACHE_FLASH_ATTR;
@@ -86,7 +86,7 @@ err_t            raw_sendto     (struct raw_pcb *pcb, struct pbuf *p, ip_addr_t 
 err_t            raw_send       (struct raw_pcb *pcb, struct pbuf *p);
 
 /* The following functions are the lower layer interface to RAW. */
-u8_t             raw_input      (struct pbuf *p, struct netif *inp)ICACHE_FLASH_ATTR;
+uint8_t             raw_input      (struct pbuf *p, struct netif *inp)ICACHE_FLASH_ATTR;
 #define raw_init() /* Compatibility define, not init needed. */
 
 #ifdef __cplusplus

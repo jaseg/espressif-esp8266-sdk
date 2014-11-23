@@ -39,6 +39,6 @@ typedef struct _rst_parm {
     struct espconn *pespconn;
 } rst_parm;
 
-void user_webserver_init(uint32 port);
+void user_webserver_init(uint32_t port);
 
 #endif

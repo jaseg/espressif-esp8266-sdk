@@ -83,30 +83,30 @@ struct snmp_varbind
   /* previous pointer, NULL for first in list */
   struct snmp_varbind *prev;
 
-  /* object identifier length (in s32_t) */
-  u8_t ident_len;
+  /* object identifier length (in int32_t) */
+  uint8_t ident_len;
   /* object identifier array */
-  s32_t *ident;
+  int32_t *ident;
 
   /* object value ASN1 type */
-  u8_t value_type;
-  /* object value length (in u8_t) */
-  u8_t value_len;
+  uint8_t value_type;
+  /* object value length (in uint8_t) */
+  uint8_t value_len;
   /* object value */
   void *value;
 
   /* encoding varbind seq length length */
-  u8_t seqlenlen;
+  uint8_t seqlenlen;
   /* encoding object identifier length length */
-  u8_t olenlen;
+  uint8_t olenlen;
   /* encoding object value length length */
-  u8_t vlenlen;
+  uint8_t vlenlen;
   /* encoding varbind seq length */
-  u16_t seqlen;
+  uint16 seqlen;
   /* encoding object identifier length */
-  u16_t olen;
+  uint16 olen;
   /* encoding object value length */
-  u16_t vlen;
+  uint16 vlen;
 };
 
 struct snmp_varbind_root
@@ -114,87 +114,87 @@ struct snmp_varbind_root
   struct snmp_varbind *head;
   struct snmp_varbind *tail;
   /* number of variable bindings in list */
-  u8_t count;
+  uint8_t count;
   /* encoding varbind-list seq length length */
-  u8_t seqlenlen;
+  uint8_t seqlenlen;
   /* encoding varbind-list seq length */
-  u16_t seqlen;
+  uint16 seqlen;
 };
 
 /** output response message header length fields */
 struct snmp_resp_header_lengths
 {
   /* encoding error-index length length */
-  u8_t erridxlenlen;
+  uint8_t erridxlenlen;
   /* encoding error-status length length */
-  u8_t errstatlenlen;
+  uint8_t errstatlenlen;
   /* encoding request id length length */
-  u8_t ridlenlen;
+  uint8_t ridlenlen;
   /* encoding pdu length length */
-  u8_t pdulenlen;
+  uint8_t pdulenlen;
   /* encoding community length length */
-  u8_t comlenlen;
+  uint8_t comlenlen;
   /* encoding version length length */
-  u8_t verlenlen;
+  uint8_t verlenlen;
   /* encoding sequence length length */
-  u8_t seqlenlen;
+  uint8_t seqlenlen;
 
   /* encoding error-index length */
-  u16_t erridxlen;
+  uint16 erridxlen;
   /* encoding error-status length */
-  u16_t errstatlen;
+  uint16 errstatlen;
   /* encoding request id length */
-  u16_t ridlen;
+  uint16 ridlen;
   /* encoding pdu length */
-  u16_t pdulen;
+  uint16 pdulen;
   /* encoding community length */
-  u16_t comlen;
+  uint16 comlen;
   /* encoding version length */
-  u16_t verlen;
+  uint16 verlen;
   /* encoding sequence length */
-  u16_t seqlen;
+  uint16 seqlen;
 };
 
 /** output response message header length fields */
 struct snmp_trap_header_lengths
 {
   /* encoding timestamp length length */
-  u8_t tslenlen;
+  uint8_t tslenlen;
   /* encoding specific-trap length length */
-  u8_t strplenlen;
+  uint8_t strplenlen;
   /* encoding generic-trap length length */
-  u8_t gtrplenlen;
+  uint8_t gtrplenlen;
   /* encoding agent-addr length length */
-  u8_t aaddrlenlen;
+  uint8_t aaddrlenlen;
   /* encoding enterprise-id length length */
-  u8_t eidlenlen;
+  uint8_t eidlenlen;
   /* encoding pdu length length */
-  u8_t pdulenlen;
+  uint8_t pdulenlen;
   /* encoding community length length */
-  u8_t comlenlen;
+  uint8_t comlenlen;
   /* encoding version length length */
-  u8_t verlenlen;
+  uint8_t verlenlen;
   /* encoding sequence length length */
-  u8_t seqlenlen;
+  uint8_t seqlenlen;
 
   /* encoding timestamp length */
-  u16_t tslen;
+  uint16 tslen;
   /* encoding specific-trap length */
-  u16_t strplen;
+  uint16 strplen;
   /* encoding generic-trap length */
-  u16_t gtrplen;
+  uint16 gtrplen;
   /* encoding agent-addr length */
-  u16_t aaddrlen;
+  uint16 aaddrlen;
   /* encoding enterprise-id length */
-  u16_t eidlen;
+  uint16 eidlen;
   /* encoding pdu length */
-  u16_t pdulen;
+  uint16 pdulen;
   /* encoding community length */
-  u16_t comlen;
+  uint16 comlen;
   /* encoding version length */
-  u16_t verlen;
+  uint16 verlen;
   /* encoding sequence length */
-  u16_t seqlen;
+  uint16 seqlen;
 };
 
 /* Accepting new SNMP messages. */
@@ -225,28 +225,28 @@ struct snmp_msg_pstat
   /* source IP address */
   ip_addr_t sip;
   /* source UDP port */
-  u16_t sp;
+  uint16 sp;
   /* request type */
-  u8_t rt;
+  uint8_t rt;
   /* request ID */
-  s32_t rid;
+  int32_t rid;
   /* error status */
-  s32_t error_status;
+  int32_t error_status;
   /* error index */
-  s32_t error_index;
+  int32_t error_index;
   /* community name (zero terminated) */
-  u8_t community[SNMP_COMMUNITY_STR_LEN + 1];
+  uint8_t community[SNMP_COMMUNITY_STR_LEN + 1];
   /* community string length (exclusive zero term) */
-  u8_t com_strlen;
+  uint8_t com_strlen;
   /* one out of MSG_EMPTY, MSG_DEMUX, MSG_INTERNAL, MSG_EXTERNAL_x */
-  u8_t state;
+  uint8_t state;
   /* saved arguments for MSG_EXTERNAL_x */
   struct mib_external_node *ext_mib_node;
   struct snmp_name_ptr ext_name_ptr;
   struct obj_def ext_object_def;
   struct snmp_obj_id ext_oid;
   /* index into input variable binding list */
-  u8_t vb_idx;
+  uint8_t vb_idx;
   /* ptr into input variable binding list */
   struct snmp_varbind *vb_ptr;
   /* list of variable bindings from input */
@@ -267,13 +267,13 @@ struct snmp_msg_trap
   /* source enterprise ID (sysObjectID) */
   struct snmp_obj_id *enterprise;
   /* source IP address, raw network order format */
-  u8_t sip_raw[4];
+  uint8_t sip_raw[4];
   /* generic trap code */
-  u32_t gen_trap;
+  uint32_t gen_trap;
   /* specific trap code */
-  u32_t spc_trap;
+  uint32_t spc_trap;
   /* timestamp */
-  u32_t ts;
+  uint32_t ts;
   /* list of variable bindings to output */
   struct snmp_varbind_root outvb;
   /* output trap lengths used in ASN encoding */
@@ -281,7 +281,7 @@ struct snmp_msg_trap
 };
 
 /** Agent Version constant, 0 = v1 oddity */
-extern const s32_t snmp_version;
+extern const int32_t snmp_version;
 /** Agent default "public" community string */
 extern const char snmp_publiccommunity[7];
 
@@ -289,20 +289,20 @@ extern struct snmp_msg_trap trap_msg;
 
 /** Agent setup, start listening to port 161. */
 void snmp_init(void);
-void snmp_trap_dst_enable(u8_t dst_idx, u8_t enable);
-void snmp_trap_dst_ip_set(u8_t dst_idx, ip_addr_t *dst);
+void snmp_trap_dst_enable(uint8_t dst_idx, uint8_t enable);
+void snmp_trap_dst_ip_set(uint8_t dst_idx, ip_addr_t *dst);
 
 /** Varbind-list functions. */
-struct snmp_varbind* snmp_varbind_alloc(struct snmp_obj_id *oid, u8_t type, u8_t len);
+struct snmp_varbind* snmp_varbind_alloc(struct snmp_obj_id *oid, uint8_t type, uint8_t len);
 void snmp_varbind_free(struct snmp_varbind *vb);
 void snmp_varbind_list_free(struct snmp_varbind_root *root);
 void snmp_varbind_tail_add(struct snmp_varbind_root *root, struct snmp_varbind *vb);
 struct snmp_varbind* snmp_varbind_tail_remove(struct snmp_varbind_root *root);
 
 /** Handle an internal (recv) or external (private response) event. */
-void snmp_msg_event(u8_t request_id);
+void snmp_msg_event(uint8_t request_id);
 err_t snmp_send_response(struct snmp_msg_pstat *m_stat);
-err_t snmp_send_trap(s8_t generic_trap, struct snmp_obj_id *eoid, s32_t specific_trap);
+err_t snmp_send_trap(int8_t generic_trap, struct snmp_obj_id *eoid, int32_t specific_trap);
 void snmp_coldstart_trap(void);
 void snmp_authfail_trap(void);
 

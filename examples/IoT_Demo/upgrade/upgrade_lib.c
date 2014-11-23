@@ -7,18 +7,18 @@
 #include "upgrade.h"
 
 struct upgrade_param {
-    uint32 fw_bin_addr;
+    uint32_t fw_bin_addr;
 
-    uint8 fw_bin_sec;
-    uint8 fw_bin_sec_num;
+    uint8_t fw_bin_sec;
+    uint8_t fw_bin_sec_num;
 
-    uint8 fw_bin_sec_earse;
+    uint8_t fw_bin_sec_earse;
 
-    uint8 extra;
+    uint8_t extra;
 
-    uint8 save[4];
+    uint8_t save[4];
 
-    uint8 *buffer;
+    uint8_t *buffer;
 };
 
 LOCAL struct upgrade_param *upgrade;
@@ -32,14 +32,14 @@ extern SpiFlashChip *flashchip;
  * Returns      :
 *******************************************************************************/
 LOCAL bool ICACHE_FLASH_ATTR
-system_upgrade_internal(struct upgrade_param *upgrade, uint8 *data, uint16 len)
+system_upgrade_internal(struct upgrade_param *upgrade, uint8_t *data, uint16 len)
 {
     bool ret = false;
     if(data == NULL || len == 0)
     {
     	return true;
     }
-    upgrade->buffer = (uint8 *)os_zalloc(len + upgrade->extra);
+    upgrade->buffer = (uint8_t *)os_zalloc(len + upgrade->extra);
 
     os_memcpy(upgrade->buffer, upgrade->save, upgrade->extra);
     os_memcpy(upgrade->buffer + upgrade->extra, data, len);
@@ -67,7 +67,7 @@ system_upgrade_internal(struct upgrade_param *upgrade, uint8 *data, uint16 len)
             }
         }
 
-        if (spi_flash_write(upgrade->fw_bin_addr, (uint32 *)upgrade->buffer, len) != SPI_FLASH_RESULT_OK) {
+        if (spi_flash_write(upgrade->fw_bin_addr, (uint32_t *)upgrade->buffer, len) != SPI_FLASH_RESULT_OK) {
             break;
         }
 
@@ -87,7 +87,7 @@ system_upgrade_internal(struct upgrade_param *upgrade, uint8 *data, uint16 len)
  * Returns      :
 *******************************************************************************/
 LOCAL bool ICACHE_FLASH_ATTR
-system_upgrade(uint8 *data, uint16 len)
+system_upgrade(uint8_t *data, uint16 len)
 {
     bool ret;
 
@@ -105,11 +105,11 @@ system_upgrade(uint8 *data, uint16 len)
 LOCAL void ICACHE_FLASH_ATTR
 system_upgrade_init(void)
 {
-    uint32 user_bin2_start;
-    uint8 flash_buf[4];
-    uint8 high_half;
+    uint32_t user_bin2_start;
+    uint8_t flash_buf[4];
+    uint8_t high_half;
 
-    spi_flash_read(0, (uint32 *)flash_buf, 4);
+    spi_flash_read(0, (uint32_t *)flash_buf, 4);
     high_half = (flash_buf[3] & 0xF0) >> 4;
 
     if (upgrade == NULL) {

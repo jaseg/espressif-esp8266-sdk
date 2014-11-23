@@ -51,11 +51,11 @@
  * The PKCS#8 files were generated with something like:
  *
  * PEM format:
- * openssl pkcs8 -in axTLS.key_512.pem -passout pass:abcd -topk8 -v1
+ * openssl pkcint8_t -in axTLS.key_512.pem -passout pass:abcd -topk8 -v1
  * PBE-SHA1-RC4-128 -out axTLS.encrypted_pem.p8
  *
  * DER format:
- * openssl pkcs8 -in axTLS.key_512.pem -passout pass:abcd -topk8 -outform DER
+ * openssl pkcint8_t -in axTLS.key_512.pem -passout pass:abcd -topk8 -outform DER
  * -v1 PBE-SHA1-RC4-128 -out axTLS.encrypted.p8
  */
 
@@ -82,9 +82,9 @@ static int get_pbe_params(uint8_t *buf, int *offset,
         const uint8_t **salt, int *iterations);
 
 /*
- * Take a raw pkcs8 block and then decrypt it and turn it into a normal key.
+ * Take a raw pkcint8_t block and then decrypt it and turn it into a normal key.
  */
-int ICACHE_FLASH_ATTR pkcs8_decode(SSL_CTX *ssl_ctx, SSLObjLoader *ssl_obj, const char *password)
+int ICACHE_FLASH_ATTR pkcint8_t_decode(SSL_CTX *ssl_ctx, SSLObjLoader *ssl_obj, const char *password)
 {
     uint8_t *buf = ssl_obj->buf;
     int len, offset = 0;
@@ -130,7 +130,7 @@ error:
 }
 
 /*
- * Take the unencrypted pkcs8 and turn it into a private key 
+ * Take the unencrypted pkcint8_t and turn it into a private key 
  */
 static int ICACHE_FLASH_ATTR p8_add_key(SSL_CTX *ssl_ctx, uint8_t *priv_key)
 {
@@ -181,7 +181,7 @@ static char * ICACHE_FLASH_ATTR make_uni_pass(const char *password, int *uni_pas
 }
 
 /*
- * Decrypt a pkcs8 block.
+ * Decrypt a pkcint8_t block.
  */
 static int ICACHE_FLASH_ATTR p8_decrypt(const char *uni_pass, int uni_pass_len,
                         const uint8_t *salt, int iter, 
@@ -246,7 +246,7 @@ int ICACHE_FLASH_ATTR pkcs12_decode(SSL_CTX *ssl_ctx, SSLObjLoader *ssl_obj, con
         { 0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x01, 0x07, 0x01 };
     static const uint8_t pkcs_encrypted[] = /* pkc7 encrypted */
         { 0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x01, 0x07, 0x06 };
-    static const uint8_t pkcs8_key_bag[] = /* 1.2.840.113549.1.12.10.1.2 */
+    static const uint8_t pkcint8_t_key_bag[] = /* 1.2.840.113549.1.12.10.1.2 */
         { 0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x01, 0x0c, 0x0a, 0x01, 0x02 };
 
     if (asn1_next_obj(buf, &offset, ASN1_SEQUENCE) < 0)
@@ -358,8 +358,8 @@ int ICACHE_FLASH_ATTR pkcs12_decode(SSL_CTX *ssl_ctx, SSLObjLoader *ssl_obj, con
             asn1_next_obj(buf, &offset, ASN1_SEQUENCE) < 0 ||
             asn1_next_obj(buf, &offset, ASN1_SEQUENCE) < 0 ||
             (len = asn1_next_obj(buf, &offset, ASN1_OID)) < 0 ||
-            (len != sizeof(pkcs8_key_bag)) || 
-            os_memcmp(&buf[offset], pkcs8_key_bag, sizeof(pkcs8_key_bag)))
+            (len != sizeof(pkcint8_t_key_bag)) || 
+            os_memcmp(&buf[offset], pkcint8_t_key_bag, sizeof(pkcint8_t_key_bag)))
         goto error;
 
     offset += len;
@@ -448,7 +448,7 @@ static int ICACHE_FLASH_ATTR get_pbe_params(uint8_t *buf, int *offset,
                     os_memcmp(&buf[*offset], pbeSH1RC4, sizeof(pbeSH1RC4)))
     {
 #ifdef CONFIG_SSL_FULL_MODE
-        ssl_printf("Error: pkcs8/pkcs12 must use \"PBE-SHA1-RC4-128\"\n");
+        ssl_printf("Error: pkcint8_t/pkcs12 must use \"PBE-SHA1-RC4-128\"\n");
 #endif
         goto error;
     }

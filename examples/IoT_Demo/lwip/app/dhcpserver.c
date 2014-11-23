@@ -14,7 +14,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////////
 static const uint8_t xid[4] = {0xad, 0xde, 0x12, 0x23};
-static u8_t old_xid[4] = {0};
+static uint8_t old_xid[4] = {0};
 static const uint8_t magic_cookie[4] = {99, 130, 83, 99};
 static struct udp_pcb *pcb_dhcps = NULL;
 static struct ip_addr broadcast_dhcps;
@@ -247,9 +247,9 @@ static void ICACHE_FLASH_ATTR send_offer(struct dhcps_msg *m)
 {
         uint8_t *end;
 	    struct pbuf *p, *q;
-	    u8_t *data;
-	    u16_t cnt=0;
-	    u16_t i;
+	    uint8_t *data;
+	    uint16 cnt=0;
+	    uint16 i;
 		err_t SendOffer_err_t;
         create_msg(m);
 
@@ -270,10 +270,10 @@ static void ICACHE_FLASH_ATTR send_offer(struct dhcps_msg *m)
 #endif
 	        q = p;
 	        while(q != NULL){
-	            data = (u8_t *)q->payload;
+	            data = (uint8_t *)q->payload;
 	            for(i=0; i<q->len; i++)
 	            {
-	                data[i] = ((u8_t *) m)[cnt++];
+	                data[i] = ((uint8_t *) m)[cnt++];
 #if DHCPS_DEBUG
 					os_printf("%02x ",data[i]);
 					if((i+1)%16 == 0){
@@ -312,11 +312,11 @@ static void ICACHE_FLASH_ATTR send_offer(struct dhcps_msg *m)
 static void ICACHE_FLASH_ATTR send_nak(struct dhcps_msg *m)
 {
 
-    	u8_t *end;
+    	uint8_t *end;
 	    struct pbuf *p, *q;
-	    u8_t *data;
-	    u16_t cnt=0;
-	    u16_t i;
+	    uint8_t *data;
+	    uint16 cnt=0;
+	    uint16 i;
 		err_t SendNak_err_t;
         create_msg(m);
 
@@ -336,10 +336,10 @@ static void ICACHE_FLASH_ATTR send_nak(struct dhcps_msg *m)
 #endif
 	        q = p;
 	        while(q != NULL){
-	            data = (u8_t *)q->payload;
+	            data = (uint8_t *)q->payload;
 	            for(i=0; i<q->len; i++)
 	            {
-	                data[i] = ((u8_t *) m)[cnt++];
+	                data[i] = ((uint8_t *) m)[cnt++];
 #if DHCPS_DEBUG					
 					os_printf("%02x ",data[i]);
 					if((i+1)%16 == 0){
@@ -378,11 +378,11 @@ static void ICACHE_FLASH_ATTR send_nak(struct dhcps_msg *m)
 static void ICACHE_FLASH_ATTR send_ack(struct dhcps_msg *m)
 {
 
-		u8_t *end;
+		uint8_t *end;
 	    struct pbuf *p, *q;
-	    u8_t *data;
-	    u16_t cnt=0;
-	    u16_t i;
+	    uint8_t *data;
+	    uint16 cnt=0;
+	    uint16 i;
 		err_t SendAck_err_t;
         create_msg(m);
 
@@ -403,10 +403,10 @@ static void ICACHE_FLASH_ATTR send_ack(struct dhcps_msg *m)
 #endif
 	        q = p;
 	        while(q != NULL){
-	            data = (u8_t *)q->payload;
+	            data = (uint8_t *)q->payload;
 	            for(i=0; i<q->len; i++)
 	            {
-	                data[i] = ((u8_t *) m)[cnt++];
+	                data[i] = ((uint8_t *) m)[cnt++];
 #if DHCPS_DEBUG					
 					os_printf("%02x ",data[i]);
 					if((i+1)%16 == 0){
@@ -446,23 +446,23 @@ static void ICACHE_FLASH_ATTR send_ack(struct dhcps_msg *m)
  * @return uint8_t ���ش�����DHCP Server״ֵ̬
  */
 ///////////////////////////////////////////////////////////////////////////////////
-static uint8_t ICACHE_FLASH_ATTR parse_options(uint8_t *optptr, sint16_t len)
+static uint8_t ICACHE_FLASH_ATTR parse_options(uint8_t *optptr, int16_t len)
 {
         struct ip_addr client;
     	bool is_dhcp_parse_end = false;
 
         client.addr = *( (uint32_t *) &client_address);// Ҫ�����DHCP�ͻ��˵�IP
 
-        u8_t *end = optptr + len;
-        u16_t type = 0;
+        uint8_t *end = optptr + len;
+        uint16 type = 0;
 
         s.state = DHCPS_STATE_IDLE;
 
         while (optptr < end) {
 #if DHCPS_DEBUG
-        	os_printf("dhcps: (sint16_t)*optptr = %d\n", (sint16_t)*optptr);
+        	os_printf("dhcps: (int16_t)*optptr = %d\n", (int16_t)*optptr);
 #endif
-        	switch ((sint16_t) *optptr) {
+        	switch ((int16_t) *optptr) {
 
                 case DHCP_OPTION_MSG_TYPE:	//53
                         type = *(optptr + 2);
@@ -534,7 +534,7 @@ static uint8_t ICACHE_FLASH_ATTR parse_options(uint8_t *optptr, sint16_t len)
 }
 ///////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////
-static sint16_t ICACHE_FLASH_ATTR parse_msg(struct dhcps_msg *m, u16_t len)
+static int16_t ICACHE_FLASH_ATTR parse_msg(struct dhcps_msg *m, uint16 len)
 {
 		if(os_memcmp((char *)m->options,
               (char *)magic_cookie,
@@ -573,7 +573,7 @@ static sint16_t ICACHE_FLASH_ATTR parse_msg(struct dhcps_msg *m, u16_t len)
 						struct station_info *station = wifi_softap_get_station_info();
 						struct station_info *next_station;
 						struct station_info *back_station = station;
-						uint8 find = 0;
+						uint8_t find = 0;
 
 						struct dhcps_pool *pdhcps_pool = NULL;
 						list_node *pnode = NULL;
@@ -672,14 +672,14 @@ static void ICACHE_FLASH_ATTR handle_dhcp(void *arg,
 									struct udp_pcb *pcb, 
 									struct pbuf *p, 
 									struct ip_addr *addr, 
-									uint16_t port)
+									uint16 port)
 {
 		
-		sint16_t tlen;
-        u16_t i;
-	    u16_t dhcps_msg_cnt=0;
-	    u8_t *p_dhcps_msg = (u8_t *)&msg_dhcps;
-	    u8_t *data;
+		int16_t tlen;
+        uint16 i;
+	    uint16 dhcps_msg_cnt=0;
+	    uint8_t *p_dhcps_msg = (uint8_t *)&msg_dhcps;
+	    uint8_t *data;
 
 #if DHCPS_DEBUG
     	os_printf("dhcps: handle_dhcp-> receive a packet\n");
@@ -760,9 +760,9 @@ static void ICACHE_FLASH_ATTR handle_dhcp(void *arg,
         pbuf_free(p);
 }
 ///////////////////////////////////////////////////////////////////////////////////
-static void ICACHE_FLASH_ATTR wifi_softap_init_dhcps_lease(uint32 ip)
+static void ICACHE_FLASH_ATTR wifi_softap_init_dhcps_lease(uint32_t ip)
 {
-	uint32 softap_ip = 0,local_ip = 0;
+	uint32_t softap_ip = 0,local_ip = 0;
 
 	if (dhcps_lease_flag) {
 		local_ip = softap_ip = htonl(ip);
@@ -813,7 +813,7 @@ void ICACHE_FLASH_ATTR dhcps_stop(void)
 bool ICACHE_FLASH_ATTR wifi_softap_set_dhcps_lease(struct dhcps_lease *please)
 {
 	struct ip_info info;
-	uint32 softap_ip = 0;
+	uint32_t softap_ip = 0;
 	if (please == NULL)
 		return false;
 

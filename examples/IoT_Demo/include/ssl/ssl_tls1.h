@@ -157,21 +157,21 @@ typedef struct
     uint8_t master_secret[SSL_SECRET_SIZE];
     uint8_t client_random[SSL_RANDOM_SIZE]; /* client's random sequence */
     uint8_t server_random[SSL_RANDOM_SIZE]; /* server's random sequence */
-    uint16_t bm_proc_index;
+    uint16 bm_proc_index;
 } DISPOSABLE_CTX;
 
 struct _SSL
 {
     uint32_t flag;
-    uint16_t need_bytes;
-    uint16_t got_bytes;
+    uint16 need_bytes;
+    uint16 got_bytes;
     uint8_t record_type;
     uint8_t cipher;
     uint8_t sess_id_size;
     uint8_t version;
     uint8_t client_version;
-    sint16_t next_state;
-    sint16_t hs_status;
+    int16_t next_state;
+    int16_t hs_status;
     DISPOSABLE_CTX *dc;         /* temporary data which we'll get rid of soon */
     //int client_fd;
 	struct tcp_pcb *SslClient_pcb;//add by ives 12.12.2013
@@ -181,13 +181,13 @@ struct _SSL
     void *decrypt_ctx;
     uint8_t bm_all_data[RT_MAX_PLAIN_LENGTH+RT_EXTRA];
     uint8_t *bm_data;
-    uint16_t bm_index;
-    uint16_t bm_read_index;
+    uint16 bm_index;
+    uint16 bm_read_index;
     struct _SSL *next;                  /* doubly linked list */
     struct _SSL *prev;
     struct _SSL_CTX *ssl_ctx;           /* back reference to a clnt/svr ctx */
 #ifndef CONFIG_SSL_SKELETON_MODE
-    uint16_t session_index;
+    uint16 session_index;
     SSL_SESSION *session;
 #endif
 #ifdef CONFIG_SSL_CERT_VERIFICATION
@@ -216,7 +216,7 @@ struct _SSL_CTX
     SSL *tail;
     SSL_CERT certs[CONFIG_SSL_MAX_CERTS];
 #ifndef CONFIG_SSL_SKELETON_MODE
-    uint16_t num_sessions;
+    uint16 num_sessions;
     SSL_SESSION **ssl_sessions;
 #endif
 #ifdef CONFIG_SSL_CTX_MUTEXING
@@ -255,7 +255,7 @@ void add_packet(SSL *ssl, const uint8_t *pkt, int len);
 int add_cert(SSL_CTX *ssl_ctx, const uint8_t *buf, int len);
 int add_private_key(SSL_CTX *ssl_ctx, SSLObjLoader *ssl_obj);
 void ssl_obj_free(SSLObjLoader *ssl_obj);
-int pkcs8_decode(SSL_CTX *ssl_ctx, SSLObjLoader *ssl_obj, const char *password);
+int pkcint8_t_decode(SSL_CTX *ssl_ctx, SSLObjLoader *ssl_obj, const char *password);
 int pkcs12_decode(SSL_CTX *ssl_ctx, SSLObjLoader *ssl_obj, const char *password);
 int load_key_certs(SSL_CTX *ssl_ctx);
 #ifdef CONFIG_SSL_CERT_VERIFICATION

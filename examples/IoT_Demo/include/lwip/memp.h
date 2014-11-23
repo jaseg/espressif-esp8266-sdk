@@ -50,8 +50,8 @@ typedef enum {
 /* Use a helper type to get the start and end of the user "memory pools" for mem_malloc */
 typedef enum {
     /* Get the first (via:
-       MEMP_POOL_HELPER_START = ((u8_t) 1*MEMP_POOL_A + 0*MEMP_POOL_B + 0*MEMP_POOL_C + 0)*/
-    MEMP_POOL_HELPER_FIRST = ((u8_t)
+       MEMP_POOL_HELPER_START = ((uint8_t) 1*MEMP_POOL_A + 0*MEMP_POOL_B + 0*MEMP_POOL_C + 0)*/
+    MEMP_POOL_HELPER_FIRST = ((uint8_t)
 #define LWIP_MEMPOOL(name,num,size,desc)
 #define LWIP_MALLOC_MEMPOOL_START 1
 #define LWIP_MALLOC_MEMPOOL(num, size) * MEMP_POOL_##size + 0
@@ -59,8 +59,8 @@ typedef enum {
 #include "lwip/memp_std.h"
     ) ,
     /* Get the last (via:
-       MEMP_POOL_HELPER_END = ((u8_t) 0 + MEMP_POOL_A*0 + MEMP_POOL_B*0 + MEMP_POOL_C*1) */
-    MEMP_POOL_HELPER_LAST = ((u8_t)
+       MEMP_POOL_HELPER_END = ((uint8_t) 0 + MEMP_POOL_A*0 + MEMP_POOL_B*0 + MEMP_POOL_C*1) */
+    MEMP_POOL_HELPER_LAST = ((uint8_t)
 #define LWIP_MEMPOOL(name,num,size,desc)
 #define LWIP_MALLOC_MEMPOOL_START
 #define LWIP_MALLOC_MEMPOOL(num, size) 0 + MEMP_POOL_##size *
@@ -76,7 +76,7 @@ typedef enum {
 #endif /* MEM_USE_POOLS */
 
 #if MEMP_MEM_MALLOC || MEM_USE_POOLS
-extern const u16_t memp_sizes[MEMP_MAX];
+extern const uint16 memp_sizes[MEMP_MAX];
 #endif /* MEMP_MEM_MALLOC || MEM_USE_POOLS */
 
 #if MEMP_MEM_MALLOC

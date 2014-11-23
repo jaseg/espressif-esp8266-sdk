@@ -35,7 +35,7 @@ struct plug_saved_param {
 };
 
 void user_plug_init(void);
-uint8 user_plug_get_status(void);
+uint8_t user_plug_get_status(void);
 void user_plug_set_status(bool status);
 
 

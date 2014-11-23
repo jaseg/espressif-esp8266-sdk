@@ -62,11 +62,11 @@
 static struct tcp_seg inseg;		//tcp_seg结构，描述输入的报文段
 static struct tcp_hdr *tcphdr;		//报文段中TCP首部
 static struct ip_hdr *iphdr;		//IP数据包首部
-static u32_t seqno, ackno;		//TCP首部中序号字段与确认号字段
-static u8_t flags;				//首部标志字段
-static u16_t tcplen;				//TCP报文长度
+static uint32_t seqno, ackno;		//TCP首部中序号字段与确认号字段
+static uint8_t flags;				//首部标志字段
+static uint16 tcplen;				//TCP报文长度
 
-static u8_t recv_flags;			//当前报文处理结果
+static uint8_t recv_flags;			//当前报文处理结果
 static struct pbuf *recv_data;		//报文段数据pbuf
 
 struct tcp_pcb *tcp_input_pcb;	//当前报文控制块
@@ -103,7 +103,7 @@ tcp_input(struct pbuf *p, struct netif *inp)
   struct tcp_pcb *lpcb_prev = NULL;
   struct tcp_pcb_listen *lpcb_any = NULL;
 #endif /* SO_REUSE */
-  u8_t hdrlen;
+  uint8_t hdrlen;
   err_t err;
 
   PERF_START;
@@ -118,14 +118,14 @@ tcp_input(struct pbuf *p, struct netif *inp)
   *IPv4包头的最小长度是20个字节，因此IHL这个字段的最小值用十进制表示就是5 (5x4 = 20字节)。 
   *就是说，它表示的包头的总字节数是4字节的倍数  
   */
-  tcphdr = (struct tcp_hdr *)((u8_t *)p->payload + IPH_HL(iphdr) * 4);
+  tcphdr = (struct tcp_hdr *)((uint8_t *)p->payload + IPH_HL(iphdr) * 4);
 
 #if TCP_INPUT_DEBUG
   tcp_debug_print(tcphdr);
 #endif
 
   /* remove header from payload */
-  if (pbuf_header(p, -((s16_t)(IPH_HL(iphdr) * 4))) || (p->tot_len < sizeof(struct tcp_hdr))) {
+  if (pbuf_header(p, -((int16_t)(IPH_HL(iphdr) * 4))) || (p->tot_len < sizeof(struct tcp_hdr))) {
     /* drop short packets */
     LWIP_DEBUGF(TCP_INPUT_DEBUG, ("tcp_input: short packet (%"U16_F" bytes) discarded\n", p->tot_len));
     TCP_STATS_INC(tcp.lenerr);//错误长度计数
@@ -477,7 +477,7 @@ tcp_listen_input(struct tcp_pcb_listen *pcb)
 {
   struct tcp_pcb *npcb;
   struct tcp_pcb *pactive_pcb;
-  u8_t active_pcb_num = 0;
+  uint8_t active_pcb_num = 0;
   err_t rc;
 
   /* In the LISTEN state, we check for incoming SYN segments,
@@ -617,7 +617,7 @@ static err_t
 tcp_process(struct tcp_pcb *pcb)
 {
   struct tcp_seg *rseg;
-  u8_t acceptable = 0;
+  uint8_t acceptable = 0;
   err_t err;
 
   err = ERR_OK;
@@ -692,7 +692,7 @@ tcp_process(struct tcp_pcb *pcb)
       pcb->cwnd = ((pcb->cwnd == 1) ? (pcb->mss * 2) : pcb->mss);
       LWIP_ASSERT("pcb->snd_queuelen > 0", (pcb->snd_queuelen > 0));
       --pcb->snd_queuelen;
-      LWIP_DEBUGF(TCP_QLEN_DEBUG, ("tcp_process: SYN-SENT --queuelen %"U16_F"\n", (u16_t)pcb->snd_queuelen));
+      LWIP_DEBUGF(TCP_QLEN_DEBUG, ("tcp_process: SYN-SENT --queuelen %"U16_F"\n", (uint16)pcb->snd_queuelen));
       rseg = pcb->unacked;
       pcb->unacked = rseg->next;
 
@@ -726,7 +726,7 @@ tcp_process(struct tcp_pcb *pcb)
     if (flags & TCP_ACK) {
       /* expected ACK number? */
       if (TCP_SEQ_BETWEEN(ackno, pcb->lastack+1, pcb->snd_nxt)) {
-        u16_t old_cwnd;
+        uint16 old_cwnd;
         pcb->state = ESTABLISHED;
         LWIP_DEBUGF(TCP_DEBUG, ("TCP connection established %"U16_F" -> %"U16_F".\n", inseg.tcphdr->src, inseg.tcphdr->dest));
 #if LWIP_CALLBACK_API
@@ -865,7 +865,7 @@ tcp_oos_insert_segment(struct tcp_seg *cseg, struct tcp_seg *next)
     if (next &&
         TCP_SEQ_GT(seqno + cseg->len, next->tcphdr->seqno)) {
       /* We need to trim the incoming segment. */
-      cseg->len = (u16_t)(next->tcphdr->seqno - seqno);
+      cseg->len = (uint16)(next->tcphdr->seqno - seqno);
       pbuf_realloc(cseg->p, cseg->len);
     }
   }
@@ -893,10 +893,10 @@ tcp_receive(struct tcp_pcb *pcb)
   struct tcp_seg *prev, *cseg;
 #endif /* TCP_QUEUE_OOSEQ */
   struct pbuf *p;
-  s32_t off;
-  s16_t m;
-  u32_t right_wnd_edge;
-  u16_t new_tot_len;
+  int32_t off;
+  int16_t m;
+  uint32_t right_wnd_edge;
+  uint16 new_tot_len;
   int found_dupack = 0;
 
   if (flags & TCP_ACK) {//报文包含ACK
@@ -965,7 +965,7 @@ tcp_receive(struct tcp_pcb *pcb)
               if (pcb->dupacks > 3) {
                 /* Inflate the congestion window, but not if it means that
                    the value overflows. */
-                if ((u16_t)(pcb->cwnd + pcb->mss) > pcb->cwnd) {
+                if ((uint16)(pcb->cwnd + pcb->mss) > pcb->cwnd) {
                   pcb->cwnd += pcb->mss;
                 }
               } else if (pcb->dupacks == 3) {//是重复ACK
@@ -996,7 +996,7 @@ tcp_receive(struct tcp_pcb *pcb)
       pcb->rto = (pcb->sa >> 3) + pcb->sv;
 
       /* Update the send buffer space. Diff between the two can never exceed 64K? */
-      pcb->acked = (u16_t)(ackno - pcb->lastack);
+      pcb->acked = (uint16)(ackno - pcb->lastack);
 
       pcb->snd_buf += pcb->acked;
 
@@ -1008,12 +1008,12 @@ tcp_receive(struct tcp_pcb *pcb)
          ssthresh). */
       if (pcb->state >= ESTABLISHED) {//状态为建立连接标志
         if (pcb->cwnd < pcb->ssthresh) {
-          if ((u16_t)(pcb->cwnd + pcb->mss) > pcb->cwnd) {
+          if ((uint16)(pcb->cwnd + pcb->mss) > pcb->cwnd) {
             pcb->cwnd += pcb->mss;
           }
           LWIP_DEBUGF(TCP_CWND_DEBUG, ("tcp_receive: slow start cwnd %"U16_F"\n", pcb->cwnd));
         } else {
-          u16_t new_cwnd = (pcb->cwnd + pcb->mss * pcb->mss / pcb->cwnd);
+          uint16 new_cwnd = (pcb->cwnd + pcb->mss * pcb->mss / pcb->cwnd);
           if (new_cwnd > pcb->cwnd) {
             pcb->cwnd = new_cwnd;
           }
@@ -1042,7 +1042,7 @@ tcp_receive(struct tcp_pcb *pcb)
         next = pcb->unacked;//pcb unacked标志
         pcb->unacked = pcb->unacked->next;//pcb unacked 下一个标志
 
-        LWIP_DEBUGF(TCP_QLEN_DEBUG, ("tcp_receive: queuelen %"U16_F" ... ", (u16_t)pcb->snd_queuelen));
+        LWIP_DEBUGF(TCP_QLEN_DEBUG, ("tcp_receive: queuelen %"U16_F" ... ", (uint16)pcb->snd_queuelen));
         LWIP_ASSERT("pcb->snd_queuelen >= pbuf_clen(next->p)", (pcb->snd_queuelen >= pbuf_clen(next->p)));
         /* Prevent ACK for FIN to generate a sent event */
         if ((pcb->acked != 0) && ((TCPH_FLAGS(next->tcphdr) & TCP_FIN) != 0)) {
@@ -1052,7 +1052,7 @@ tcp_receive(struct tcp_pcb *pcb)
         pcb->snd_queuelen -= pbuf_clen(next->p);//计算链表里面的pbufs数量 
         tcp_seg_free(next);//释放tcp段
 
-        LWIP_DEBUGF(TCP_QLEN_DEBUG, ("%"U16_F" (after freeing unacked)\n", (u16_t)pcb->snd_queuelen));
+        LWIP_DEBUGF(TCP_QLEN_DEBUG, ("%"U16_F" (after freeing unacked)\n", (uint16)pcb->snd_queuelen));
         if (pcb->snd_queuelen != 0) {
           LWIP_ASSERT("tcp_receive: valid queue length", pcb->unacked != NULL ||
                       pcb->unsent != NULL);
@@ -1088,7 +1088,7 @@ tcp_receive(struct tcp_pcb *pcb)
 
       next = pcb->unsent;//pcb未发送标志 
       pcb->unsent = pcb->unsent->next;//未发送的下一个
-      LWIP_DEBUGF(TCP_QLEN_DEBUG, ("tcp_receive: queuelen %"U16_F" ... ", (u16_t)pcb->snd_queuelen));
+      LWIP_DEBUGF(TCP_QLEN_DEBUG, ("tcp_receive: queuelen %"U16_F" ... ", (uint16)pcb->snd_queuelen));
       LWIP_ASSERT("pcb->snd_queuelen >= pbuf_clen(next->p)", (pcb->snd_queuelen >= pbuf_clen(next->p)));
       /* Prevent ACK for FIN to generate a sent event */
       if ((pcb->acked != 0) && ((TCPH_FLAGS(next->tcphdr) & TCP_FIN) != 0)) {
@@ -1096,7 +1096,7 @@ tcp_receive(struct tcp_pcb *pcb)
       }
       pcb->snd_queuelen -= pbuf_clen(next->p);//链表中pbuf的个数
       tcp_seg_free(next);//释放段
-      LWIP_DEBUGF(TCP_QLEN_DEBUG, ("%"U16_F" (after freeing unsent)\n", (u16_t)pcb->snd_queuelen));
+      LWIP_DEBUGF(TCP_QLEN_DEBUG, ("%"U16_F" (after freeing unsent)\n", (uint16)pcb->snd_queuelen));
       if (pcb->snd_queuelen != 0) {//发送序列长度
         LWIP_ASSERT("tcp_receive: valid queue length",
           pcb->unacked != NULL || pcb->unsent != NULL);
@@ -1113,7 +1113,7 @@ tcp_receive(struct tcp_pcb *pcb)
     if (pcb->rttest && TCP_SEQ_LT(pcb->rtseq, ackno)) {//RTT正在进行且该报文段被确认
       /* diff between this shouldn't exceed 32K since this are tcp timer ticks
          and a round-trip shouldn't be that long... */
-      m = (s16_t)(tcp_ticks - pcb->rttest);//计算M值
+      m = (int16_t)(tcp_ticks - pcb->rttest);//计算M值
 
       LWIP_DEBUGF(TCP_RTO_DEBUG, ("tcp_receive: experienced rtt %"U16_F" ticks (%"U16_F" msec).\n",
                                   m, m * TCP_SLOW_INTERVAL));
@@ -1194,8 +1194,8 @@ tcp_receive(struct tcp_pcb *pcb)
       LWIP_ASSERT("inseg.p != NULL", inseg.p);
       LWIP_ASSERT("insane offset!", (off < 0x7fff));
       if (inseg.p->len < off) {
-        LWIP_ASSERT("pbuf too short!", (((s32_t)inseg.p->tot_len) >= off));
-        new_tot_len = (u16_t)(inseg.p->tot_len - off);
+        LWIP_ASSERT("pbuf too short!", (((int32_t)inseg.p->tot_len) >= off));
+        new_tot_len = (uint16)(inseg.p->tot_len - off);
         while (p->len < off) {
           off -= p->len;
           /* KJM following line changed (with addition of new_tot_len var)
@@ -1205,17 +1205,17 @@ tcp_receive(struct tcp_pcb *pcb)
           p->len = 0;
           p = p->next;
         }
-        if(pbuf_header(p, (s16_t)-off)) {
+        if(pbuf_header(p, (int16_t)-off)) {
           /* Do we need to cope with this failing?  Assert for now */
           LWIP_ASSERT("pbuf_header failed", 0);
         }
       } else {
-        if(pbuf_header(inseg.p, (s16_t)-off)) {
+        if(pbuf_header(inseg.p, (int16_t)-off)) {
           /* Do we need to cope with this failing?  Assert for now */
           LWIP_ASSERT("pbuf_header failed", 0);
         }
       }
-      inseg.len -= (u16_t)(pcb->rcv_nxt - seqno);
+      inseg.len -= (uint16)(pcb->rcv_nxt - seqno);
       inseg.tcphdr->seqno = seqno = pcb->rcv_nxt;
     }
     else {
@@ -1301,7 +1301,7 @@ tcp_receive(struct tcp_pcb *pcb)
                 TCP_SEQ_GT(seqno + tcplen,
                            next->tcphdr->seqno)) {
               /* inseg cannot have FIN here (already processed above) */
-              inseg.len = (u16_t)(next->tcphdr->seqno - seqno);
+              inseg.len = (uint16)(next->tcphdr->seqno - seqno);
               if (TCPH_FLAGS(inseg.tcphdr) & TCP_SYN) {
                 inseg.len -= 1;
               }
@@ -1461,7 +1461,7 @@ tcp_receive(struct tcp_pcb *pcb)
                   if (cseg != NULL) {
                     if (TCP_SEQ_GT(prev->tcphdr->seqno + prev->len, seqno)) {
                       /* We need to trim the prev segment. */
-                      prev->len = (u16_t)(seqno - prev->tcphdr->seqno);
+                      prev->len = (uint16)(seqno - prev->tcphdr->seqno);
                       pbuf_realloc(prev->p, prev->len);
                     }
                     prev->next = cseg;
@@ -1483,11 +1483,11 @@ tcp_receive(struct tcp_pcb *pcb)
                 if (next->next != NULL) {
                   if (TCP_SEQ_GT(next->tcphdr->seqno + next->len, seqno)) {
                     /* We need to trim the last segment. */
-                    next->len = (u16_t)(seqno - next->tcphdr->seqno);
+                    next->len = (uint16)(seqno - next->tcphdr->seqno);
                     pbuf_realloc(next->p, next->len);
                   }
                   /* check if the remote side overruns our receive window */
-                  if ((u32_t)tcplen + seqno > pcb->rcv_nxt + (u32_t)pcb->rcv_wnd) {
+                  if ((uint32_t)tcplen + seqno > pcb->rcv_nxt + (uint32_t)pcb->rcv_wnd) {
                     LWIP_DEBUGF(TCP_INPUT_DEBUG, 
                                 ("tcp_receive: other end overran receive window"
                                  "seqno %"U32_F" len %"U16_F" right edge %"U32_F"\n",
@@ -1540,14 +1540,14 @@ tcp_receive(struct tcp_pcb *pcb)
 static void
 tcp_parseopt(struct tcp_pcb *pcb)
 {
-  u16_t c, max_c;
-  u16_t mss;
-  u8_t *opts, opt;
+  uint16 c, max_c;
+  uint16 mss;
+  uint8_t *opts, opt;
 #if LWIP_TCP_TIMESTAMPS
-  u32_t tsval;
+  uint32_t tsval;
 #endif
 
-  opts = (u8_t *)tcphdr + TCP_HLEN;
+  opts = (uint8_t *)tcphdr + TCP_HLEN;
 
   /* Parse the TCP MSS option, if present. */
   if(TCPH_HDRLEN(tcphdr) > 0x5) {

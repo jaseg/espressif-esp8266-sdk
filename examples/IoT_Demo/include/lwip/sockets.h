@@ -49,21 +49,21 @@ extern "C" {
 
 /* members are in network byte order */
 struct sockaddr_in {
-  u8_t sin_len;
-  u8_t sin_family;
-  u16_t sin_port;
+  uint8_t sin_len;
+  uint8_t sin_family;
+  uint16 sin_port;
   struct in_addr sin_addr;
   char sin_zero[8];
 };
 
 struct sockaddr {
-  u8_t sa_len;
-  u8_t sa_family;
+  uint8_t sa_len;
+  uint8_t sa_family;
   char sa_data[14];
 };
 
 #ifndef socklen_t
-#  define socklen_t u32_t
+#  define socklen_t uint32_t
 #endif
 
 /* Socket protocol types (TCP/UDP/RAW) */

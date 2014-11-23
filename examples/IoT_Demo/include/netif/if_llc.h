@@ -76,7 +76,7 @@ struct llc {
 	    struct {
 		uint8_t  control;
 		uint8_t  org_code[3];
-		uint16_t ether_type;
+		uint16 ether_type;
 	    } __packed type_snap;
 	    struct {
 		uint8_t control;

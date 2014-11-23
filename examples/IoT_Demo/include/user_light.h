@@ -16,13 +16,13 @@
 
 struct light_saved_param {
     uint16 pwm_freq;
-    uint8  pwm_duty[PWM_CHANNEL];
-    uint8  pad[6-PWM_CHANNEL];
+    uint8_t  pwm_duty[PWM_CHANNEL];
+    uint8_t  pad[6-PWM_CHANNEL];
 };
 
 void user_light_init(void);
-uint8 user_light_get_duty(uint8 channel);
-void user_light_set_duty(uint8 duty, uint8 channel);
+uint8_t user_light_get_duty(uint8_t channel);
+void user_light_set_duty(uint8_t duty, uint8_t channel);
 uint16 user_light_get_freq(void);
 void user_light_set_freq(uint16 freq);
 

@@ -14,15 +14,15 @@
 #define token_size 41
 
 struct esp_platform_saved_param {
-    uint8 devkey[40];
-    uint8 token[40];
-    uint8 activeflag;
-    uint8 pad[3];
+    uint8_t devkey[40];
+    uint8_t token[40];
+    uint8_t activeflag;
+    uint8_t pad[3];
 };
 
 struct esp_platform_sec_flag_param {
-    uint8 flag; 
-    uint8 pad[3];
+    uint8_t flag; 
+    uint8_t pad[3];
 };
 
 enum {

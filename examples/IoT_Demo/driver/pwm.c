@@ -20,15 +20,15 @@ LOCAL struct pwm_single_param *pwm_single;
 
 LOCAL struct pwm_param pwm;
 
-LOCAL uint8 pwm_out_io_num[PWM_CHANNEL] = {PWM_0_OUT_IO_NUM, PWM_1_OUT_IO_NUM, PWM_2_OUT_IO_NUM};
+LOCAL uint8_t pwm_out_io_num[PWM_CHANNEL] = {PWM_0_OUT_IO_NUM, PWM_1_OUT_IO_NUM, PWM_2_OUT_IO_NUM};
 
-LOCAL uint8 pwm_channel_toggle[2];
-LOCAL uint8 *pwm_channel;
+LOCAL uint8_t pwm_channel_toggle[2];
+LOCAL uint8_t *pwm_channel;
 
-LOCAL uint8 pwm_toggle = 1;
-LOCAL uint8 pwm_timer_down = 1;
+LOCAL uint8_t pwm_toggle = 1;
+LOCAL uint8_t pwm_timer_down = 1;
 
-LOCAL uint8 pwm_current_channel = 0;
+LOCAL uint8_t pwm_current_channel = 0;
 
 LOCAL uint16 pwm_gpio = 0;
 
@@ -55,13 +55,13 @@ typedef enum {
 } TIMER_INT_MODE;
 
 LOCAL void ICACHE_FLASH_ATTR
-pwm_insert_sort(struct pwm_single_param pwm[], uint8 n)
+pwm_insert_sort(struct pwm_single_param pwm[], uint8_t n)
 {
-    uint8 i;
+    uint8_t i;
 
     for (i = 1; i < n; i++) {
         if (pwm[i].h_time < pwm[i - 1].h_time) {
-            int8 j = i - 1;
+            int8_t j = i - 1;
             struct pwm_single_param tmp;
 
             os_memcpy(&tmp, &pwm[i], sizeof(struct pwm_single_param));
@@ -83,14 +83,14 @@ pwm_insert_sort(struct pwm_single_param pwm[], uint8 n)
 void ICACHE_FLASH_ATTR
 pwm_start(void)
 {
-    uint8 i, j;
+    uint8_t i, j;
 
     struct pwm_single_param *local_single = pwm_single_toggle[pwm_toggle ^ 0x01];
-    uint8 *local_channel = &pwm_channel_toggle[pwm_toggle ^ 0x01];
+    uint8_t *local_channel = &pwm_channel_toggle[pwm_toggle ^ 0x01];
 
     // step 1: init PWM_CHANNEL+1 channels param
     for (i = 0; i < PWM_CHANNEL; i++) {
-        uint32 us = pwm.period * pwm.duty[i] / PWM_DEPTH;
+        uint32_t us = pwm.period * pwm.duty[i] / PWM_DEPTH;
         local_single[i].h_time = US_TO_RTC_TIMER_TICKS(us);
         local_single[i].gpio_set = 0;
         local_single[i].gpio_clear = 1 << pwm_out_io_num[i];
@@ -163,12 +163,12 @@ pwm_start(void)
 /******************************************************************************
  * FunctionName : pwm_set_duty
  * Description  : set each channel's duty params
- * Parameters   : uint8 duty    : 0 ~ PWM_DEPTH
- *                uint8 channel : channel index
+ * Parameters   : uint8_t duty    : 0 ~ PWM_DEPTH
+ *                uint8_t channel : channel index
  * Returns      : NONE
 *******************************************************************************/
 void ICACHE_FLASH_ATTR
-pwm_set_duty(uint8 duty, uint8 channel)
+pwm_set_duty(uint8_t duty, uint8_t channel)
 {
     if (duty < 1) {
         pwm.duty[channel] = 0;
@@ -203,13 +203,13 @@ pwm_set_freq(uint16 freq)
  * FunctionName : pwm_set_freq_duty
  * Description  : set pwm frequency and each channel's duty
  * Parameters   : uint16 freq : 100hz typically
- *                uint8 *duty : each channel's duty
+ *                uint8_t *duty : each channel's duty
  * Returns      : NONE
 *******************************************************************************/
 LOCAL void ICACHE_FLASH_ATTR
-pwm_set_freq_duty(uint16 freq, uint8 *duty)
+pwm_set_freq_duty(uint16 freq, uint8_t *duty)
 {
-    uint8 i;
+    uint8_t i;
 
     pwm_set_freq(freq);
 
@@ -221,11 +221,11 @@ pwm_set_freq_duty(uint16 freq, uint8 *duty)
 /******************************************************************************
  * FunctionName : pwm_get_duty
  * Description  : get duty of each channel
- * Parameters   : uint8 channel : channel index
+ * Parameters   : uint8_t channel : channel index
  * Returns      : NONE
 *******************************************************************************/
-uint8 ICACHE_FLASH_ATTR
-pwm_get_duty(uint8 channel)
+uint8_t ICACHE_FLASH_ATTR
+pwm_get_duty(uint8_t channel)
 {
     return pwm.duty[channel];
 }
@@ -284,13 +284,13 @@ pwm_tim1_intr_handler(void)
  * FunctionName : pwm_init
  * Description  : pwm gpio, params and timer initialization
  * Parameters   : uint16 freq : pwm freq param
- *                uint8 *duty : each channel's duty
+ *                uint8_t *duty : each channel's duty
  * Returns      : NONE
 *******************************************************************************/
 void ICACHE_FLASH_ATTR
-pwm_init(uint16 freq, uint8 *duty)
+pwm_init(uint16 freq, uint8_t *duty)
 {
-    uint8 i;
+    uint8_t i;
 
     ETS_FRC_TIMER1_INTR_ATTACH(pwm_tim1_intr_handler, NULL);
     TM1_EDGE_INT_ENABLE();

@@ -90,10 +90,10 @@ typedef size_t mem_size_t;
  * 65535 leaves some room for alignment...
  */
 #if MEM_SIZE > 64000l
-typedef u32_t mem_size_t;
+typedef uint32_t mem_size_t;
 #define MEM_SIZE_F U32_F
 #else
-typedef u16_t mem_size_t;
+typedef uint16 mem_size_t;
 #define MEM_SIZE_F U16_F
 #endif /* MEM_SIZE > 64000 */
 
@@ -123,7 +123,7 @@ void  mem_free(void *mem)ICACHE_FLASH_ATTR;
 
 /** Calculate safe memory size for an aligned buffer when using an unaligned
  * type as storage. This includes a safety-margin on (MEM_ALIGNMENT - 1) at the
- * start (e.g. if buffer is u8_t[] and actual data will be u32_t*)
+ * start (e.g. if buffer is uint8_t[] and actual data will be uint32_t*)
  */
 #ifndef LWIP_MEM_ALIGN_BUFFER
 #define LWIP_MEM_ALIGN_BUFFER(size) (((size) + MEM_ALIGNMENT - 1))

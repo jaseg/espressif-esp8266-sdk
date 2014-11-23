@@ -93,27 +93,27 @@ enum snmp_ifType {
 /** internal object identifier representation */
 struct snmp_obj_id
 {
-  u8_t len;
-  s32_t id[LWIP_SNMP_OBJ_ID_LEN];
+  uint8_t len;
+  int32_t id[LWIP_SNMP_OBJ_ID_LEN];
 };
 
 /* system */
-void snmp_set_sysdesr(u8_t* str, u8_t* len);
+void snmp_set_sysdesr(uint8_t* str, uint8_t* len);
 void snmp_set_sysobjid(struct snmp_obj_id *oid);
 void snmp_get_sysobjid_ptr(struct snmp_obj_id **oid);
 void snmp_inc_sysuptime(void);
-void snmp_add_sysuptime(u32_t value);
-void snmp_get_sysuptime(u32_t *value);
-void snmp_set_syscontact(u8_t *ocstr, u8_t *ocstrlen);
-void snmp_set_sysname(u8_t *ocstr, u8_t *ocstrlen);
-void snmp_set_syslocation(u8_t *ocstr, u8_t *ocstrlen);
+void snmp_add_sysuptime(uint32_t value);
+void snmp_get_sysuptime(uint32_t *value);
+void snmp_set_syscontact(uint8_t *ocstr, uint8_t *ocstrlen);
+void snmp_set_sysname(uint8_t *ocstr, uint8_t *ocstrlen);
+void snmp_set_syslocation(uint8_t *ocstr, uint8_t *ocstrlen);
 
 /* network interface */
-void snmp_add_ifinoctets(struct netif *ni, u32_t value); 
+void snmp_add_ifinoctets(struct netif *ni, uint32_t value); 
 void snmp_inc_ifinucastpkts(struct netif *ni);
 void snmp_inc_ifinnucastpkts(struct netif *ni);
 void snmp_inc_ifindiscards(struct netif *ni);
-void snmp_add_ifoutoctets(struct netif *ni, u32_t value);
+void snmp_add_ifoutoctets(struct netif *ni, uint32_t value);
 void snmp_inc_ifoutucastpkts(struct netif *ni);
 void snmp_inc_ifoutnucastpkts(struct netif *ni);
 void snmp_inc_ifoutdiscards(struct netif *ni);
@@ -144,8 +144,8 @@ void snmp_inc_ipfragcreates(void);
 void snmp_inc_iproutingdiscards(void);
 void snmp_insert_ipaddridx_tree(struct netif *ni);
 void snmp_delete_ipaddridx_tree(struct netif *ni);
-void snmp_insert_iprteidx_tree(u8_t dflt, struct netif *ni);
-void snmp_delete_iprteidx_tree(u8_t dflt, struct netif *ni);
+void snmp_insert_iprteidx_tree(uint8_t dflt, struct netif *ni);
+void snmp_delete_iprteidx_tree(uint8_t dflt, struct netif *ni);
 
 /* ICMP */
 void snmp_inc_icmpinmsgs(void);
@@ -206,8 +206,8 @@ void snmp_inc_snmpinnosuchnames(void);
 void snmp_inc_snmpinbadvalues(void);
 void snmp_inc_snmpinreadonlys(void);
 void snmp_inc_snmpingenerrs(void);
-void snmp_add_snmpintotalreqvars(u8_t value);
-void snmp_add_snmpintotalsetvars(u8_t value);
+void snmp_add_snmpintotalreqvars(uint8_t value);
+void snmp_add_snmpintotalsetvars(uint8_t value);
 void snmp_inc_snmpingetrequests(void);
 void snmp_inc_snmpingetnexts(void);
 void snmp_inc_snmpinsetrequests(void);
@@ -223,8 +223,8 @@ void snmp_inc_snmpoutsetrequests(void);
 void snmp_inc_snmpoutgetresponses(void);
 void snmp_inc_snmpouttraps(void);
 void snmp_get_snmpgrpid_ptr(struct snmp_obj_id **oid);
-void snmp_set_snmpenableauthentraps(u8_t *value);
-void snmp_get_snmpenableauthentraps(u8_t *value);
+void snmp_set_snmpenableauthentraps(uint8_t *value);
+void snmp_get_snmpenableauthentraps(uint8_t *value);
 
 /* LWIP_SNMP support not available */
 /* define everything to be empty */

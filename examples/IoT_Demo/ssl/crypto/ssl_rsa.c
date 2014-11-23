@@ -233,7 +233,7 @@ bigint *ICACHE_FLASH_ATTR RSA_public(const RSA_CTX * c, bigint *bi_msg)
  * Use PKCS1.5 for encryption/signing.
  * see http://www.rsasecurity.com/rsalabs/node.asp?id=2125
  */
-int ICACHE_FLASH_ATTR RSA_encrypt(const RSA_CTX *ctx, const uint8_t *in_data, uint16_t in_len, 
+int ICACHE_FLASH_ATTR RSA_encrypt(const RSA_CTX *ctx, const uint8_t *in_data, uint16 in_len, 
         uint8_t *out_data, int is_signing)
 {
     int byte_size = ctx->num_octets;

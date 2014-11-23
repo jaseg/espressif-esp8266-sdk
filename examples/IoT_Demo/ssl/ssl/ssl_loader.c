@@ -142,7 +142,7 @@ static int ICACHE_FLASH_ATTR do_obj(SSL_CTX *ssl_ctx, int obj_type,
 
 #ifdef CONFIG_SSL_USE_PKCS12
         case SSL_OBJ_PKCS8:
-            ret = pkcs8_decode(ssl_ctx, ssl_obj, password);
+            ret = pkcint8_t_decode(ssl_ctx, ssl_obj, password);
             break;
 
         case SSL_OBJ_PKCS12:

@@ -2,14 +2,14 @@
 #define __DHCPS_H__
 
 typedef struct dhcps_state{
-        sint16_t state;
+        int16_t state;
 } dhcps_state;
 
 // ����dhcpclient�Զ����һ��DHCP msg�ṹ��
 typedef struct dhcps_msg {
         uint8_t op, htype, hlen, hops;
         uint8_t xid[4];
-        uint16_t secs, flags;
+        uint16 secs, flags;
         uint8_t ciaddr[4];
         uint8_t yiaddr[4];
         uint8_t siaddr[4];
@@ -22,15 +22,15 @@ typedef struct dhcps_msg {
 
 #ifndef LWIP_OPEN_SRC
 struct dhcps_lease {
-	uint32 start_ip;
-	uint32 end_ip;
+	uint32_t start_ip;
+	uint32_t end_ip;
 };
 #endif
 
 struct dhcps_pool{
 	struct ip_addr ip;
-	uint8 mac[6];
-	uint32 lease_timer;
+	uint8_t mac[6];
+	uint32_t lease_timer;
 };
 
 typedef struct _list_node{

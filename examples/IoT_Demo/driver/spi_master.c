@@ -13,9 +13,9 @@
 #include "driver/spi_master.h"
 
 void ICACHE_FLASH_ATTR
-spi_master_init(uint8 spi_no)
+spi_master_init(uint8_t spi_no)
 {
-    uint32 regvalue;
+    uint32_t regvalue;
 
     if (spi_no > 1) {
     	return;
@@ -44,10 +44,10 @@ spi_master_init(uint8 spi_no)
 }
 
 void ICACHE_FLASH_ATTR
-spi_master_9bit_write(uint8 spi_no, uint8 high_bit, uint8 low_8bit)
+spi_master_9bit_write(uint8_t spi_no, uint8_t high_bit, uint8_t low_8bit)
 {
-    uint32 regvalue;
-    uint8 bytetemp;
+    uint32_t regvalue;
+    uint8_t bytetemp;
 
     if (spi_no > 1) {
         return;
@@ -59,7 +59,7 @@ spi_master_9bit_write(uint8 spi_no, uint8 high_bit, uint8 low_8bit)
         bytetemp = (low_8bit >> 1) & 0x7f;
     }
 
-    regvalue = 0x80000000 | ((uint32)bytetemp);		//configure transmission variable,9bit transmission length and first 8 command bit
+    regvalue = 0x80000000 | ((uint32_t)bytetemp);		//configure transmission variable,9bit transmission length and first 8 command bit
 
     if (low_8bit & 0x01) {
         regvalue |= BIT15;    //write the 9th bit

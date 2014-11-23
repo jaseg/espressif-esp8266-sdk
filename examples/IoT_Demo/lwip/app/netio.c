@@ -61,14 +61,14 @@
 #define NETIO_STATE_DONE            4
 
 struct netio_state {
-  u32_t  state;
-  u32_t  cmd;
-  u32_t  data_len;
-  u32_t  cntr;
-  u8_t * buf_ptr;
-  u32_t  buf_pos;
-  u32_t  first_byte;
-  u32_t  time_stamp;
+  uint32_t  state;
+  uint32_t  cmd;
+  uint32_t  data_len;
+  uint32_t  cntr;
+  uint8_t * buf_ptr;
+  uint32_t  buf_pos;
+  uint32_t  first_byte;
+  uint32_t  time_stamp;
 };
 
 /* NetIO command protocol definition */
@@ -112,10 +112,10 @@ static err_t ICACHE_FLASH_ATTR
 netio_recv(void *arg, struct tcp_pcb *pcb, struct pbuf *p, err_t err)
 {
   struct netio_state *ns = arg;
-  u8_t * data_ptr;
-  u32_t data_cntr;
+  uint8_t * data_ptr;
+  uint32_t data_cntr;
   struct pbuf *q = p;
-  u16_t len;
+  uint16 len;
 
   if (p != NULL) {
     tcp_recved(pcb, p->tot_len);
@@ -245,7 +245,7 @@ netio_recv(void *arg, struct tcp_pcb *pcb, struct pbuf *p, err_t err)
 }
 
 static err_t ICACHE_FLASH_ATTR
-netio_sent(void *arg, struct tcp_pcb *pcb, u16_t len)
+netio_sent(void *arg, struct tcp_pcb *pcb, uint16 len)
 {
   struct netio_state *ns = arg;
   err_t err = ERR_OK;
@@ -311,7 +311,7 @@ netio_poll(void *arg, struct tcp_pcb *pcb)
 }
 
 #if NETIO_USE_STATIC_BUF == 1
-static u8_t netio_buf[NETIO_BUF_SIZE];
+static uint8_t netio_buf[NETIO_BUF_SIZE];
 #endif
 
 static err_t ICACHE_FLASH_ATTR

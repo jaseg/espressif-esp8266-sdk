@@ -25,7 +25,7 @@
 #include "lwip/app/espconn_tcp.h"
 
 extern espconn_msg *plink_active;
-extern uint32 link_timer;
+extern uint32_t link_timer;
 extern espconn_msg *pserver_list;
 
 static err_t
@@ -50,7 +50,7 @@ static void ICACHE_FLASH_ATTR
 espconn_tcp_reconnect(void *arg)
 {
 	espconn_msg *precon_cb = arg;
-	sint8 re_err = 0;
+	int8_t re_err = 0;
 	if (precon_cb != NULL) {
 		struct espconn *espconn = precon_cb->preverse;
 		re_err = precon_cb->pcommon.err;
@@ -94,7 +94,7 @@ static void ICACHE_FLASH_ATTR
 espconn_tcp_disconnect_successful(void *arg)
 {
 	espconn_msg *pdiscon_cb = arg;
-	sint8 dis_err = 0;
+	int8_t dis_err = 0;
 	if (pdiscon_cb != NULL) {
 		struct espconn *espconn = pdiscon_cb->preverse;
 
@@ -142,18 +142,18 @@ espconn_tcp_disconnect_successful(void *arg)
  * FunctionName : espconn_tcp_sent
  * Description  : sent data for client or server
  * Parameters   : void *arg -- client or server to send
- *                uint8* psent -- Data to send
+ *                uint8_t* psent -- Data to send
  *                uint16 length -- Length of data to send
  * Returns      : none
 *******************************************************************************/
 void ICACHE_FLASH_ATTR
-espconn_tcp_sent(void *arg, uint8 *psent, uint16 length)
+espconn_tcp_sent(void *arg, uint8_t *psent, uint16 length)
 {
 	espconn_msg *ptcp_sent = arg;
     struct tcp_pcb *pcb = NULL;
     err_t err = 0;
-    u16_t len = 0;
-    u8_t data_to_send = false;
+    uint16 len = 0;
+    uint8_t data_to_send = false;
 
     espconn_printf("espconn_tcp_sent ptcp_sent %p psent %p length %d\n", ptcp_sent, psent, length);
 
@@ -295,7 +295,7 @@ espconn_client_recv(void *arg, struct tcp_pcb *pcb, struct pbuf *p, err_t err)
 
     if (err == ERR_OK && p != NULL) {
     	char *pdata = NULL;
-    	u16_t length = 0;
+    	uint16 length = 0;
         pdata = (char *)os_zalloc(p ->tot_len + 1);
         length = pbuf_copy_partial(p, pdata, p ->tot_len, 0);
         pbuf_free(p);
@@ -331,7 +331,7 @@ espconn_client_recv(void *arg, struct tcp_pcb *pcb, struct pbuf *p, err_t err)
  *                ERR_ABRT: if you have called tcp_abort from within the function!
 *******************************************************************************/
 static err_t ICACHE_FLASH_ATTR
-espconn_client_sent(void *arg, struct tcp_pcb *pcb, u16_t len)
+espconn_client_sent(void *arg, struct tcp_pcb *pcb, uint16 len)
 {
 	espconn_msg *psent_cb = arg;
 	psent_cb->pcommon.pcb = pcb;
@@ -483,7 +483,7 @@ espconn_client_connect(void *arg, struct tcp_pcb *tpcb, err_t err)
  * Parameters   : espconn -- the espconn used to build client
  * Returns      : none
 *******************************************************************************/
-sint8 ICACHE_FLASH_ATTR
+int8_t ICACHE_FLASH_ATTR
 espconn_tcp_client(struct espconn *espconn)
 {
     struct tcp_pcb *pcb = NULL;
@@ -601,10 +601,10 @@ espconn_server_recv(void *arg, struct tcp_pcb *pcb, struct pbuf *p, err_t err)
     }
 
     if (err == ERR_OK && p != NULL) {
-    	u8_t *data_ptr = NULL;
-    	u32_t data_cntr = 0;
+    	uint8_t *data_ptr = NULL;
+    	uint32_t data_cntr = 0;
 		precv_cb->pcommon.recv_check = 0;
-        data_ptr = (u8_t *)os_zalloc(p ->tot_len + 1);
+        data_ptr = (uint8_t *)os_zalloc(p ->tot_len + 1);
         data_cntr = pbuf_copy_partial(p, data_ptr, p ->tot_len, 0);
         pbuf_free(p);
 
@@ -642,7 +642,7 @@ espconn_server_recv(void *arg, struct tcp_pcb *pcb, struct pbuf *p, err_t err)
  *                ERR_ABRT: if you have called tcp_abort from within the function!
 *******************************************************************************/
 static err_t ICACHE_FLASH_ATTR
-espconn_server_sent(void *arg, struct tcp_pcb *pcb, u16_t len)
+espconn_server_sent(void *arg, struct tcp_pcb *pcb, uint16 len)
 {
 	espconn_msg *psent_cb = arg;
 	psent_cb->pcommon.pcb = pcb;
@@ -846,7 +846,7 @@ espconn_tcp_accept(void *arg, struct tcp_pcb *pcb, err_t err)
  * Parameters   : espconn -- the espconn used to build server
  * Returns      : none
 *******************************************************************************/
-sint8 ICACHE_FLASH_ATTR
+int8_t ICACHE_FLASH_ATTR
 espconn_tcp_server(struct espconn *espconn)
 {
     struct tcp_pcb *pcb = NULL;
@@ -893,7 +893,7 @@ espconn_tcp_server(struct espconn *espconn)
  * Parameters   : pdeletecon -- the espconn used to delete a server
  * Returns      : none
 *******************************************************************************/
-sint8 ICACHE_FLASH_ATTR espconn_tcp_delete(struct espconn *pdeletecon)
+int8_t ICACHE_FLASH_ATTR espconn_tcp_delete(struct espconn *pdeletecon)
 {
 	err_t err;
 	remot_info *pinfo = NULL;

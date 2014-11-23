@@ -48,10 +48,10 @@ extern "C" {
 #endif
 
 #if LWIP_STATS_LARGE
-#define STAT_COUNTER     u32_t
+#define STAT_COUNTER     uint32_t
 #define STAT_COUNTER_F   U32_F
 #else
-#define STAT_COUNTER     u16_t
+#define STAT_COUNTER     uint16
 #define STAT_COUNTER_F   U16_F
 #endif 
 

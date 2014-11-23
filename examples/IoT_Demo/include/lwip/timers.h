@@ -64,7 +64,7 @@ typedef void (* sys_timeout_handler)(void *arg);
 
 struct sys_timeo {
   struct sys_timeo *next;
-  u32_t time;
+  uint32_t time;
   sys_timeout_handler h;
   void *arg;
 #if LWIP_DEBUG_TIMERNAMES
@@ -75,10 +75,10 @@ struct sys_timeo {
 void sys_timeouts_init(void)ICACHE_FLASH_ATTR;
 
 #if LWIP_DEBUG_TIMERNAMES
-void sys_timeout_debug(u32_t msecs, sys_timeout_handler handler, void *arg, const char* handler_name)ICACHE_FLASH_ATTR;
+void sys_timeout_debug(uint32_t msecs, sys_timeout_handler handler, void *arg, const char* handler_name)ICACHE_FLASH_ATTR;
 #define sys_timeout(msecs, handler, arg) sys_timeout_debug(msecs, handler, arg, #handler)
 #else /* LWIP_DEBUG_TIMERNAMES */
-void sys_timeout(u32_t msecs, sys_timeout_handler handler, void *arg)ICACHE_FLASH_ATTR;
+void sys_timeout(uint32_t msecs, sys_timeout_handler handler, void *arg)ICACHE_FLASH_ATTR;
 #endif /* LWIP_DEBUG_TIMERNAMES */
 
 void sys_untimeout(sys_timeout_handler handler, void *arg)ICACHE_FLASH_ATTR;

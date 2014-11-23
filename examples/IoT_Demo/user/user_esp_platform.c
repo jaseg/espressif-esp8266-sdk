@@ -54,7 +54,7 @@
 \"body\": {\"datapoint\": {\"x\": %d.%03d}}, \"meta\": {\"Authorization\": \"token %s\"}}\n"
 #endif
 
-LOCAL uint32 count = 0;
+LOCAL uint32_t count = 0;
 #endif
 
 #define UPGRADE_FRAME  "{\"path\": \"/v1/messages/\", \"method\": \"POST\", \"meta\": {\"Authorization\": \"token %s\"},\
@@ -72,7 +72,7 @@ Authorization: token %s\r\n\
 Accept-Encoding: gzip,deflate,sdch\r\n\
 Accept-Language: zh-CN,zh;q=0.8\r\n\r\n"
 
-LOCAL uint8 ping_status;
+LOCAL uint8_t ping_status;
 LOCAL os_timer_t beacon_timer;
 #endif
 
@@ -84,11 +84,11 @@ LOCAL struct espconn user_conn;
 LOCAL struct _esp_tcp user_tcp;
 LOCAL os_timer_t client_timer;
 LOCAL struct esp_platform_saved_param esp_param;
-LOCAL uint8 device_status;
-LOCAL uint8 device_recon_count = 0;
-LOCAL uint32 active_nonce = 0;
+LOCAL uint8_t device_status;
+LOCAL uint8_t device_recon_count = 0;
+LOCAL uint32_t active_nonce = 0;
 struct rst_info rtc_info;
-void user_esp_platform_check_ip(uint8 reset_flag);
+void user_esp_platform_check_ip(uint8_t reset_flag);
 
 /******************************************************************************
  * FunctionName : user_esp_platform_load_param
@@ -102,14 +102,14 @@ user_esp_platform_load_param(struct esp_platform_saved_param *param)
     struct esp_platform_sec_flag_param flag;
 
     spi_flash_read((ESP_PARAM_START_SEC + ESP_PARAM_FLAG) * SPI_FLASH_SEC_SIZE,
-                   (uint32 *)&flag, sizeof(struct esp_platform_sec_flag_param));
+                   (uint32_t *)&flag, sizeof(struct esp_platform_sec_flag_param));
 
     if (flag.flag == 0) {
         spi_flash_read((ESP_PARAM_START_SEC + ESP_PARAM_SAVE_0) * SPI_FLASH_SEC_SIZE,
-                       (uint32 *)param, sizeof(struct esp_platform_saved_param));
+                       (uint32_t *)param, sizeof(struct esp_platform_saved_param));
     } else {
         spi_flash_read((ESP_PARAM_START_SEC + ESP_PARAM_SAVE_1) * SPI_FLASH_SEC_SIZE,
-                       (uint32 *)param, sizeof(struct esp_platform_saved_param));
+                       (uint32_t *)param, sizeof(struct esp_platform_saved_param));
     }
 }
 
@@ -126,24 +126,24 @@ user_esp_platform_save_param(struct esp_platform_saved_param *param)
     struct esp_platform_sec_flag_param flag;
 
     spi_flash_read((ESP_PARAM_START_SEC + ESP_PARAM_FLAG) * SPI_FLASH_SEC_SIZE,
-                   (uint32 *)&flag, sizeof(struct esp_platform_sec_flag_param));
+                   (uint32_t *)&flag, sizeof(struct esp_platform_sec_flag_param));
 
     if (flag.flag == 0) {
         spi_flash_erase_sector(ESP_PARAM_START_SEC + ESP_PARAM_SAVE_1);
         spi_flash_write((ESP_PARAM_START_SEC + ESP_PARAM_SAVE_1) * SPI_FLASH_SEC_SIZE,
-                        (uint32 *)param, sizeof(struct esp_platform_saved_param));
+                        (uint32_t *)param, sizeof(struct esp_platform_saved_param));
         flag.flag = 1;
         spi_flash_erase_sector(ESP_PARAM_START_SEC + ESP_PARAM_FLAG);
         spi_flash_write((ESP_PARAM_START_SEC + ESP_PARAM_FLAG) * SPI_FLASH_SEC_SIZE,
-                        (uint32 *)&flag, sizeof(struct esp_platform_sec_flag_param));
+                        (uint32_t *)&flag, sizeof(struct esp_platform_sec_flag_param));
     } else {
         spi_flash_erase_sector(ESP_PARAM_START_SEC + ESP_PARAM_SAVE_0);
         spi_flash_write((ESP_PARAM_START_SEC + ESP_PARAM_SAVE_0) * SPI_FLASH_SEC_SIZE,
-                        (uint32 *)param, sizeof(struct esp_platform_saved_param));
+                        (uint32_t *)param, sizeof(struct esp_platform_saved_param));
         flag.flag = 0;
         spi_flash_erase_sector(ESP_PARAM_START_SEC + ESP_PARAM_FLAG);
         spi_flash_write((ESP_PARAM_START_SEC + ESP_PARAM_FLAG) * SPI_FLASH_SEC_SIZE,
-                        (uint32 *)&flag, sizeof(struct esp_platform_sec_flag_param));
+                        (uint32_t *)&flag, sizeof(struct esp_platform_sec_flag_param));
     }
 }
 
@@ -188,14 +188,14 @@ user_esp_platform_set_token(uint8_t *token)
  * Returns      : none
 *******************************************************************************/
 void ICACHE_FLASH_ATTR
-user_esp_platform_set_active(uint8 activeflag)
+user_esp_platform_set_active(uint8_t activeflag)
 {
     esp_param.activeflag = activeflag;
     user_esp_platform_save_param(&esp_param);
 }
 
 void ICACHE_FLASH_ATTR
-user_esp_platform_set_connect_status(uint8 status)
+user_esp_platform_set_connect_status(uint8_t status)
 {
     device_status = status;
 }
@@ -206,10 +206,10 @@ user_esp_platform_set_connect_status(uint8 status)
  * Parameters   : none
  * Returns      : status
 *******************************************************************************/
-uint8 ICACHE_FLASH_ATTR
+uint8_t ICACHE_FLASH_ATTR
 user_esp_platform_get_connect_status(void)
 {
-    uint8 status = wifi_station_get_connect_status();
+    uint8_t status = wifi_station_get_connect_status();
 
     if (status == STATION_GOT_IP) {
         status = (device_status == 0) ? DEVICE_CONNECTING : device_status;
@@ -270,7 +270,7 @@ user_esp_platform_parse_nonce(char *pbuffer)
  * Returns      : none
 *******************************************************************************/
 void ICACHE_FLASH_ATTR
-user_esp_platform_get_info(struct espconn *pconn, uint8 *pbuffer)
+user_esp_platform_get_info(struct espconn *pconn, uint8_t *pbuffer)
 {
     char *pbuf = NULL;
     int nonce = 0;
@@ -307,7 +307,7 @@ user_esp_platform_get_info(struct espconn *pconn, uint8 *pbuffer)
  * Returns      : none
 *******************************************************************************/
 void ICACHE_FLASH_ATTR
-user_esp_platform_set_info(struct espconn *pconn, uint8 *pbuffer)
+user_esp_platform_set_info(struct espconn *pconn, uint8_t *pbuffer)
 {
 #if PLUG_DEVICE
     char *pstr = NULL;
@@ -523,8 +523,8 @@ user_esp_platform_sent_cb(void *arg)
 LOCAL void ICACHE_FLASH_ATTR
 user_esp_platform_sent(struct espconn *pespconn)
 {
-    uint8 devkey[token_size] = {0};
-    uint32 nonce;
+    uint8_t devkey[token_size] = {0};
+    uint32_t nonce;
     char *pbuf = (char *)os_zalloc(packet_size);
 
     os_memcpy(devkey, esp_param.devkey, 40);
@@ -535,8 +535,8 @@ user_esp_platform_sent(struct espconn *pespconn)
 
     if (pbuf != NULL) {
         if (esp_param.activeflag == 0) {
-            uint8 token[token_size] = {0};
-            uint8 bssid[6];
+            uint8_t token[token_size] = {0};
+            uint8_t bssid[6];
             active_nonce = rand();
 
             os_memcpy(token, esp_param.token, 40);
@@ -551,7 +551,7 @@ user_esp_platform_sent(struct espconn *pespconn)
         else {
 #if 0
             uint16 tp, rh;
-            uint8 data[4];
+            uint8_t data[4];
 
             if (user_mvh3004_read_th(data)) {
                 rh = data[0] << 8 | data[1];
@@ -560,9 +560,9 @@ user_esp_platform_sent(struct espconn *pespconn)
 
 #else
             uint16 tp, rh;
-            uint8 *data;
-            uint32 tp_t, rh_t;
-            data = (uint8 *)user_mvh3004_get_poweron_th();
+            uint8_t *data;
+            uint32_t tp_t, rh_t;
+            data = (uint8_t *)user_mvh3004_get_poweron_th();
 
             rh = data[0] << 8 | data[1];
             tp = data[2] << 8 | data[3];
@@ -580,7 +580,7 @@ user_esp_platform_sent(struct espconn *pespconn)
 
 #elif FLAMMABLE_GAS_SUB_DEVICE
         else {
-            uint32 adc_value = adc_read();
+            uint32_t adc_value = adc_read();
 
             os_sprintf(pbuf, UPLOAD_FRAME, count, adc_value / 1024, adc_value * 1000 / 1024, devkey);
         }
@@ -624,7 +624,7 @@ user_esp_platform_sent_beacon(struct espconn *pespconn)
             ESP_DBG("plese check device is activated.\n");
             user_esp_platform_sent(pespconn);
         } else {
-            uint8 devkey[token_size] = {0};
+            uint8_t devkey[token_size] = {0};
             os_memcpy(devkey, esp_param.devkey, 40);
 
             ESP_DBG("user_esp_platform_sent_beacon %u\n", system_get_time());
@@ -691,7 +691,7 @@ user_platform_rpc_set_rsp(struct espconn *pespconn, int nonce)
 LOCAL void ICACHE_FLASH_ATTR
 user_platform_timer_get(struct espconn *pespconn)
 {
-    uint8 devkey[token_size] = {0};
+    uint8_t devkey[token_size] = {0};
     char *pbuf = (char *)os_zalloc(packet_size);
     os_memcpy(devkey, esp_param.devkey, 40);
 
@@ -720,8 +720,8 @@ user_esp_platform_upgrade_rsp(void *arg)
 {
     struct upgrade_server_info *server = arg;
     struct espconn *pespconn = server->pespconn;
-    uint8 devkey[41] = {0};
-    uint8 *pbuf = NULL;
+    uint8_t devkey[41] = {0};
+    uint8_t *pbuf = NULL;
     char *action = NULL;
 
     os_memcpy(devkey, esp_param.devkey, 40);
@@ -777,8 +777,8 @@ user_esp_platform_upgrade_rsp(void *arg)
 LOCAL void ICACHE_FLASH_ATTR
 user_esp_platform_upgrade_begin(struct espconn *pespconn, struct upgrade_server_info *server)
 {
-    uint8 user_bin[9] = {0};
-    uint8 devkey[41] = {0};
+    uint8_t user_bin[9] = {0};
+    uint8_t devkey[41] = {0};
 
     server->pespconn = pespconn;
 
@@ -795,7 +795,7 @@ user_esp_platform_upgrade_begin(struct espconn *pespconn, struct upgrade_server_
     server->check_times = 120000;
 
     if (server->url == NULL) {
-        server->url = (uint8 *)os_zalloc(512);
+        server->url = (uint8_t *)os_zalloc(512);
     }
 
     if (system_upgrade_userbin_check() == UPGRADE_FW_BIN1) {
@@ -942,7 +942,7 @@ user_esp_platform_recv_cb(void *arg, char *pusrdata, unsigned short length)
 LOCAL void ICACHE_FLASH_ATTR
 user_esp_platform_ap_change(void)
 {
-    uint8 current_id;
+    uint8_t current_id;
 
     ESP_DBG("user_esp_platform_ap_is_changing\n");
 
@@ -990,7 +990,7 @@ user_esp_platform_reset_mode(void)
  * Returns      : none
 *******************************************************************************/
 LOCAL void ICACHE_FLASH_ATTR
-user_esp_platform_recon_cb(void *arg, sint8 err)
+user_esp_platform_recon_cb(void *arg, int8_t err)
 {
     struct espconn *pespconn = (struct espconn *)arg;
 
@@ -1110,8 +1110,8 @@ user_esp_platform_dns_found(const char *name, ip_addr_t *ipaddr, void *arg)
     }
 
     ESP_DBG("user_esp_platform_dns_found %d.%d.%d.%d\n",
-            *((uint8 *)&ipaddr->addr), *((uint8 *)&ipaddr->addr + 1),
-            *((uint8 *)&ipaddr->addr + 2), *((uint8 *)&ipaddr->addr + 3));
+            *((uint8_t *)&ipaddr->addr), *((uint8_t *)&ipaddr->addr + 1),
+            *((uint8_t *)&ipaddr->addr + 2), *((uint8_t *)&ipaddr->addr + 3));
 
     if (esp_server_ip.addr == 0 && ipaddr->addr != 0) {
         os_timer_disarm(&client_timer);
@@ -1174,7 +1174,7 @@ user_esp_platform_start_dns(struct espconn *pespconn)
  * Returns      : none
 *******************************************************************************/
 void ICACHE_FLASH_ATTR
-user_esp_platform_check_ip(uint8 reset_flag)
+user_esp_platform_check_ip(uint8_t reset_flag)
 {
     struct ip_info ipconfig;
 

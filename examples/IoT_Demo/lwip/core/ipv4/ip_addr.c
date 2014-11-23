@@ -51,11 +51,11 @@ const ip_addr_t ip_addr_broadcast = { IPADDR_BROADCAST };
  * @param netif the network interface against which the address is checked
  * @return returns non-zero if the address is a broadcast address
  */
-u8_t
-ip4_addr_isbroadcast(u32_t addr, const struct netif *netif)
+uint8_t
+ip4_addr_isbroadcast(uint32_t addr, const struct netif *netif)
 {
   ip_addr_t ipaddr;
-  ip4_addr_set_u32(&ipaddr, addr);
+  ip4_addr_set_uint32_t(&ipaddr, addr);
 
   /* all ones (broadcast) or all zeroes (old skool broadcast) */
   if ((~addr == IPADDR_ANY) ||
@@ -67,13 +67,13 @@ ip4_addr_isbroadcast(u32_t addr, const struct netif *netif)
      * nor can we check against any broadcast addresses */
     return 0;
   /* address matches network interface address exactly? => no broadcast */
-  } else if (addr == ip4_addr_get_u32(&netif->ip_addr)) {
+  } else if (addr == ip4_addr_get_uint32_t(&netif->ip_addr)) {
     return 0;
   /*  on the same (sub) network... */
   } else if (ip_addr_netcmp(&ipaddr, &(netif->ip_addr), &(netif->netmask))
          /* ...and host identifier bits are all ones? =>... */
-          && ((addr & ~ip4_addr_get_u32(&netif->netmask)) ==
-           (IPADDR_BROADCAST & ~ip4_addr_get_u32(&netif->netmask)))) {
+          && ((addr & ~ip4_addr_get_uint32_t(&netif->netmask)) ==
+           (IPADDR_BROADCAST & ~ip4_addr_get_uint32_t(&netif->netmask)))) {
     /* => network broadcast address */
     return 1;
   } else {
@@ -86,11 +86,11 @@ ip4_addr_isbroadcast(u32_t addr, const struct netif *netif)
  * @param netmask the IPv4 netmask to check (in network byte order!)
  * @return 1 if the netmask is valid, 0 if it is not
  */
-u8_t
-ip4_addr_netmask_valid(u32_t netmask)
+uint8_t
+ip4_addr_netmask_valid(uint32_t netmask)
 {
-  u32_t mask;
-  u32_t nm_hostorder = lwip_htonl(netmask);
+  uint32_t mask;
+  uint32_t nm_hostorder = lwip_htonl(netmask);
 
   /* first, check for the first zero */
   for (mask = 1U << 31 ; mask != 0; mask >>= 1) {
@@ -111,7 +111,7 @@ ip4_addr_netmask_valid(u32_t netmask)
 
 /* Here for now until needed in other places in lwIP */
 #ifndef isprint
-#define in_range(c, lo, up)  ((u8_t)c >= lo && (u8_t)c <= up)
+#define in_range(c, lo, up)  ((uint8_t)c >= lo && (uint8_t)c <= up)
 #define isprint(c)           in_range(c, 0x20, 0x7f)
 //#define isdigit(c)           in_range(c, '0', '9')
 //#define isxdigit(c)          (isdigit(c) || in_range(c, 'a', 'f') || in_range(c, 'A', 'F'))
@@ -126,13 +126,13 @@ ip4_addr_netmask_valid(u32_t netmask)
  * @param cp IP address in ascii represenation (e.g. "127.0.0.1")
  * @return ip address in network order
  */
-u32_t
+uint32_t
 ipaddr_addr(const char *cp)
 {
   ip_addr_t val;
 
   if (ipaddr_aton(cp, &val)) {
-    return ip4_addr_get_u32(&val);
+    return ip4_addr_get_uint32_t(&val);
   }
   return (IPADDR_NONE);
 }
@@ -151,11 +151,11 @@ ipaddr_addr(const char *cp)
 int
 ipaddr_aton(const char *cp, ip_addr_t *addr)
 {
-  u32_t val;
-  u8_t base;
+  uint32_t val;
+  uint8_t base;
   char c;
-  u32_t parts[4];
-  u32_t *pp = parts;
+  uint32_t parts[4];
+  uint32_t *pp = parts;
 
   c = *cp;
   for (;;) {
@@ -244,7 +244,7 @@ ipaddr_aton(const char *cp, ip_addr_t *addr)
     break;
   }
   if (addr) {
-    ip4_addr_set_u32(addr, htonl(val));
+    ip4_addr_set_uint32_t(addr, htonl(val));
   }
   return (1);
 }
@@ -275,24 +275,24 @@ ipaddr_ntoa(const ip_addr_t *addr)
  */
 char *ipaddr_ntoa_r(const ip_addr_t *addr, char *buf, int buflen)
 {
-  u32_t s_addr;
+  uint32_t s_addr;
   char inv[3];
   char *rp;
-  u8_t *ap;
-  u8_t rem;
-  u8_t n;
-  u8_t i;
+  uint8_t *ap;
+  uint8_t rem;
+  uint8_t n;
+  uint8_t i;
   int len = 0;
 
-  s_addr = ip4_addr_get_u32(addr);
+  s_addr = ip4_addr_get_uint32_t(addr);
 
   rp = buf;
-  ap = (u8_t *)&s_addr;
+  ap = (uint8_t *)&s_addr;
   for(n = 0; n < 4; n++) {
     i = 0;
     do {
-      rem = *ap % (u8_t)10;
-      *ap /= (u8_t)10;
+      rem = *ap % (uint8_t)10;
+      *ap /= (uint8_t)10;
       inv[i++] = '0' + rem;
     } while(*ap);
     while(i--) {

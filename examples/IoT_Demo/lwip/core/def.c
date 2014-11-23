@@ -55,37 +55,37 @@
 #if (LWIP_PLATFORM_BYTESWAP == 0) && (BYTE_ORDER == LITTLE_ENDIAN)
 
 /**
- * Convert an u16_t from host- to network byte order.
+ * Convert an uint16 from host- to network byte order.
  *
- * @param n u16_t in host byte order
+ * @param n uint16 in host byte order
  * @return n in network byte order
  */
-u16_t
-lwip_htons(u16_t n)
+uint16
+lwip_htons(uint16 n)
 {
   return ((n & 0xff) << 8) | ((n & 0xff00) >> 8);
 }
 
 /**
- * Convert an u16_t from network- to host byte order.
+ * Convert an uint16 from network- to host byte order.
  *
- * @param n u16_t in network byte order
+ * @param n uint16 in network byte order
  * @return n in host byte order
  */
-u16_t
-lwip_ntohs(u16_t n)
+uint16
+lwip_ntohs(uint16 n)
 {
   return lwip_htons(n);
 }
 
 /**
- * Convert an u32_t from host- to network byte order.
+ * Convert an uint32_t from host- to network byte order.
  *
- * @param n u32_t in host byte order
+ * @param n uint32_t in host byte order
  * @return n in network byte order
  */
-u32_t
-lwip_htonl(u32_t n)
+uint32_t
+lwip_htonl(uint32_t n)
 {
   return ((n & 0xff) << 24) |
     ((n & 0xff00) << 8) |
@@ -94,13 +94,13 @@ lwip_htonl(u32_t n)
 }
 
 /**
- * Convert an u32_t from network- to host byte order.
+ * Convert an uint32_t from network- to host byte order.
  *
- * @param n u32_t in network byte order
+ * @param n uint32_t in network byte order
  * @return n in host byte order
  */
-u32_t
-lwip_ntohl(u32_t n)
+uint32_t
+lwip_ntohl(uint32_t n)
 {
   return lwip_htonl(n);
 }

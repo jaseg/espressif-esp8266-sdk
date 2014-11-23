@@ -20,28 +20,28 @@ LOCAL struct keys_param keys;
 LOCAL struct single_key_param *single_key[SENSOR_KEY_NUM];
 LOCAL os_timer_t sensor_sleep_timer;
 LOCAL os_timer_t link_led_timer;
-LOCAL uint8 link_led_level = 0;
-LOCAL uint32 link_start_time;
+LOCAL uint8_t link_led_level = 0;
+LOCAL uint32_t link_start_time;
 
 #if HUMITURE_SUB_DEVICE
 #include "driver/i2c_master.h"
 
 #define MVH3004_Addr    0x88
 
-LOCAL uint8 humiture_data[4];
+LOCAL uint8_t humiture_data[4];
 
 /******************************************************************************
  * FunctionName : user_mvh3004_burst_read
  * Description  : burst read mvh3004's internal data
- * Parameters   : uint8 addr - mvh3004's address
- *                uint8 *pData - data point to put read data
+ * Parameters   : uint8_t addr - mvh3004's address
+ *                uint8_t *pData - data point to put read data
  *                uint16 len - read length
  * Returns      : bool - true or false
 *******************************************************************************/
 LOCAL bool ICACHE_FLASH_ATTR
-user_mvh3004_burst_read(uint8 addr, uint8 *pData, uint16 len)
+user_mvh3004_burst_read(uint8_t addr, uint8_t *pData, uint16 len)
 {
-    uint8 ack;
+    uint8_t ack;
     uint16 i;
 
     i2c_master_start();
@@ -81,11 +81,11 @@ user_mvh3004_burst_read(uint8 addr, uint8 *pData, uint16 len)
 /******************************************************************************
  * FunctionName : user_mvh3004_read_th
  * Description  : read mvh3004's humiture data
- * Parameters   : uint8 *data - where data to put
+ * Parameters   : uint8_t *data - where data to put
  * Returns      : bool - ture or false
 *******************************************************************************/
 bool ICACHE_FLASH_ATTR
-user_mvh3004_read_th(uint8 *data)
+user_mvh3004_read_th(uint8_t *data)
 {
     return user_mvh3004_burst_read(MVH3004_Addr, data, 4);
 }
@@ -102,7 +102,7 @@ user_mvh3004_init(void)
     i2c_master_gpio_init();
 }
 
-uint8 *ICACHE_FLASH_ATTR
+uint8_t *ICACHE_FLASH_ATTR
 user_mvh3004_get_poweron_th(void)
 {
     return humiture_data;
@@ -132,7 +132,7 @@ user_link_led_init(void)
 }
 
 void ICACHE_FLASH_ATTR
-user_link_led_output(uint8 level)
+user_link_led_output(uint8_t level)
 {
     GPIO_OUTPUT_SET(GPIO_ID_PIN(SENSOR_LINK_LED_IO_NUM), level);
 }
@@ -177,7 +177,7 @@ user_sensor_deep_sleep_disable(void)
 }
 
 void ICACHE_FLASH_ATTR
-user_sensor_deep_sleep_init(uint32 time)
+user_sensor_deep_sleep_init(uint32_t time)
 {
     os_timer_disarm(&sensor_sleep_timer);
     os_timer_setfn(&sensor_sleep_timer, (os_timer_func_t *)user_sensor_deep_sleep_enter, NULL);
@@ -191,7 +191,7 @@ user_sensor_deep_sleep_init(uint32 time)
  * Returns      : none
 *******************************************************************************/
 void ICACHE_FLASH_ATTR
-user_sensor_init(uint8 active)
+user_sensor_init(uint8_t active)
 {
     user_link_led_init();
 

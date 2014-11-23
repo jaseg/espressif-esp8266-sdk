@@ -7,7 +7,7 @@
 #define SPI         0
 #define HSPI        1
 
-void spi_master_init(uint8 spi_no);
-void spi_master_9bit_write(uint8 spi_no, uint8 high_bit, uint8 low_8bit);
+void spi_master_init(uint8_t spi_no);
+void spi_master_9bit_write(uint8_t spi_no, uint8_t high_bit, uint8_t low_8bit);
 
 #endif

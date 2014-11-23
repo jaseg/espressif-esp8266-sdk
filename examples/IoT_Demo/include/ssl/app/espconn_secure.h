@@ -10,7 +10,7 @@
  * Returns      : none
 *******************************************************************************/
 
-sint8 espconn_secure_connect(struct espconn *espconn);
+int8_t espconn_secure_connect(struct espconn *espconn);
 
 /******************************************************************************
  * FunctionName : espconn_encry_disconnect
@@ -19,7 +19,7 @@ sint8 espconn_secure_connect(struct espconn *espconn);
  * Returns      : none
 *******************************************************************************/
 
-extern sint8 espconn_secure_disconnect(struct espconn *espconn);
+extern int8_t espconn_secure_disconnect(struct espconn *espconn);
 
 /******************************************************************************
  * FunctionName : espconn_encry_sent
@@ -30,7 +30,7 @@ extern sint8 espconn_secure_disconnect(struct espconn *espconn);
  * Returns      : none
 *******************************************************************************/
 
-extern sint8 espconn_secure_sent(struct espconn *espconn, uint8 *psent, uint16 length);
+extern int8_t espconn_secure_sent(struct espconn *espconn, uint8_t *psent, uint16 length);
 
 /******************************************************************************
  * FunctionName : espconn_secure_accept
@@ -39,7 +39,7 @@ extern sint8 espconn_secure_sent(struct espconn *espconn, uint8 *psent, uint16 l
  * Returns      : none
 *******************************************************************************/
 
-extern sint8 espconn_secure_accept(struct espconn *espconn);
+extern int8_t espconn_secure_accept(struct espconn *espconn);
 
 #endif
 

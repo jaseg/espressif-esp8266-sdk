@@ -36,7 +36,7 @@ LOCAL struct softap_config *ap_conf;
 //struct lewei_login_info *login_info;
 LOCAL scaninfo *pscaninfo;
 
-extern u16 scannum;
+extern uint16 scannum;
 
 /******************************************************************************
  * FunctionName : device_get
@@ -174,7 +174,7 @@ status_set(struct jsontree_context *js_ctx, struct jsonparse_state *parser)
     while ((type = jsonparse_next(parser)) != 0) {
         if (type == JSON_TYPE_PAIR_NAME) {
             if (jsonparse_strcmp_value(parser, "status") == 0) {
-                uint8 status;
+                uint8_t status;
                 jsonparse_next(parser);
                 jsonparse_next(parser);
                 status = jsonparse_get_value_as_int(parser);
@@ -224,21 +224,21 @@ light_status_set(struct jsontree_context *js_ctx, struct jsonparse_state *parser
     while ((type = jsonparse_next(parser)) != 0) {
         if (type == JSON_TYPE_PAIR_NAME) {
             if (jsonparse_strcmp_value(parser, "red") == 0) {
-                uint8 status;
+                uint8_t status;
                 jsonparse_next(parser);
                 jsonparse_next(parser);
                 status = jsonparse_get_value_as_int(parser);
                 //                os_printf("R: %d \n",status);
                 user_light_set_duty(status, LIGHT_RED);
             } else if (jsonparse_strcmp_value(parser, "green") == 0) {
-                uint8 status;
+                uint8_t status;
                 jsonparse_next(parser);
                 jsonparse_next(parser);
                 status = jsonparse_get_value_as_int(parser);
                 //                os_printf("G: %d \n",status);
                 user_light_set_duty(status, LIGHT_GREEN);
             } else if (jsonparse_strcmp_value(parser, "blue") == 0) {
-                uint8 status;
+                uint8_t status;
                 jsonparse_next(parser);
                 jsonparse_next(parser);
                 status = jsonparse_get_value_as_int(parser);
@@ -285,7 +285,7 @@ wifi_station_get(struct jsontree_context *js_ctx)
 {
     const char *path = jsontree_path_name(js_ctx, js_ctx->depth - 1);
     struct ip_info ipconfig;
-    uint8 buf[20];
+    uint8_t buf[20];
     os_bzero(buf, sizeof(buf));
     wifi_station_get_config(sta_conf);
     wifi_get_ip_info(STATION_IF, &ipconfig);
@@ -319,7 +319,7 @@ LOCAL int ICACHE_FLASH_ATTR
 wifi_station_set(struct jsontree_context *js_ctx, struct jsonparse_state *parser)
 {
     int type;
-    uint8 station_tree;
+    uint8_t station_tree;
 
     while ((type = jsonparse_next(parser)) != 0) {
         if (type == JSON_TYPE_PAIR_NAME) {
@@ -399,7 +399,7 @@ wifi_softap_get(struct jsontree_context *js_ctx)
 {
     const char *path = jsontree_path_name(js_ctx, js_ctx->depth - 1);
     struct ip_info ipconfig;
-    uint8 buf[20];
+    uint8_t buf[20];
     os_bzero(buf, sizeof(buf));
     wifi_softap_get_config(ap_conf);
     wifi_get_ip_info(SOFTAP_IF, &ipconfig);
@@ -461,7 +461,7 @@ LOCAL int ICACHE_FLASH_ATTR
 wifi_softap_set(struct jsontree_context *js_ctx, struct jsonparse_state *parser)
 {
     int type;
-    uint8 softap_tree;
+    uint8_t softap_tree;
 
     while ((type = jsonparse_next(parser)) != 0) {
         if (type == JSON_TYPE_PAIR_NAME) {
@@ -573,7 +573,7 @@ scan_get(struct jsontree_context *js_ctx)
         jsontree_write_int(js_ctx, pscaninfo->pagenum);
     } else if (os_strncmp(path, "bssid", 5) == 0) {
         bss = STAILQ_FIRST(pscaninfo->pbss);
-        u8 buffer[32];
+        uint8_t buffer[32];
         //if (bss != NULL){
         os_memset(buffer, 0, sizeof(buffer));
         os_sprintf(buffer, MACSTR, MAC2STR(bss->bssid));
@@ -663,7 +663,7 @@ LOCAL void ICACHE_FLASH_ATTR
 parse_url(char *precv, URL_Frame *purl_frame)
 {
     char *str = NULL;
-    uint8 length = 0;
+    uint8_t length = 0;
     char *pbuffer = NULL;
     char *pbufer = NULL;
 
@@ -726,7 +726,7 @@ parse_url(char *precv, URL_Frame *purl_frame)
 }
 
 LOCAL char *precvbuffer;
-static uint32 dat_sumlength = 0;
+static uint32_t dat_sumlength = 0;
 LOCAL bool save_data(char *precv, uint16 length)
 {
     bool flag = false;
@@ -734,7 +734,7 @@ LOCAL bool save_data(char *precv, uint16 length)
     char *ptemp = NULL;
     char *pdata = NULL;
     uint16 headlength = 0;
-    static uint32 totallength = 0;
+    static uint32_t totallength = 0;
 
     ptemp = (char *)os_strstr(precv, "\r\n\r\n");
 
@@ -948,8 +948,8 @@ json_send(void *arg, ParmType ParmType)
             break;
 
         case SCAN: {
-            u8 i = 0;
-            u8 scancount = 0;
+            uint8_t i = 0;
+            uint8_t scancount = 0;
             struct bss_info *bss = NULL;
             bss = STAILQ_FIRST(pscaninfo->pbss);
 
@@ -1352,7 +1352,7 @@ webserver_recv(void *arg, char *pusrdata, unsigned short length)
  * Returns      : none
 *******************************************************************************/
 LOCAL ICACHE_FLASH_ATTR
-void webserver_recon(void *arg, sint8 err)
+void webserver_recon(void *arg, int8_t err)
 {
     struct espconn *pesp_conn = arg;
 
@@ -1400,7 +1400,7 @@ webserver_listen(void *arg)
  * Returns      : none
 *******************************************************************************/
 void ICACHE_FLASH_ATTR
-user_webserver_init(uint32 port)
+user_webserver_init(uint32_t port)
 {
     LOCAL struct espconn esp_conn;
     LOCAL esp_tcp esptcp;

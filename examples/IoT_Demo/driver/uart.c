@@ -30,7 +30,7 @@ LOCAL void uart0_rx_intr_handler(void *para);
  * Returns      : NONE
 *******************************************************************************/
 LOCAL void ICACHE_FLASH_ATTR
-uart_config(uint8 uart_no)
+uart_config(uint8_t uart_no)
 {
     if (uart_no == UART1) {
         PIN_FUNC_SELECT(PERIPHS_IO_MUX_GPIO2_U, FUNC_U1TXD_BK);
@@ -66,15 +66,15 @@ uart_config(uint8 uart_no)
  * FunctionName : uart1_tx_one_char
  * Description  : Internal used function
  *                Use uart1 interface to transfer one char
- * Parameters   : uint8 TxChar - character to tx
+ * Parameters   : uint8_t TxChar - character to tx
  * Returns      : OK
 *******************************************************************************/
 LOCAL STATUS ICACHE_FLASH_ATTR
-uart1_tx_one_char(uint8 TxChar)
+uart1_tx_one_char(uint8_t TxChar)
 {
     while (true)
 	{
-		uint32 fifo_cnt = READ_PERI_REG(UART_STATUS(UART1)) & (UART_TXFIFO_CNT<<UART_TXFIFO_CNT_S);
+		uint32_t fifo_cnt = READ_PERI_REG(UART_STATUS(UART1)) & (UART_TXFIFO_CNT<<UART_TXFIFO_CNT_S);
 		if ((fifo_cnt >> UART_TXFIFO_CNT_S & UART_TXFIFO_CNT) < 126) {
 			break;
 		}
@@ -117,7 +117,7 @@ uart0_rx_intr_handler(void *para)
      * uart1 and uart0 respectively
      */
     RcvMsgBuff *pRxBuff = (RcvMsgBuff *)para;
-    uint8 RcvChar;
+    uint8_t RcvChar;
 
     if (UART_RXFIFO_FULL_INT_ST != (READ_PERI_REG(UART_INT_ST(UART0)) & UART_RXFIFO_FULL_INT_ST)) {
         return;
@@ -150,12 +150,12 @@ uart0_rx_intr_handler(void *para)
 /******************************************************************************
  * FunctionName : uart0_tx_buffer
  * Description  : use uart0 to transfer buffer
- * Parameters   : uint8 *buf - point to send buffer
+ * Parameters   : uint8_t *buf - point to send buffer
  *                uint16 len - buffer len
  * Returns      :
 *******************************************************************************/
 void ICACHE_FLASH_ATTR
-uart0_tx_buffer(uint8 *buf, uint16 len)
+uart0_tx_buffer(uint8_t *buf, uint16 len)
 {
     uint16 i;
 

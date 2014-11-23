@@ -29,34 +29,34 @@ extern "C" {
 struct dhcp
 {
   /** transaction identifier of last sent request */ 
-  u32_t xid;
+  uint32_t xid;
   /** our connection to the DHCP server */ 
   struct udp_pcb *pcb;
   /** incoming msg */
   struct dhcp_msg *msg_in;
   /** current DHCP state machine state */
-  u8_t state;
+  uint8_t state;
   /** retries of current request */
-  u8_t tries;
+  uint8_t tries;
 #if LWIP_DHCP_AUTOIP_COOP
-  u8_t autoip_coop_state;
+  uint8_t autoip_coop_state;
 #endif
-  u8_t subnet_mask_given;
+  uint8_t subnet_mask_given;
 
   struct pbuf *p_out; /* pbuf of outcoming msg */
   struct dhcp_msg *msg_out; /* outgoing msg */
-  u16_t options_out_len; /* outgoing msg options length */
-  u16_t request_timeout; /* #ticks with period DHCP_FINE_TIMER_SECS for request timeout */
-  u16_t t1_timeout;  /* #ticks with period DHCP_COARSE_TIMER_SECS for renewal time */
-  u16_t t2_timeout;  /* #ticks with period DHCP_COARSE_TIMER_SECS for rebind time */
+  uint16 options_out_len; /* outgoing msg options length */
+  uint16 request_timeout; /* #ticks with period DHCP_FINE_TIMER_SECS for request timeout */
+  uint16 t1_timeout;  /* #ticks with period DHCP_COARSE_TIMER_SECS for renewal time */
+  uint16 t2_timeout;  /* #ticks with period DHCP_COARSE_TIMER_SECS for rebind time */
   ip_addr_t server_ip_addr; /* dhcp server address that offered this lease */
   ip_addr_t offered_ip_addr;
   ip_addr_t offered_sn_mask;
   ip_addr_t offered_gw_addr;
  
-  u32_t offered_t0_lease; /* lease period (in seconds) */
-  u32_t offered_t1_renew; /* recommended renew time (usually 50% of lease period) */
-  u32_t offered_t2_rebind; /* recommended rebind time (usually 66% of lease period)  */
+  uint32_t offered_t0_lease; /* lease period (in seconds) */
+  uint32_t offered_t1_renew; /* recommended renew time (usually 50% of lease period) */
+  uint32_t offered_t2_rebind; /* recommended rebind time (usually 66% of lease period)  */
   /* @todo: LWIP_DHCP_BOOTP_FILE configuration option?
      integrate with possible TFTP-client for booting? */
 #define LWIP_DHCP_BOOTP_FILE 0
@@ -74,21 +74,21 @@ PACK_STRUCT_BEGIN
 /** minimum set of fields of any DHCP message */
 struct dhcp_msg
 {
-  PACK_STRUCT_FIELD(u8_t op);
-  PACK_STRUCT_FIELD(u8_t htype);
-  PACK_STRUCT_FIELD(u8_t hlen);
-  PACK_STRUCT_FIELD(u8_t hops);
-  PACK_STRUCT_FIELD(u32_t xid);
-  PACK_STRUCT_FIELD(u16_t secs);
-  PACK_STRUCT_FIELD(u16_t flags);
+  PACK_STRUCT_FIELD(uint8_t op);
+  PACK_STRUCT_FIELD(uint8_t htype);
+  PACK_STRUCT_FIELD(uint8_t hlen);
+  PACK_STRUCT_FIELD(uint8_t hops);
+  PACK_STRUCT_FIELD(uint32_t xid);
+  PACK_STRUCT_FIELD(uint16 secs);
+  PACK_STRUCT_FIELD(uint16 flags);
   PACK_STRUCT_FIELD(ip_addr_p_t ciaddr);
   PACK_STRUCT_FIELD(ip_addr_p_t yiaddr);
   PACK_STRUCT_FIELD(ip_addr_p_t siaddr);
   PACK_STRUCT_FIELD(ip_addr_p_t giaddr);
-  PACK_STRUCT_FIELD(u8_t chaddr[DHCP_CHADDR_LEN]);
-  PACK_STRUCT_FIELD(u8_t sname[DHCP_SNAME_LEN]);
-  PACK_STRUCT_FIELD(u8_t file[DHCP_FILE_LEN]);
-  PACK_STRUCT_FIELD(u32_t cookie);
+  PACK_STRUCT_FIELD(uint8_t chaddr[DHCP_CHADDR_LEN]);
+  PACK_STRUCT_FIELD(uint8_t sname[DHCP_SNAME_LEN]);
+  PACK_STRUCT_FIELD(uint8_t file[DHCP_FILE_LEN]);
+  PACK_STRUCT_FIELD(uint32_t cookie);
 #define DHCP_MIN_OPTIONS_LEN 68U
 /** make sure user does not configure this too small */
 #if ((defined(DHCP_OPTIONS_LEN)) && (DHCP_OPTIONS_LEN < DHCP_MIN_OPTIONS_LEN))
@@ -99,7 +99,7 @@ struct dhcp_msg
 /** set this to be sufficient for your options in outgoing DHCP msgs */
 #  define DHCP_OPTIONS_LEN DHCP_MIN_OPTIONS_LEN
 #endif
-  PACK_STRUCT_FIELD(u8_t options[DHCP_OPTIONS_LEN]);
+  PACK_STRUCT_FIELD(uint8_t options[DHCP_OPTIONS_LEN]);
 } PACK_STRUCT_STRUCT;
 PACK_STRUCT_END
 #ifdef PACK_STRUCT_USE_INCLUDES

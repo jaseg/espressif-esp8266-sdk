@@ -27,7 +27,7 @@
  * Parameters   : espconn -- the espconn used to listen the connection
  * Returns      : none
 *******************************************************************************/
-sint8 ICACHE_FLASH_ATTR
+int8_t ICACHE_FLASH_ATTR
 espconn_secure_connect(struct espconn *espconn)
 {	
 	if (espconn == NULL)
@@ -42,7 +42,7 @@ espconn_secure_connect(struct espconn *espconn)
  * Parameters   : espconn -- the espconn used to listen the connection
  * Returns      : none
 *******************************************************************************/
-sint8 ICACHE_FLASH_ATTR
+int8_t ICACHE_FLASH_ATTR
 espconn_secure_disconnect(struct espconn *espconn)
 {
 	espconn_msg *pnode = NULL;
@@ -67,8 +67,8 @@ espconn_secure_disconnect(struct espconn *espconn)
  *                length -- length of data to send
  * Returns      : none
 *******************************************************************************/
-sint8 ICACHE_FLASH_ATTR
-espconn_secure_sent(struct espconn *espconn, uint8 *psent, uint16 length)
+int8_t ICACHE_FLASH_ATTR
+espconn_secure_sent(struct espconn *espconn, uint8_t *psent, uint16 length)
 {
 	espconn_msg *pnode = NULL;
 	bool value = false;
@@ -85,7 +85,7 @@ espconn_secure_sent(struct espconn *espconn, uint8 *psent, uint16 length)
 		return ESPCONN_ARG;
 }
 
-sint8 ICACHE_FLASH_ATTR
+int8_t ICACHE_FLASH_ATTR
 espconn_secure_accept(struct espconn *espconn)
 {
 	if (espconn == NULL)

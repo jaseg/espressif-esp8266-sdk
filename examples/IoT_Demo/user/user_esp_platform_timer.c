@@ -26,22 +26,22 @@
 #endif
 
 LOCAL os_timer_t device_timer;
-uint32 min_wait_second;
+uint32_t min_wait_second;
 char timestamp_str[11];
 int timestamp = 0;
 char *timer_splits[20] = {NULL};
 
 struct esp_platform_wait_timer_param {
-    uint8 wait_time_param[11];
-    uint8 wait_action[15];
+    uint8_t wait_time_param[11];
+    uint8_t wait_action[15];
     int wait_time_second;
 };
 
 struct wait_param {
-    uint8 action[20][15];
+    uint8_t action[20][15];
     uint16 action_number;
     uint16 count;
-    uint32 min_time_backup;
+    uint32_t min_time_backup;
 };
 
 void esp_platform_timer_action(struct esp_platform_wait_timer_param   *timer_wait_param, uint16 count);
@@ -201,7 +201,7 @@ user_platform_timer_first_start(uint16 count)
 void ICACHE_FLASH_ATTR
 user_esp_platform_device_action(struct wait_param *pwait_action)
 {
-    uint8 i = 0;
+    uint8_t i = 0;
     uint16 count = pwait_action->count;
     uint16 action_number = pwait_action->action_number;
 
@@ -298,7 +298,7 @@ user_platform_timer_start(char *pbuffer)
 {
     int str_begin = 0;
     int str_end = 0;
-    uint8 i = 0;
+    uint8_t i = 0;
     char *pstr_start = NULL;
     char *pstr_end = NULL;
     struct esp_platform_wait_timer_param timer_wait_param[20];

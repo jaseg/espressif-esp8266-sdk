@@ -63,7 +63,7 @@
 /* The amount of data from the original packet to return in a dest-unreachable */
 #define ICMP_DEST_UNREACH_DATASIZE 8
 
-static void icmp_send_response(struct pbuf *p, u8_t type, u8_t code);
+static void icmp_send_response(struct pbuf *p, uint8_t type, uint8_t code);
 
 /**
  * Processes ICMP input packets, called from ip_input().
@@ -77,13 +77,13 @@ static void icmp_send_response(struct pbuf *p, u8_t type, u8_t code);
 void
 icmp_input(struct pbuf *p, struct netif *inp)
 {
-  u8_t type;
+  uint8_t type;
 #ifdef LWIP_DEBUG
-  u8_t code;
+  uint8_t code;
 #endif /* LWIP_DEBUG */
   struct icmp_echo_hdr *iecho;
   struct ip_hdr *iphdr;
-  s16_t hlen;
+  int16_t hlen;
 
   ICMP_STATS_INC(icmp.recv);
   snmp_inc_icmpinmsgs();
@@ -91,14 +91,14 @@ icmp_input(struct pbuf *p, struct netif *inp)
 
   iphdr = (struct ip_hdr *)p->payload;
   hlen = IPH_HL(iphdr) * 4;
-  if (pbuf_header(p, -hlen) || (p->tot_len < sizeof(u16_t)*2)) {
+  if (pbuf_header(p, -hlen) || (p->tot_len < sizeof(uint16)*2)) {
     LWIP_DEBUGF(ICMP_DEBUG, ("icmp_input: short ICMP (%"U16_F" bytes) received\n", p->tot_len));
     goto lenerr;
   }
 
-  type = *((u8_t *)p->payload);
+  type = *((uint8_t *)p->payload);
 #ifdef LWIP_DEBUG
-  code = *(((u8_t *)p->payload)+1);
+  code = *(((uint8_t *)p->payload)+1);
 #endif /* LWIP_DEBUG */
   switch (type) {
   case ICMP_ER:
@@ -178,7 +178,7 @@ icmp_input(struct pbuf *p, struct netif *inp)
       p = r;
     } else {
       /* restore p->payload to point to icmp header */
-      if (pbuf_header(p, -(s16_t)(PBUF_IP_HLEN + PBUF_LINK_HLEN))) {
+      if (pbuf_header(p, -(int16_t)(PBUF_IP_HLEN + PBUF_LINK_HLEN))) {
         LWIP_ASSERT("icmp_input: restoring original p->payload failed\n", 0);
         goto memerr;
       }
@@ -225,7 +225,7 @@ icmp_input(struct pbuf *p, struct netif *inp)
     break;
   default:
     LWIP_DEBUGF(ICMP_DEBUG, ("icmp_input: ICMP type %"S16_F" code %"S16_F" not supported.\n", 
-                (s16_t)type, (s16_t)code));
+                (int16_t)type, (int16_t)code));
     ICMP_STATS_INC(icmp.proterr);
     ICMP_STATS_INC(icmp.drop);
   }
@@ -285,7 +285,7 @@ icmp_time_exceeded(struct pbuf *p, enum icmp_te_type t)
  * @param code Code of the ICMP header
  */
 static void ICACHE_FLASH_ATTR
-icmp_send_response(struct pbuf *p, u8_t type, u8_t code)
+icmp_send_response(struct pbuf *p, uint8_t type, uint8_t code)
 {
   struct pbuf *q;
   struct ip_hdr *iphdr;
@@ -319,7 +319,7 @@ icmp_send_response(struct pbuf *p, u8_t type, u8_t code)
   icmphdr->seqno = 0;//报文，首部剩余的4个字节都为0
 
   /* copy fields from original packet 将引起差错的IP数据报的IP首部+8字节数据拷贝到差错报文数据区*/
-  SMEMCPY((u8_t *)q->payload + sizeof(struct icmp_echo_hdr), (u8_t *)p->payload,
+  SMEMCPY((uint8_t *)q->payload + sizeof(struct icmp_echo_hdr), (uint8_t *)p->payload,
           IP_HLEN + ICMP_DEST_UNREACH_DATASIZE);
 
   /* calculate checksum */

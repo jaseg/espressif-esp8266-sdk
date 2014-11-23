@@ -77,13 +77,13 @@ struct igmp_group {
   /** multicast address */
   ip_addr_t          group_address;
   /** signifies we were the last person to report */
-  u8_t               last_reporter_flag;
+  uint8_t               last_reporter_flag;
   /** current state of the group */
-  u8_t               group_state;
+  uint8_t               group_state;
   /** timer for reporting, negative is OFF */
-  u16_t              timer;
+  uint16              timer;
   /** counter of simultaneous uses */
-  u8_t               use;
+  uint8_t               use;
 };
 
 /*  Prototypes */

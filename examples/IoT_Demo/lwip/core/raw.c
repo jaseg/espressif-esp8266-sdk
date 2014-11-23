@@ -72,13 +72,13 @@ static struct raw_pcb *raw_pcbs;
  *           caller).
  *
  */
-u8_t ICACHE_FLASH_ATTR
+uint8_t ICACHE_FLASH_ATTR
 raw_input(struct pbuf *p, struct netif *inp)
 {
   struct raw_pcb *pcb, *prev;
   struct ip_hdr *iphdr;
-  s16_t proto;
-  u8_t eaten = 0;
+  int16_t proto;
+  uint8_t eaten = 0;
 
   LWIP_UNUSED_ARG(inp);
 
@@ -332,7 +332,7 @@ raw_remove(struct raw_pcb *pcb)
  * @see raw_remove()
  */
 struct raw_pcb * ICACHE_FLASH_ATTR
-raw_new(u8_t proto)
+raw_new(uint8_t proto)
 {
   struct raw_pcb *pcb;
 

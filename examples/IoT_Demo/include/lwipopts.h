@@ -242,7 +242,7 @@
  * (requires the LWIP_TCP option)
  */
 #ifndef MEMP_NUM_TCP_PCB
-#define MEMP_NUM_TCP_PCB                (*(volatile uint32*)0x600011FC)
+#define MEMP_NUM_TCP_PCB                (*(volatile uint32_t*)0x600011FC)
 #endif
 
 /**
@@ -452,7 +452,7 @@
 
 /**
  * ETHARP_SUPPORT_VLAN==1: support receiving ethernet packets with VLAN header.
- * Additionally, you can define ETHARP_VLAN_CHECK to an u16_t VLAN ID to check.
+ * Additionally, you can define ETHARP_VLAN_CHECK to an uint16 VLAN ID to check.
  * If ETHARP_VLAN_CHECK is defined, only VLAN-traffic for this VLAN is accepted.
  * If ETHARP_VLAN_CHECK is not defined, all traffic is accepted.
  */
@@ -757,7 +757,7 @@
  * SNMP_MAX_OCTET_STRING_LEN and SNMP_MAX_TREE_DEPTH.
  */
 #ifndef SNMP_MAX_VALUE_SIZE
-#define SNMP_MAX_VALUE_SIZE             LWIP_MAX((SNMP_MAX_OCTET_STRING_LEN)+1, sizeof(s32_t)*(SNMP_MAX_TREE_DEPTH))
+#define SNMP_MAX_VALUE_SIZE             LWIP_MAX((SNMP_MAX_OCTET_STRING_LEN)+1, sizeof(int32_t)*(SNMP_MAX_TREE_DEPTH))
 #endif
 
 /*
@@ -813,11 +813,11 @@
 /** DNS_LOCAL_HOSTLIST: Implements a local host-to-address list. If enabled,
  *  you have to define
  *    #define DNS_LOCAL_HOSTLIST_INIT {{"host1", 0x123}, {"host2", 0x234}}
- *  (an array of structs name/address, where address is an u32_t in network
+ *  (an array of structs name/address, where address is an uint32_t in network
  *  byte order).
  *
  *  Instead, you can also use an external function:
- *  #define DNS_LOOKUP_LOCAL_EXTERN(x) extern u32_t my_lookup_function(const char *name)
+ *  #define DNS_LOOKUP_LOCAL_EXTERN(x) extern uint32_t my_lookup_function(const char *name)
  *  that returns the IP address or INADDR_NONE if not found.
  */
 #ifndef DNS_LOCAL_HOSTLIST
@@ -993,7 +993,7 @@
 /**
  * The maximum allowed backlog for TCP listen netconns.
  * This backlog is used unless another is explicitly specified.
- * 0xff is the maximum (u8_t).
+ * 0xff is the maximum (uint8_t).
  */
 #ifndef TCP_DEFAULT_LISTEN_BACKLOG
 #define TCP_DEFAULT_LISTEN_BACKLOG      0xff

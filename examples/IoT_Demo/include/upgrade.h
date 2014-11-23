@@ -15,16 +15,16 @@ typedef void (*upgrade_states_check_callback)(void * arg);
 //#define UPGRADE_SSL_ENABLE
 
 struct upgrade_server_info {
-    uint8 ip[4];
+    uint8_t ip[4];
     uint16 port;
 
-    uint8 upgrade_flag;
+    uint8_t upgrade_flag;
 
-    uint8 pre_version[8];
-    uint8 upgrade_version[8];
+    uint8_t pre_version[8];
+    uint8_t upgrade_version[8];
 
-    uint32 check_times;
-    uint8 *url;
+    uint32_t check_times;
+    uint8_t *url;
 
     upgrade_states_check_callback check_cb;
     struct espconn *pespconn;

@@ -74,7 +74,7 @@ static void do_close_internal(struct netconn *conn);
  *
  * @see raw.h (struct raw_pcb.recv) for parameters and return value
  */
-static u8_t
+static uint8_t
 recv_raw(void *arg, struct raw_pcb *pcb, struct pbuf *p,
     ip_addr_t *addr)
 {
@@ -103,7 +103,7 @@ recv_raw(void *arg, struct raw_pcb *pcb, struct pbuf *p,
     }
 
     if (q != NULL) {
-      u16_t len;
+      uint16 len;
       buf = (struct netbuf *)memp_malloc(MEMP_NETBUF);
       if (buf == NULL) {
         pbuf_free(q);
@@ -142,11 +142,11 @@ recv_raw(void *arg, struct raw_pcb *pcb, struct pbuf *p,
  */
 static void
 recv_udp(void *arg, struct udp_pcb *pcb, struct pbuf *p,
-   ip_addr_t *addr, u16_t port)
+   ip_addr_t *addr, uint16 port)
 {
   struct netbuf *buf;
   struct netconn *conn;
-  u16_t len;
+  uint16 len;
 #if LWIP_SO_RCVBUF
   int recv_avail;
 #endif /* LWIP_SO_RCVBUF */
@@ -216,7 +216,7 @@ static err_t
 recv_tcp(void *arg, struct tcp_pcb *pcb, struct pbuf *p, err_t err)
 {
   struct netconn *conn;
-  u16_t len;
+  uint16 len;
 
   LWIP_UNUSED_ARG(pcb);
   LWIP_ASSERT("recv_tcp must have a pcb argument", pcb != NULL);
@@ -310,7 +310,7 @@ poll_tcp(void *arg, struct tcp_pcb *pcb)
  * @see tcp.h (struct tcp_pcb.sent) for parameters and return value
  */
 static err_t
-sent_tcp(void *arg, struct tcp_pcb *pcb, u16_t len)
+sent_tcp(void *arg, struct tcp_pcb *pcb, uint16 len)
 {
   struct netconn *conn = (struct netconn *)arg;
 
@@ -735,7 +735,7 @@ static void
 do_close_internal(struct netconn *conn)
 {
   err_t err;
-  u8_t shut, shut_rx, shut_tx, close;
+  uint8_t shut, shut_rx, shut_tx, close;
 
   LWIP_ASSERT("invalid conn", (conn != NULL));
   LWIP_ASSERT("this is for tcp netconns only", (conn->type == NETCONN_TCP));
@@ -1001,7 +1001,7 @@ do_connect(struct api_msg_msg *msg)
       msg->err = tcp_connect(msg->conn->pcb.tcp, msg->msg.bc.ipaddr,
         msg->msg.bc.port, do_connected);
       if (msg->err == ERR_OK) {
-        u8_t non_blocking = netconn_is_nonblocking(msg->conn);
+        uint8_t non_blocking = netconn_is_nonblocking(msg->conn);
         msg->conn->state = NETCONN_CONNECT;
         SET_NONBLOCKING_CONNECT(msg->conn, non_blocking);
         if (non_blocking) {
@@ -1172,9 +1172,9 @@ do_recv(struct api_msg_msg *msg)
       } else
 #endif /* TCP_LISTEN_BACKLOG */
       {
-        u32_t remaining = msg->msg.r.len;
+        uint32_t remaining = msg->msg.r.len;
         do {
-          u16_t recved = (remaining > 0xffff) ? 0xffff : (u16_t)remaining;
+          uint16 recved = (remaining > 0xffff) ? 0xffff : (uint16)remaining;
           tcp_recved(msg->conn->pcb.tcp, recved);
           remaining -= recved;
         }while(remaining != 0);
@@ -1200,12 +1200,12 @@ do_writemore(struct netconn *conn)
 {
   err_t err = ERR_OK;
   void *dataptr;
-  u16_t len, available;
-  u8_t write_finished = 0;
+  uint16 len, available;
+  uint8_t write_finished = 0;
   size_t diff;
-  u8_t dontblock = netconn_is_nonblocking(conn) ||
+  uint8_t dontblock = netconn_is_nonblocking(conn) ||
        (conn->current_msg->msg.w.apiflags & NETCONN_DONTBLOCK);
-  u8_t apiflags = conn->current_msg->msg.w.apiflags;
+  uint8_t apiflags = conn->current_msg->msg.w.apiflags;
 
   LWIP_ASSERT("conn != NULL", conn != NULL);
   LWIP_ASSERT("conn->state == NETCONN_WRITE", (conn->state == NETCONN_WRITE));
@@ -1214,16 +1214,16 @@ do_writemore(struct netconn *conn)
   LWIP_ASSERT("conn->write_offset < conn->current_msg->msg.w.len",
     conn->write_offset < conn->current_msg->msg.w.len);
 
-  dataptr = (u8_t*)conn->current_msg->msg.w.dataptr + conn->write_offset;
+  dataptr = (uint8_t*)conn->current_msg->msg.w.dataptr + conn->write_offset;
   diff = conn->current_msg->msg.w.len - conn->write_offset;
-  if (diff > 0xffffUL) { /* max_u16_t */
+  if (diff > 0xffffUL) { /* max_uint16 */
     len = 0xffff;
 #if LWIP_TCPIP_CORE_LOCKING
     conn->flags |= NETCONN_FLAG_WRITE_DELAYED;
 #endif
     apiflags |= TCP_WRITE_FLAG_MORE;
   } else {
-    len = (u16_t)diff;
+    len = (uint16)diff;
   }
   available = tcp_sndbuf(conn->pcb.tcp);
   if (available < len) {

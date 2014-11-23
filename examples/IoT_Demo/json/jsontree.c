@@ -103,9 +103,9 @@ jsontree_write_int(const struct jsontree_context *js_ctx, int value)
 
 /*---------------------------------------------------------------------------*/
 void ICACHE_FLASH_ATTR
-jsontree_write_int_array(const struct jsontree_context *js_ctx, const int *text, uint32 length)
+jsontree_write_int_array(const struct jsontree_context *js_ctx, const int *text, uint32_t length)
 {
-  uint32 i = 0;
+  uint32_t i = 0;
   if(text == NULL) {
     js_ctx->putchar('0');
   } else {

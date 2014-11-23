@@ -12,7 +12,7 @@ typedef struct _ssl_msg {
     bool quiet;
     char *private_key_file;
     uint8_t session_id[SSL_SESSION_ID_SIZE];
-    u16_t pkt_length;
+    uint16 pkt_length;
 } ssl_msg;
 
 /******************************************************************************
@@ -23,7 +23,7 @@ typedef struct _ssl_msg {
  * Returns      : none
 *******************************************************************************/
 
-extern sint8 espconn_ssl_server(struct espconn *espconn);
+extern int8_t espconn_ssl_server(struct espconn *espconn);
 
 /******************************************************************************
  * FunctionName : espconn_ssl_client
@@ -33,18 +33,18 @@ extern sint8 espconn_ssl_server(struct espconn *espconn);
  * Returns      : none
 *******************************************************************************/
 
-extern sint8 espconn_ssl_client(struct espconn *espconn);
+extern int8_t espconn_ssl_client(struct espconn *espconn);
 
 /******************************************************************************
  * FunctionName : espconn_ssl_write
  * Description  : sent data for client or server
  * Parameters   : void *arg -- client or server to send
- * 				  uint8* psent -- Data to send
+ * 				  uint8_t* psent -- Data to send
  *                uint16 length -- Length of data to send
  * Returns      : none
 *******************************************************************************/
 
-extern void espconn_ssl_sent(void *arg, uint8 *psent, uint16 length);
+extern void espconn_ssl_sent(void *arg, uint8_t *psent, uint16 length);
 
 /******************************************************************************
  * FunctionName : espconn_ssl_disconnect

@@ -124,9 +124,9 @@ Steve Reynolds
 #endif
 PACK_STRUCT_BEGIN
 struct igmp_msg {
- PACK_STRUCT_FIELD(u8_t           igmp_msgtype);
- PACK_STRUCT_FIELD(u8_t           igmp_maxresp);
- PACK_STRUCT_FIELD(u16_t          igmp_checksum);
+ PACK_STRUCT_FIELD(uint8_t           igmp_msgtype);
+ PACK_STRUCT_FIELD(uint8_t           igmp_maxresp);
+ PACK_STRUCT_FIELD(uint16          igmp_checksum);
  PACK_STRUCT_FIELD(ip_addr_p_t    igmp_group_address);
 } PACK_STRUCT_STRUCT;
 PACK_STRUCT_END
@@ -138,11 +138,11 @@ PACK_STRUCT_END
 static struct igmp_group *igmp_lookup_group(struct netif *ifp, ip_addr_t *addr)ICACHE_FLASH_ATTR;
 static err_t  igmp_remove_group(struct igmp_group *group)ICACHE_FLASH_ATTR;
 static void   igmp_timeout( struct igmp_group *group)ICACHE_FLASH_ATTR;
-static void   igmp_start_timer(struct igmp_group *group, u8_t max_time)ICACHE_FLASH_ATTR;
+static void   igmp_start_timer(struct igmp_group *group, uint8_t max_time)ICACHE_FLASH_ATTR;
 static void   igmp_stop_timer(struct igmp_group *group)ICACHE_FLASH_ATTR;
-static void   igmp_delaying_member(struct igmp_group *group, u8_t maxresp)ICACHE_FLASH_ATTR;
+static void   igmp_delaying_member(struct igmp_group *group, uint8_t maxresp)ICACHE_FLASH_ATTR;
 static err_t  igmp_ip_output_if(struct pbuf *p, ip_addr_t *src, ip_addr_t *dest, struct netif *netif)ICACHE_FLASH_ATTR;
-static void   igmp_send(struct igmp_group *group, u8_t type)ICACHE_FLASH_ATTR;
+static void   igmp_send(struct igmp_group *group, uint8_t type)ICACHE_FLASH_ATTR;
 
 
 static struct igmp_group* igmp_group_list;
@@ -172,7 +172,7 @@ igmp_dump_group_list()
   struct igmp_group *group = igmp_group_list;
 
   while (group != NULL) {
-    LWIP_DEBUGF(IGMP_DEBUG, ("igmp_dump_group_list: [%"U32_F"] ", (u32_t)(group->group_state)));
+    LWIP_DEBUGF(IGMP_DEBUG, ("igmp_dump_group_list: [%"U32_F"] ", (uint32_t)(group->group_state)));
     ip_addr_debug_print(IGMP_DEBUG, &group->group_address);
     LWIP_DEBUGF(IGMP_DEBUG, (" on if %p\n", group->netif));
     group = group->next;
@@ -398,7 +398,7 @@ igmp_input(struct pbuf *p, struct netif *inp, ip_addr_t *dest)
 
   /* Note that the length CAN be greater than 8 but only 8 are used - All are included in the checksum */    
   iphdr = (struct ip_hdr *)p->payload;
-  if (pbuf_header(p, -(s16_t)(IPH_HL(iphdr) * 4)) || (p->len < IGMP_MINLEN)) {
+  if (pbuf_header(p, -(int16_t)(IPH_HL(iphdr) * 4)) || (p->len < IGMP_MINLEN)) {
     pbuf_free(p);
     IGMP_STATS_INC(igmp.lenerr);
     LWIP_DEBUGF(IGMP_DEBUG, ("igmp_input: length error\n"));
@@ -696,7 +696,7 @@ igmp_timeout(struct igmp_group *group)
  *        every call to igmp_tmr())
  */
 static void
-igmp_start_timer(struct igmp_group *group, u8_t max_time)
+igmp_start_timer(struct igmp_group *group, uint8_t max_time)
 {
   /* ensure the input value is > 0 */
   if (max_time == 0) {
@@ -724,7 +724,7 @@ igmp_stop_timer(struct igmp_group *group)
  * @param maxresp query delay
  */
 static void
-igmp_delaying_member(struct igmp_group *group, u8_t maxresp)
+igmp_delaying_member(struct igmp_group *group, uint8_t maxresp)
 {
   if ((group->group_state == IGMP_GROUP_IDLE_MEMBER) ||
      ((group->group_state == IGMP_GROUP_DELAYING_MEMBER) &&
@@ -757,7 +757,7 @@ static err_t
 igmp_ip_output_if(struct pbuf *p, ip_addr_t *src, ip_addr_t *dest, struct netif *netif)
 {
   /* This is the "router alert" option */
-  u16_t ra[2];
+  uint16 ra[2];
   ra[0] = PP_HTONS(ROUTER_ALERT);
   ra[1] = 0x0000; /* Router shall examine packet */
   IGMP_STATS_INC(igmp.xmit);
@@ -771,7 +771,7 @@ igmp_ip_output_if(struct pbuf *p, ip_addr_t *src, ip_addr_t *dest, struct netif 
  * @param type the type of igmp packet to send
  */
 static void
-igmp_send(struct igmp_group *group, u8_t type)
+igmp_send(struct igmp_group *group, uint8_t type)
 {
   struct pbuf*     p    = NULL;
   struct igmp_msg* igmp = NULL;

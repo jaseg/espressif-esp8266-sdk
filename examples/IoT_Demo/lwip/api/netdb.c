@@ -116,7 +116,7 @@ lwip_gethostbyname(const char *name)
   LWIP_DEBUGF(DNS_DEBUG, ("hostent.h_name           == %s\n", s_hostent.h_name));
   LWIP_DEBUGF(DNS_DEBUG, ("hostent.h_aliases        == %p\n", s_hostent.h_aliases));
   if (s_hostent.h_aliases != NULL) {
-    u8_t idx;
+    uint8_t idx;
     for ( idx=0; s_hostent.h_aliases[idx]; idx++) {
       LWIP_DEBUGF(DNS_DEBUG, ("hostent.h_aliases[%i]->   == %p\n", idx, s_hostent.h_aliases[idx]));
       LWIP_DEBUGF(DNS_DEBUG, ("hostent.h_aliases[%i]->   == %s\n", idx, s_hostent.h_aliases[idx]));
@@ -126,7 +126,7 @@ lwip_gethostbyname(const char *name)
   LWIP_DEBUGF(DNS_DEBUG, ("hostent.h_length         == %d\n", s_hostent.h_length));
   LWIP_DEBUGF(DNS_DEBUG, ("hostent.h_addr_list      == %p\n", s_hostent.h_addr_list));
   if (s_hostent.h_addr_list != NULL) {
-    u8_t idx;
+    uint8_t idx;
     for ( idx=0; s_hostent.h_addr_list[idx]; idx++) {
       LWIP_DEBUGF(DNS_DEBUG, ("hostent.h_addr_list[%i]   == %p\n", idx, s_hostent.h_addr_list[idx]));
       LWIP_DEBUGF(DNS_DEBUG, ("hostent.h_addr_list[%i]-> == %s\n", idx, ip_ntoa((ip_addr_t*)s_hostent.h_addr_list[idx])));
@@ -316,12 +316,12 @@ lwip_getaddrinfo(const char *nodename, const char *servname,
     goto memerr;
   }
   memset(ai, 0, total_size);
-  sa = (struct sockaddr_in*)((u8_t*)ai + sizeof(struct addrinfo));
+  sa = (struct sockaddr_in*)((uint8_t*)ai + sizeof(struct addrinfo));
   /* set up sockaddr */
   inet_addr_from_ipaddr(&sa->sin_addr, &addr);
   sa->sin_family = AF_INET;
   sa->sin_len = sizeof(struct sockaddr_in);
-  sa->sin_port = htons((u16_t)port_nr);
+  sa->sin_port = htons((uint16)port_nr);
 
   /* set up addrinfo */
   ai->ai_family = AF_INET;

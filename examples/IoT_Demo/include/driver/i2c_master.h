@@ -45,9 +45,9 @@ void i2c_master_init(void);
 #define i2c_master_wait    os_delay_us
 void i2c_master_stop(void);
 void i2c_master_start(void);
-void i2c_master_setAck(uint8 level);
-uint8 i2c_master_getAck(void);
-uint8 i2c_master_readByte(void);
-void i2c_master_writeByte(uint8 wrdata);
+void i2c_master_setAck(uint8_t level);
+uint8_t i2c_master_getAck(void);
+uint8_t i2c_master_readByte(void);
+void i2c_master_writeByte(uint8_t wrdata);
 
 #endif

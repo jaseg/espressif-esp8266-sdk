@@ -81,11 +81,11 @@ extern "C" {
 struct autoip
 {
   ip_addr_t llipaddr;       /* the currently selected, probed, announced or used LL IP-Address */
-  u8_t state;               /* current AutoIP state machine state */
-  u8_t sent_num;            /* sent number of probes or announces, dependent on state */
-  u16_t ttw;                /* ticks to wait, tick is AUTOIP_TMR_INTERVAL long */
-  u8_t lastconflict;        /* ticks until a conflict can be solved by defending */
-  u8_t tried_llipaddr;      /* total number of probed/used Link Local IP-Addresses */
+  uint8_t state;               /* current AutoIP state machine state */
+  uint8_t sent_num;            /* sent number of probes or announces, dependent on state */
+  uint16 ttw;                /* ticks to wait, tick is AUTOIP_TMR_INTERVAL long */
+  uint8_t lastconflict;        /* ticks until a conflict can be solved by defending */
+  uint8_t tried_llipaddr;      /* total number of probed/used Link Local IP-Addresses */
 };
 
 

@@ -87,7 +87,7 @@ static ip_addr_t g_ping_target;
 #define PING_DELAY     1000
 #endif
 
-/** ping identifier - must fit on a u16_t */
+/** ping identifier - must fit on a uint16 */
 #ifndef PING_ID
 #define PING_ID        0xAFAF
 #endif
@@ -107,26 +107,26 @@ static void (* ping_recv_cb)(struct pbuf *p, struct icmp_echo_hdr *iecho);
 #endif /* SSC */
 
 /* ping variables */
-static u16_t ping_seq_num;
-static u32_t ping_time;
-static u16_t ping_data_size = PING_DATA_SIZE;
+static uint16 ping_seq_num;
+static uint32_t ping_time;
+static uint16 ping_data_size = PING_DATA_SIZE;
 #if !PING_USE_SOCKETS
 static struct raw_pcb *ping_pcb;
 #endif /* PING_USE_SOCKETS */
 
-void inline set_ping_length(u16_t ping_length){
+void inline set_ping_length(uint16 ping_length){
     ping_data_size = ping_length >= PING_DATA_SIZE ? ping_length:PING_DATA_SIZE;
 }
 
-u16_t inline get_ping_length(){
+uint16 inline get_ping_length(){
     return ping_data_size;
 }	
 
 /** Prepare a echo ICMP request */
 static void
-ping_prepare_echo( struct icmp_echo_hdr *iecho, u16_t len)ICACHE_FLASH_ATTR;
+ping_prepare_echo( struct icmp_echo_hdr *iecho, uint16 len)ICACHE_FLASH_ATTR;
 static void
-ping_prepare_echo( struct icmp_echo_hdr *iecho, u16_t len)
+ping_prepare_echo( struct icmp_echo_hdr *iecho, uint16 len)
 {
   size_t i;
   size_t data_len = len - sizeof(struct icmp_echo_hdr);
@@ -147,9 +147,9 @@ ping_prepare_echo( struct icmp_echo_hdr *iecho, u16_t len)
 }
 
 static void
-ping_prepare_er(struct icmp_echo_hdr *iecho, u16_t len)ICACHE_FLASH_ATTR;
+ping_prepare_er(struct icmp_echo_hdr *iecho, uint16 len)ICACHE_FLASH_ATTR;
 static void
-ping_prepare_er(struct icmp_echo_hdr *iecho, u16_t len)
+ping_prepare_er(struct icmp_echo_hdr *iecho, uint16 len)
 {
 
   ICMPH_TYPE_SET(iecho, ICMP_ER);
@@ -164,9 +164,9 @@ ping_prepare_er(struct icmp_echo_hdr *iecho, u16_t len)
 #else /* PING_USE_SOCKETS */
 
 /* Ping using the raw ip */
-static u8_t
+static uint8_t
 ping_recv(void *arg, struct raw_pcb *pcb, struct pbuf *p, ip_addr_t *addr)ICACHE_FLASH_ATTR;
-static u8_t
+static uint8_t
 ping_recv(void *arg, struct raw_pcb *pcb, struct pbuf *p, ip_addr_t *addr)
 {
   struct icmp_echo_hdr *iecho;
@@ -200,7 +200,7 @@ ping_recv(void *arg, struct raw_pcb *pcb, struct pbuf *p, ip_addr_t *addr)
     }else if(iecho->type == ICMP_ECHO){
         struct pbuf *q;
 //        os_printf("receive ping request:seq=%d\n", ntohs(iecho->seqno));
-        q = pbuf_alloc(PBUF_IP, (u16_t)p->tot_len, PBUF_RAM);
+        q = pbuf_alloc(PBUF_IP, (uint16)p->tot_len, PBUF_RAM);
         if(q!=NULL)
         {
             pbuf_copy(q, p);
@@ -231,14 +231,14 @@ ping_send(struct raw_pcb *raw, ip_addr_t *addr)
   LWIP_DEBUGF( PING_DEBUG, ("\n"));
   LWIP_ASSERT("ping_size <= 0xffff", ping_size <= 0xffff);
 
-  p = pbuf_alloc(PBUF_IP, (u16_t)ping_size, PBUF_RAM);
+  p = pbuf_alloc(PBUF_IP, (uint16)ping_size, PBUF_RAM);
   if (!p) {
     return;
   }
   if ((p->len == p->tot_len) && (p->next == NULL)) {
     iecho = (struct icmp_echo_hdr *)p->payload;
 
-    ping_prepare_echo(iecho, (u16_t)ping_size);
+    ping_prepare_echo(iecho, (uint16)ping_size);
 
     raw_sendto(raw, p, addr);
     ping_time = sys_now();

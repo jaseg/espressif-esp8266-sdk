@@ -70,8 +70,8 @@ enum icmp_te_type {
 #ifdef PACK_STRUCT_USE_INCLUDES
 #  include "arch/bpstruct.h"
 #endif
-/** This is the standard ICMP header only that the u32_t data
- *  is splitted to two u16_t like ICMP echo needs it.
+/** This is the standard ICMP header only that the uint32_t data
+ *  is splitted to two uint16 like ICMP echo needs it.
  *  This header is also used for other ICMP types that do not
  *  use the data part.
  *  定义ICMP回送请求报文首部结构，
@@ -80,11 +80,11 @@ enum icmp_te_type {
  */
 PACK_STRUCT_BEGIN
 struct icmp_echo_hdr {
-  PACK_STRUCT_FIELD(u8_t type);
-  PACK_STRUCT_FIELD(u8_t code);
-  PACK_STRUCT_FIELD(u16_t chksum);
-  PACK_STRUCT_FIELD(u16_t id);
-  PACK_STRUCT_FIELD(u16_t seqno);
+  PACK_STRUCT_FIELD(uint8_t type);
+  PACK_STRUCT_FIELD(uint8_t code);
+  PACK_STRUCT_FIELD(uint16 chksum);
+  PACK_STRUCT_FIELD(uint16 id);
+  PACK_STRUCT_FIELD(uint16 seqno);
 } PACK_STRUCT_STRUCT;
 PACK_STRUCT_END
 #ifdef PACK_STRUCT_USE_INCLUDES
@@ -95,7 +95,7 @@ PACK_STRUCT_END
 #define ICMPH_TYPE(hdr) ((hdr)->type)
 #define ICMPH_CODE(hdr) ((hdr)->code)
 
-/** Combines type and code to an u16_t 向ICMP报文首部字段中写入相应值*/
+/** Combines type and code to an uint16 向ICMP报文首部字段中写入相应值*/
 #define ICMPH_TYPE_SET(hdr, t) ((hdr)->type = (t))
 #define ICMPH_CODE_SET(hdr, c) ((hdr)->code = (c))
 

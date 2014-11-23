@@ -7,7 +7,7 @@
 
 #define MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 #ifndef IOT_SIP_MODE
-//#define configTOTAL_HEAP_SIZE			( ( size_t ) ( 0x3fffc000 - (uint32)&_heap_start ) )//fix 16000 to 24000 on 14.2.26
+//#define configTOTAL_HEAP_SIZE			( ( size_t ) ( 0x3fffc000 - (uint32_t)&_heap_start ) )//fix 16000 to 24000 on 14.2.26
 #else
 #define configTOTAL_HEAP_SIZE			( ( size_t ) ( 8000 ) )
 #endif

@@ -23,10 +23,10 @@
 #define SENSOR_UNUSED_LED_IO_FUNC    FUNC_GPIO15
 
 #if HUMITURE_SUB_DEVICE
-bool user_mvh3004_read_th(uint8 *data);
+bool user_mvh3004_read_th(uint8_t *data);
 void user_mvh3004_init(void);
 #endif
 
-void user_sensor_init(uint8 active);
+void user_sensor_init(uint8_t active);
 
 #endif

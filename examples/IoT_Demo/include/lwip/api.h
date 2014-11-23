@@ -51,14 +51,14 @@ extern "C" {
  * the same byte order as in the corresponding pcb.
  */
 
-/* Flags for netconn_write (u8_t) */
+/* Flags for netconn_write (uint8_t) */
 #define NETCONN_NOFLAG    0x00
 #define NETCONN_NOCOPY    0x00 /* Only for source code compatibility */
 #define NETCONN_COPY      0x01
 #define NETCONN_MORE      0x02
 #define NETCONN_DONTBLOCK 0x04
 
-/* Flags for struct netconn.flags (u8_t) */
+/* Flags for struct netconn.flags (uint8_t) */
 /** TCP: when data passed to netconn_write doesn't fit into the send buffer,
     this temporarily stores whether to wake up the original application task
     if data couldn't be sent in the first try. */
@@ -128,7 +128,7 @@ struct netconn;
 struct api_msg_msg;
 
 /** A callback prototype to inform about events for a netconn */
-typedef void (* netconn_callback)(struct netconn *, enum netconn_evt, u16_t len);
+typedef void (* netconn_callback)(struct netconn *, enum netconn_evt, uint16 len);
 
 /** A netconn descriptor */
 struct netconn {
@@ -171,10 +171,10 @@ struct netconn {
   /** number of bytes currently in recvmbox to be received,
       tested against recv_bufsize to limit bytes on recvmbox
       for UDP and RAW, used for FIONREAD */
-  s16_t recv_avail;
+  int16_t recv_avail;
 #endif /* LWIP_SO_RCVBUF */
   /** flags holding more netconn-internal state, see NETCONN_FLAG_* defines */
-  u8_t flags;
+  uint8_t flags;
 #if LWIP_TCP
   /** TCP: when data passed to netconn_write doesn't fit into the send buffer,
       this temporarily stores how much is already sent. */
@@ -207,33 +207,33 @@ struct netconn {
 #define netconn_new(t)                  netconn_new_with_proto_and_callback(t, 0, NULL)
 #define netconn_new_with_callback(t, c) netconn_new_with_proto_and_callback(t, 0, c)
 struct
-netconn *netconn_new_with_proto_and_callback(enum netconn_type t, u8_t proto,
+netconn *netconn_new_with_proto_and_callback(enum netconn_type t, uint8_t proto,
                                              netconn_callback callback);
 err_t   netconn_delete(struct netconn *conn);
 /** Get the type of a netconn (as enum netconn_type). */
 #define netconn_type(conn) (conn->type)
 
 err_t   netconn_getaddr(struct netconn *conn, ip_addr_t *addr,
-                        u16_t *port, u8_t local);
+                        uint16 *port, uint8_t local);
 #define netconn_peer(c,i,p) netconn_getaddr(c,i,p,0)
 #define netconn_addr(c,i,p) netconn_getaddr(c,i,p,1)
 
-err_t   netconn_bind(struct netconn *conn, ip_addr_t *addr, u16_t port);
-err_t   netconn_connect(struct netconn *conn, ip_addr_t *addr, u16_t port);
+err_t   netconn_bind(struct netconn *conn, ip_addr_t *addr, uint16 port);
+err_t   netconn_connect(struct netconn *conn, ip_addr_t *addr, uint16 port);
 err_t   netconn_disconnect (struct netconn *conn);
-err_t   netconn_listen_with_backlog(struct netconn *conn, u8_t backlog);
+err_t   netconn_listen_with_backlog(struct netconn *conn, uint8_t backlog);
 #define netconn_listen(conn) netconn_listen_with_backlog(conn, TCP_DEFAULT_LISTEN_BACKLOG)
 err_t   netconn_accept(struct netconn *conn, struct netconn **new_conn);
 err_t   netconn_recv(struct netconn *conn, struct netbuf **new_buf);
 err_t   netconn_recv_tcp_pbuf(struct netconn *conn, struct pbuf **new_buf);
-void    netconn_recved(struct netconn *conn, u32_t length);
+void    netconn_recved(struct netconn *conn, uint32_t length);
 err_t   netconn_sendto(struct netconn *conn, struct netbuf *buf,
-                       ip_addr_t *addr, u16_t port);
+                       ip_addr_t *addr, uint16 port);
 err_t   netconn_send(struct netconn *conn, struct netbuf *buf);
 err_t   netconn_write(struct netconn *conn, const void *dataptr, size_t size,
-                      u8_t apiflags);
+                      uint8_t apiflags);
 err_t   netconn_close(struct netconn *conn);
-err_t   netconn_shutdown(struct netconn *conn, u8_t shut_rx, u8_t shut_tx);
+err_t   netconn_shutdown(struct netconn *conn, uint8_t shut_rx, uint8_t shut_tx);
 
 #if LWIP_IGMP
 err_t   netconn_join_leave_group(struct netconn *conn, ip_addr_t *multiaddr,

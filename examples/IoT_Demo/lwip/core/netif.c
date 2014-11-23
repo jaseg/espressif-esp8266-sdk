@@ -137,7 +137,7 @@ struct netif *
 netif_add(struct netif *netif, ip_addr_t *ipaddr, ip_addr_t *netmask,
   ip_addr_t *gw, void *state, netif_init_fn init, netif_input_fn input)
 {
-  static u8_t netifnum = 0;
+  static uint8_t netifnum = 0;
 
   LWIP_ASSERT("No init function given", init != NULL);
 
@@ -286,7 +286,7 @@ struct netif *
 netif_find(char *name)
 {
   struct netif *netif;
-  u8_t num;
+  uint8_t num;
 
   if (name == NULL) {
     return NULL;
@@ -597,7 +597,7 @@ netif_loop_output(struct netif *netif, struct pbuf *p,
   err_t err;
   struct pbuf *last;
 #if LWIP_LOOPBACK_MAX_PBUFS
-  u8_t clen = 0;
+  uint8_t clen = 0;
 #endif /* LWIP_LOOPBACK_MAX_PBUFS */
   /* If we have a loopif, SNMP counters are adjusted for it,
    * if not they are adjusted for 'netif'. */
@@ -699,7 +699,7 @@ netif_poll(struct netif *netif)
     if (in != NULL) {
       struct pbuf *in_end = in;
 #if LWIP_LOOPBACK_MAX_PBUFS
-      u8_t clen = pbuf_clen(in);
+      uint8_t clen = pbuf_clen(in);
       /* adjust the number of pbufs on queue */
       LWIP_ASSERT("netif->loop_cnt_current underflow",
         ((netif->loop_cnt_current - clen) < netif->loop_cnt_current));

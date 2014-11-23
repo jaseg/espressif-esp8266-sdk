@@ -57,7 +57,7 @@ extern "C" {
 #endif
 PACK_STRUCT_BEGIN
 struct eth_addr {
-  PACK_STRUCT_FIELD(u8_t addr[ETHARP_HWADDR_LEN]);
+  PACK_STRUCT_FIELD(uint8_t addr[ETHARP_HWADDR_LEN]);
 } PACK_STRUCT_STRUCT;
 PACK_STRUCT_END
 #ifdef PACK_STRUCT_USE_INCLUDES
@@ -71,11 +71,11 @@ PACK_STRUCT_BEGIN
 /** Ethernet header */
 struct eth_hdr {
 #if ETH_PAD_SIZE
-  PACK_STRUCT_FIELD(u8_t padding[ETH_PAD_SIZE]);
+  PACK_STRUCT_FIELD(uint8_t padding[ETH_PAD_SIZE]);
 #endif
   PACK_STRUCT_FIELD(struct eth_addr dest);
   PACK_STRUCT_FIELD(struct eth_addr src);
-  PACK_STRUCT_FIELD(u16_t type);
+  PACK_STRUCT_FIELD(uint16 type);
 } PACK_STRUCT_STRUCT;
 PACK_STRUCT_END
 #ifdef PACK_STRUCT_USE_INCLUDES
@@ -94,8 +94,8 @@ PACK_STRUCT_BEGIN
  * if 'type' in ethernet header is ETHTYPE_VLAN.
  * See IEEE802.Q */
 struct eth_vlan_hdr {
-  PACK_STRUCT_FIELD(u16_t tpid);
-  PACK_STRUCT_FIELD(u16_t prio_vid);
+  PACK_STRUCT_FIELD(uint16 tpid);
+  PACK_STRUCT_FIELD(uint16 prio_vid);
 } PACK_STRUCT_STRUCT;
 PACK_STRUCT_END
 #ifdef PACK_STRUCT_USE_INCLUDES
@@ -113,11 +113,11 @@ PACK_STRUCT_END
 PACK_STRUCT_BEGIN
 /** the ARP message, see RFC 826 ("Packet format") */
 struct etharp_hdr {
-  PACK_STRUCT_FIELD(u16_t hwtype);
-  PACK_STRUCT_FIELD(u16_t proto);
-  PACK_STRUCT_FIELD(u8_t  hwlen);
-  PACK_STRUCT_FIELD(u8_t  protolen);
-  PACK_STRUCT_FIELD(u16_t opcode);
+  PACK_STRUCT_FIELD(uint16 hwtype);
+  PACK_STRUCT_FIELD(uint16 proto);
+  PACK_STRUCT_FIELD(uint8_t  hwlen);
+  PACK_STRUCT_FIELD(uint8_t  protolen);
+  PACK_STRUCT_FIELD(uint16 opcode);
   PACK_STRUCT_FIELD(struct eth_addr shwaddr);
   PACK_STRUCT_FIELD(struct ip_addr2 sipaddr);
   PACK_STRUCT_FIELD(struct eth_addr dhwaddr);
@@ -183,7 +183,7 @@ struct etharp_q_entry {
 
 #define etharp_init() /* Compatibility define, not init needed. */
 void etharp_tmr(void)ICACHE_FLASH_ATTR;
-s8_t etharp_find_addr(struct netif *netif, ip_addr_t *ipaddr,
+int8_t etharp_find_addr(struct netif *netif, ip_addr_t *ipaddr,
          struct eth_addr **eth_ret, ip_addr_t **ip_ret)ICACHE_FLASH_ATTR;
 err_t etharp_output(struct netif *netif, struct pbuf *q, ip_addr_t *ipaddr)ICACHE_FLASH_ATTR;
 err_t etharp_query(struct netif *netif, ip_addr_t *ipaddr, struct pbuf *q)ICACHE_FLASH_ATTR;
@@ -205,7 +205,7 @@ err_t etharp_raw(struct netif *netif, const struct eth_addr *ethsrc_addr,
                  const struct eth_addr *ethdst_addr,
                  const struct eth_addr *hwsrc_addr, const ip_addr_t *ipsrc_addr,
                  const struct eth_addr *hwdst_addr, const ip_addr_t *ipdst_addr,
-                 const u16_t opcode)ICACHE_FLASH_ATTR;
+                 const uint16 opcode)ICACHE_FLASH_ATTR;
 #endif /* LWIP_AUTOIP */
 
 #endif /* LWIP_ARP */
@@ -226,17 +226,17 @@ extern const struct eth_addr ethbroadcast, ethzero;
 
 
 struct eth_addr {
-  PACK_STRUCT_FIELD(u8_t addr[ETHARP_HWADDR_LEN]);
+  PACK_STRUCT_FIELD(uint8_t addr[ETHARP_HWADDR_LEN]);
 } PACK_STRUCT_STRUCT;
 
 
 struct eth_hdr {
 #if ETH_PAD_SIZE
-  PACK_STRUCT_FIELD(u8_t padding[ETH_PAD_SIZE]);
+  PACK_STRUCT_FIELD(uint8_t padding[ETH_PAD_SIZE]);
 #endif
   PACK_STRUCT_FIELD(struct eth_addr dest);
   PACK_STRUCT_FIELD(struct eth_addr src);
-  PACK_STRUCT_FIELD(u16_t type);
+  PACK_STRUCT_FIELD(uint16 type);
 } PACK_STRUCT_STRUCT;
 
 #ifdef PACK_STRUCT_USE_INCLUDES

@@ -47,11 +47,11 @@ extern "C" {
 #define NULL ((void *)0)
 #endif
 
-/** Get the absolute difference between 2 u32_t values (correcting overflows)
+/** Get the absolute difference between 2 uint32_t values (correcting overflows)
  * 'a' is expected to be 'higher' (without overflow) than 'b'. */
 #define LWIP_U32_DIFF(a, b) (((a) >= (b)) ? ((a) - (b)) : (((a) + ((b) ^ 0xFFFFFFFF) + 1))) 
 
-/* Endianess-optimized shifting of two u8_t to create one u16_t */
+/* Endianess-optimized shifting of two uint8_t to create one uint16 */
 #if BYTE_ORDER == LITTLE_ENDIAN
 #define LWIP_MAKE_U16(a, b) ((a << 8) | b)
 #else
@@ -100,10 +100,10 @@ extern "C" {
 #define lwip_htonl(x) LWIP_PLATFORM_HTONL(x)
 #define lwip_ntohl(x) LWIP_PLATFORM_HTONL(x)
 #else /* LWIP_PLATFORM_BYTESWAP */
-u16_t lwip_htons(u16_t x);
-u16_t lwip_ntohs(u16_t x);
-u32_t lwip_htonl(u32_t x);
-u32_t lwip_ntohl(u32_t x);
+uint16 lwip_htons(uint16 x);
+uint16 lwip_ntohs(uint16 x);
+uint32_t lwip_htonl(uint32_t x);
+uint32_t lwip_ntohl(uint32_t x);
 #endif /* LWIP_PLATFORM_BYTESWAP */
 
 /* These macros should be calculated by the preprocessor and are used

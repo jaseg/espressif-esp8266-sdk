@@ -128,7 +128,7 @@ typedef err_t (*netif_linkoutput_fn)(struct netif *netif, struct pbuf *p);
 typedef void (*netif_status_callback_fn)(struct netif *netif);
 /** Function prototype for netif igmp_mac_filter functions */
 typedef err_t (*netif_igmp_mac_filter_fn)(struct netif *netif,
-       ip_addr_t *group, u8_t action);
+       ip_addr_t *group, uint8_t action);
 
 /** Generic data structure used for all lwIP network interfaces.
  *  The following fields should be filled in by the initialization
@@ -179,33 +179,33 @@ struct netif {
   char*  hostname;
 #endif /* LWIP_NETIF_HOSTNAME */
   /** maximum transfer unit (in bytes) 该接口允许的最大数据包长度，多是1500*/
-  u16_t mtu;
+  uint16 mtu;
   /** number of bytes used in hwaddr该接口物理地址长度 */
-  u8_t hwaddr_len;
+  uint8_t hwaddr_len;
   /** link level hardware address of this interface 该接口物理地址*/
-  u8_t hwaddr[NETIF_MAX_HWADDR_LEN];
+  uint8_t hwaddr[NETIF_MAX_HWADDR_LEN];
   /** flags (see NETIF_FLAG_ above) 该接口状态、属性字段*/
-  u8_t flags;
+  uint8_t flags;
   /** descriptive abbreviation 该接口的名字*/
   char name[2];
   /** number of this interface 该接口的编号*/
-  u8_t num;
+  uint8_t num;
 #if LWIP_SNMP
   /** link type (from "snmp_ifType" enum from snmp.h) */
-  u8_t link_type;
+  uint8_t link_type;
   /** (estimate) link speed */
-  u32_t link_speed;
+  uint32_t link_speed;
   /** timestamp at last change made (up/down) */
-  u32_t ts;
+  uint32_t ts;
   /** counters */
-  u32_t ifinoctets;
-  u32_t ifinucastpkts;
-  u32_t ifinnucastpkts;
-  u32_t ifindiscards;
-  u32_t ifoutoctets;
-  u32_t ifoutucastpkts;
-  u32_t ifoutnucastpkts;
-  u32_t ifoutdiscards;
+  uint32_t ifinoctets;
+  uint32_t ifinucastpkts;
+  uint32_t ifinnucastpkts;
+  uint32_t ifindiscards;
+  uint32_t ifoutoctets;
+  uint32_t ifoutucastpkts;
+  uint32_t ifoutnucastpkts;
+  uint32_t ifoutdiscards;
 #endif /* LWIP_SNMP */
 #if LWIP_IGMP
   /** This function could be called to add or delete a entry in the multicast
@@ -213,14 +213,14 @@ struct netif {
   netif_igmp_mac_filter_fn igmp_mac_filter;
 #endif /* LWIP_IGMP */
 #if LWIP_NETIF_HWADDRHINT
-  u8_t *addr_hint;
+  uint8_t *addr_hint;
 #endif /* LWIP_NETIF_HWADDRHINT */
 #if ENABLE_LOOPBACK
   /* List of packets to be queued for ourselves. 指向发送给自己的数据包的pbuf*/
   struct pbuf *loop_first;//第一个
   struct pbuf *loop_last;//最后一个
 #if LWIP_LOOPBACK_MAX_PBUFS
-  u16_t loop_cnt_current;
+  uint16 loop_cnt_current;
 #endif /* LWIP_LOOPBACK_MAX_PBUFS */
 #endif /* ENABLE_LOOPBACK */
 };
@@ -275,7 +275,7 @@ void netif_set_gw(struct netif *netif, ip_addr_t *gw)ICACHE_FLASH_ATTR;
 void netif_set_up(struct netif *netif)ICACHE_FLASH_ATTR;
 void netif_set_down(struct netif *netif)ICACHE_FLASH_ATTR;
 /** Ask if an interface is up */
-#define netif_is_up(netif) (((netif)->flags & NETIF_FLAG_UP) ? (u8_t)1 : (u8_t)0)
+#define netif_is_up(netif) (((netif)->flags & NETIF_FLAG_UP) ? (uint8_t)1 : (uint8_t)0)
 
 #if LWIP_NETIF_STATUS_CALLBACK
 void netif_set_status_callback(struct netif *netif, netif_status_callback_fn status_callback)ICACHE_FLASH_ATTR;
@@ -284,7 +284,7 @@ void netif_set_status_callback(struct netif *netif, netif_status_callback_fn sta
 void netif_set_link_up(struct netif *netif)ICACHE_FLASH_ATTR;
 void netif_set_link_down(struct netif *netif)ICACHE_FLASH_ATTR;
 /** Ask if a link is up */ 
-#define netif_is_link_up(netif) (((netif)->flags & NETIF_FLAG_LINK_UP) ? (u8_t)1 : (u8_t)0)
+#define netif_is_link_up(netif) (((netif)->flags & NETIF_FLAG_LINK_UP) ? (uint8_t)1 : (uint8_t)0)
 
 #if LWIP_NETIF_LINK_CALLBACK
 void netif_set_link_callback(struct netif *netif, netif_status_callback_fn link_callback)ICACHE_FLASH_ATTR;

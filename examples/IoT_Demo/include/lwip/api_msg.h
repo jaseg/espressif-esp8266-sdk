@@ -71,32 +71,32 @@ struct api_msg_msg {
     struct netbuf *b;
     /** used for do_newconn */
     struct {
-      u8_t proto;
+      uint8_t proto;
     } n;
     /** used for do_bind and do_connect */
     struct {
       ip_addr_t *ipaddr;
-      u16_t port;
+      uint16 port;
     } bc;
     /** used for do_getaddr */
     struct {
       ip_addr_t *ipaddr;
-      u16_t *port;
-      u8_t local;
+      uint16 *port;
+      uint8_t local;
     } ad;
     /** used for do_write */
     struct {
       const void *dataptr;
       size_t len;
-      u8_t apiflags;
+      uint8_t apiflags;
     } w;
     /** used for do_recv */
     struct {
-      u32_t len;
+      uint32_t len;
     } r;
     /** used for do_close (/shutdown) */
     struct {
-      u8_t shut;
+      uint8_t shut;
     } sd;
 #if LWIP_IGMP
     /** used for do_join_leave_group */
@@ -108,7 +108,7 @@ struct api_msg_msg {
 #endif /* LWIP_IGMP */
 #if TCP_LISTEN_BACKLOG
     struct {
-      u8_t backlog;
+      uint8_t backlog;
     } lb;
 #endif /* TCP_LISTEN_BACKLOG */
   } msg;

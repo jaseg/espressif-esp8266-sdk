@@ -61,7 +61,7 @@
 /** The one and only timeout list */
 static struct sys_timeo *next_timeout = NULL;
 #if NO_SYS
-static u32_t timeouts_last_time;
+static uint32_t timeouts_last_time;
 #endif /* NO_SYS */
 
 #if LWIP_TCP
@@ -281,10 +281,10 @@ void sys_timeouts_init(void)
  */
 #if LWIP_DEBUG_TIMERNAMES
 void
-sys_timeout_debug(u32_t msecs, sys_timeout_handler handler, void *arg, const char* handler_name)
+sys_timeout_debug(uint32_t msecs, sys_timeout_handler handler, void *arg, const char* handler_name)
 #else /* LWIP_DEBUG_TIMERNAMES */
 void
-sys_timeout(u32_t msecs, sys_timeout_handler handler, void *arg)
+sys_timeout(uint32_t msecs, sys_timeout_handler handler, void *arg)
 #endif /* LWIP_DEBUG_TIMERNAMES */
 {
   struct sys_timeo *timeout, *t;
@@ -368,7 +368,7 @@ sys_untimeout(sys_timeout_handler handler, void *arg)
 }
 
 #if NO_SYS
-extern uint8 timer2_ms_flag;
+extern uint8_t timer2_ms_flag;
 /** Handle timeouts for NO_SYS==1 (i.e. without using
  * tcpip_thread/sys_timeouts_mbox_fetch(). Uses sys_now() to call timeout
  * handler functions when timeouts expire.
@@ -379,11 +379,11 @@ void
 sys_check_timeouts(void)
 {
   struct sys_timeo *tmptimeout;
-  u32_t diff;
+  uint32_t diff;
   sys_timeout_handler handler;
   void *arg;
   int had_one;
-  u32_t now;
+  uint32_t now;
 
   now = NOW();
   if (next_timeout) {
@@ -444,7 +444,7 @@ sys_restart_timeouts(void)
 void
 sys_timeouts_mbox_fetch(sys_mbox_t *mbox, void **msg)
 {
-  u32_t time_needed;
+  uint32_t time_needed;
   struct sys_timeo *tmptimeout;
   sys_timeout_handler handler;
   void *arg;

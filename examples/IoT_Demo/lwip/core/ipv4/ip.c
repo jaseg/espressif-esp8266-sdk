@@ -109,7 +109,7 @@ ip_addr_t current_iphdr_src;
 ip_addr_t current_iphdr_dest;
 
 /** The IP header ID of the next outgoing IP packet */
-static u16_t ip_id;
+static uint16 ip_id;
 
 /**
  * Finds the appropriate network interface for a given IP address. It
@@ -290,8 +290,8 @@ ip_input(struct pbuf *p, struct netif *inp)
 {
   struct ip_hdr *iphdr;
   struct netif *netif;
-  u16_t iphdr_hlen;
-  u16_t iphdr_len;
+  uint16 iphdr_hlen;
+  uint16 iphdr_len;
 #if IP_ACCEPT_LINK_LAYER_ADDRESSING
   int check_ip_src=1;
 #endif /* IP_ACCEPT_LINK_LAYER_ADDRESSING */
@@ -379,10 +379,10 @@ ip_input(struct pbuf *p, struct netif *inp)
     netif = inp;
     do {
       LWIP_DEBUGF(IP_DEBUG, ("ip_input: iphdr->dest 0x%"X32_F" netif->ip_addr 0x%"X32_F" (0x%"X32_F", 0x%"X32_F", 0x%"X32_F")\n",
-          ip4_addr_get_u32(&iphdr->dest), ip4_addr_get_u32(&netif->ip_addr),
-          ip4_addr_get_u32(&iphdr->dest) & ip4_addr_get_u32(&netif->netmask),
-          ip4_addr_get_u32(&netif->ip_addr) & ip4_addr_get_u32(&netif->netmask),
-          ip4_addr_get_u32(&iphdr->dest) & ~ip4_addr_get_u32(&netif->netmask)));
+          ip4_addr_get_uint32_t(&iphdr->dest), ip4_addr_get_uint32_t(&netif->ip_addr),
+          ip4_addr_get_uint32_t(&iphdr->dest) & ip4_addr_get_uint32_t(&netif->netmask),
+          ip4_addr_get_uint32_t(&netif->ip_addr) & ip4_addr_get_uint32_t(&netif->netmask),
+          ip4_addr_get_uint32_t(&iphdr->dest) & ~ip4_addr_get_uint32_t(&netif->netmask)));
 
       /* interface is up and configured? */
       if ((netif_is_up(netif)) && (!ip_addr_isany(&(netif->ip_addr)))) {
@@ -432,7 +432,7 @@ ip_input(struct pbuf *p, struct netif *inp)
   if (netif == NULL) {
     /* remote port is DHCP server? */
     if (IPH_PROTO(iphdr) == IP_PROTO_UDP) {
-      struct udp_hdr *udphdr = (struct udp_hdr *)((u8_t *)iphdr + iphdr_hlen);
+      struct udp_hdr *udphdr = (struct udp_hdr *)((uint8_t *)iphdr + iphdr_hlen);
       LWIP_DEBUGF(IP_DEBUG | LWIP_DBG_TRACE, ("ip_input: UDP packet to DHCP client port %"U16_F"\n",
         ntohs(udphdr->dest)));
       if (IP_ACCEPT_LINK_LAYER_ADDRESSED_PORT(udphdr->dest)) {
@@ -617,8 +617,8 @@ ip_input(struct pbuf *p, struct netif *inp)
  */
 err_t
 ip_output_if(struct pbuf *p, ip_addr_t *src, ip_addr_t *dest,
-             u8_t ttl, u8_t tos,
-             u8_t proto, struct netif *netif)
+             uint8_t ttl, uint8_t tos,
+             uint8_t proto, struct netif *netif)
 {
 #if IP_OPTIONS_SEND
   return ip_output_if_opt(p, src, dest, ttl, tos, proto, netif, NULL, 0);
@@ -631,14 +631,14 @@ ip_output_if(struct pbuf *p, ip_addr_t *src, ip_addr_t *dest,
  * @ param optlen length of ip_options
  */
 err_t ip_output_if_opt(struct pbuf *p, ip_addr_t *src, ip_addr_t *dest,
-       u8_t ttl, u8_t tos, u8_t proto, struct netif *netif, void *ip_options,
-       u16_t optlen)
+       uint8_t ttl, uint8_t tos, uint8_t proto, struct netif *netif, void *ip_options,
+       uint16 optlen)
 {
 #endif /* IP_OPTIONS_SEND */
   struct ip_hdr *iphdr;
   ip_addr_t dest_addr;
 #if CHECKSUM_GEN_IP_INLINE
-  u32_t chk_sum = 0;
+  uint32_t chk_sum = 0;
 #endif /* CHECKSUM_GEN_IP_INLINE */
 
   /* pbufs passed to IP must have a ref-count of 1 as their payload pointer
@@ -649,9 +649,9 @@ err_t ip_output_if_opt(struct pbuf *p, ip_addr_t *src, ip_addr_t *dest,
 
   /* Should the IP header be generated or is it already included in p? */
   if (dest != IP_HDRINCL) {
-    u16_t ip_hlen = IP_HLEN;
+    uint16 ip_hlen = IP_HLEN;
 #if IP_OPTIONS_SEND
-    u16_t optlen_aligned = 0;
+    uint16 optlen_aligned = 0;
     if (optlen != 0) {
 #if CHECKSUM_GEN_IP_INLINE
       int i;
@@ -673,7 +673,7 @@ err_t ip_output_if_opt(struct pbuf *p, ip_addr_t *src, ip_addr_t *dest,
       }
 #if CHECKSUM_GEN_IP_INLINE
       for (i = 0; i < optlen_aligned/2; i++) {
-        chk_sum += ((u16_t*)p->payload)[i];
+        chk_sum += ((uint16*)p->payload)[i];
       }
 #endif /* CHECKSUM_GEN_IP_INLINE */
     }
@@ -700,8 +700,8 @@ err_t ip_output_if_opt(struct pbuf *p, ip_addr_t *src, ip_addr_t *dest,
     /* dest cannot be NULL here */
     ip_addr_copy(iphdr->dest, *dest);
 #if CHECKSUM_GEN_IP_INLINE
-    chk_sum += ip4_addr_get_u32(&iphdr->dest) & 0xFFFF;
-    chk_sum += ip4_addr_get_u32(&iphdr->dest) >> 16;
+    chk_sum += ip4_addr_get_uint32_t(&iphdr->dest) & 0xFFFF;
+    chk_sum += ip4_addr_get_uint32_t(&iphdr->dest) >> 16;
 #endif /* CHECKSUM_GEN_IP_INLINE */
 
     IPH_VHLTOS_SET(iphdr, 4, ip_hlen / 4, tos);
@@ -727,8 +727,8 @@ err_t ip_output_if_opt(struct pbuf *p, ip_addr_t *src, ip_addr_t *dest,
     }
 
 #if CHECKSUM_GEN_IP_INLINE
-    chk_sum += ip4_addr_get_u32(&iphdr->src) & 0xFFFF;
-    chk_sum += ip4_addr_get_u32(&iphdr->src) >> 16;
+    chk_sum += ip4_addr_get_uint32_t(&iphdr->src) & 0xFFFF;
+    chk_sum += ip4_addr_get_uint32_t(&iphdr->src) >> 16;
     chk_sum = (chk_sum >> 16) + (chk_sum & 0xFFFF);
     chk_sum = (chk_sum >> 16) + chk_sum;
     chk_sum = ~chk_sum;
@@ -793,7 +793,7 @@ err_t ip_output_if_opt(struct pbuf *p, ip_addr_t *src, ip_addr_t *dest,
  */
 err_t
 ip_output(struct pbuf *p, ip_addr_t *src, ip_addr_t *dest,
-          u8_t ttl, u8_t tos, u8_t proto)
+          uint8_t ttl, uint8_t tos, uint8_t proto)
 {
   struct netif *netif;
 
@@ -832,7 +832,7 @@ ip_output(struct pbuf *p, ip_addr_t *src, ip_addr_t *dest,
  */
 err_t
 ip_output_hinted(struct pbuf *p, ip_addr_t *src, ip_addr_t *dest,
-          u8_t ttl, u8_t tos, u8_t proto, u8_t *addr_hint)
+          uint8_t ttl, uint8_t tos, uint8_t proto, uint8_t *addr_hint)
 {
   struct netif *netif;
   err_t err;
@@ -864,9 +864,9 @@ void
 ip_debug_print(struct pbuf *p)
 {
   struct ip_hdr *iphdr = (struct ip_hdr *)p->payload;
-  u8_t *payload;
+  uint8_t *payload;
 
-  payload = (u8_t *)iphdr + IP_HLEN;
+  payload = (uint8_t *)iphdr + IP_HLEN;
 
   LWIP_DEBUGF(IP_DEBUG, ("IP header:\n"));
   LWIP_DEBUGF(IP_DEBUG, ("+-------------------------------+\n"));

@@ -1,11 +1,11 @@
 #ifndef __ESPCONN_H__
 #define __ESPCONN_H__
 
-typedef sint8 err_t;
+typedef int8_t err_t;
 
 typedef void *espconn_handle;
 typedef void (* espconn_connect_callback)(void *arg);
-typedef void (* espconn_reconnect_callback)(void *arg, sint8 err);
+typedef void (* espconn_reconnect_callback)(void *arg, int8_t err);
 
 /* Definitions for error constants. */
 
@@ -46,8 +46,8 @@ enum espconn_state {
 typedef struct _esp_tcp {
     int remote_port;
     int local_port;
-    uint8 local_ip[4];
-    uint8 remote_ip[4];
+    uint8_t local_ip[4];
+    uint8_t remote_ip[4];
     espconn_connect_callback connect_callback;
     espconn_reconnect_callback reconnect_callback;
     espconn_connect_callback disconnect_callback;
@@ -56,14 +56,14 @@ typedef struct _esp_tcp {
 typedef struct _esp_udp {
     int remote_port;
     int local_port;
-    uint8 local_ip[4];
-	uint8 remote_ip[4];
+    uint8_t local_ip[4];
+	uint8_t remote_ip[4];
 } esp_udp;
 
 typedef struct _remot_info{
 	enum espconn_state state;
 	int remote_port;
-	uint8 remote_ip[4];
+	uint8_t remote_ip[4];
 }remot_info;
 
 /** A callback prototype to inform about events for a espconn */
@@ -83,7 +83,7 @@ struct espconn {
     /** A callback function that is informed about events for this espconn */
     espconn_recv_callback recv_callback;
     espconn_sent_callback sent_callback;
-    uint8 link_cnt;
+    uint8_t link_cnt;
     void *reverse;
 };
 
@@ -94,7 +94,7 @@ struct espconn {
  * Returns      : none
 *******************************************************************************/
 
-sint8 espconn_connect(struct espconn *espconn);
+int8_t espconn_connect(struct espconn *espconn);
 
 /******************************************************************************
  * FunctionName : espconn_disconnect
@@ -103,7 +103,7 @@ sint8 espconn_connect(struct espconn *espconn);
  * Returns      : none
 *******************************************************************************/
 
-sint8 espconn_disconnect(struct espconn *espconn);
+int8_t espconn_disconnect(struct espconn *espconn);
 
 /******************************************************************************
  * FunctionName : espconn_delete
@@ -112,7 +112,7 @@ sint8 espconn_disconnect(struct espconn *espconn);
  * Returns      : none
 *******************************************************************************/
 
-sint8 espconn_delete(struct espconn *espconn);
+int8_t espconn_delete(struct espconn *espconn);
 
 /******************************************************************************
  * FunctionName : espconn_accept
@@ -121,7 +121,7 @@ sint8 espconn_delete(struct espconn *espconn);
  * Returns      : none
 *******************************************************************************/
 
-sint8 espconn_accept(struct espconn *espconn);
+int8_t espconn_accept(struct espconn *espconn);
 
 /******************************************************************************
  * FunctionName : espconn_create
@@ -130,7 +130,7 @@ sint8 espconn_accept(struct espconn *espconn);
  * Returns      : result
 *******************************************************************************/
 
-sint8 espconn_create(struct espconn *espconn);
+int8_t espconn_create(struct espconn *espconn);
 
 /******************************************************************************
  * FunctionName : espconn_tcp_get_max_con
@@ -139,7 +139,7 @@ sint8 espconn_create(struct espconn *espconn);
  * Returns      : none
 *******************************************************************************/
 
-uint8 espconn_tcp_get_max_con(void);
+uint8_t espconn_tcp_get_max_con(void);
 
 /******************************************************************************
  * FunctionName : espconn_tcp_set_max_con
@@ -148,7 +148,7 @@ uint8 espconn_tcp_get_max_con(void);
  * Returns      : none
 *******************************************************************************/
 
-sint8 espconn_tcp_set_max_con(uint8 num);
+int8_t espconn_tcp_set_max_con(uint8_t num);
 
 /******************************************************************************
  * FunctionName : espconn_tcp_get_max_con_allow
@@ -157,7 +157,7 @@ sint8 espconn_tcp_set_max_con(uint8 num);
  * Returns      : result
 *******************************************************************************/
 
-sint8 espconn_tcp_get_max_con_allow(struct espconn *espconn);
+int8_t espconn_tcp_get_max_con_allow(struct espconn *espconn);
 
 /******************************************************************************
  * FunctionName : espconn_tcp_set_max_con_allow
@@ -167,7 +167,7 @@ sint8 espconn_tcp_get_max_con_allow(struct espconn *espconn);
  * Returns      : result
 *******************************************************************************/
 
-sint8 espconn_tcp_set_max_con_allow(struct espconn *espconn, uint8 num);
+int8_t espconn_tcp_set_max_con_allow(struct espconn *espconn, uint8_t num);
 
 /******************************************************************************
  * FunctionName : espconn_regist_time
@@ -177,7 +177,7 @@ sint8 espconn_tcp_set_max_con_allow(struct espconn *espconn, uint8 num);
  * Returns      : none
 *******************************************************************************/
 
-sint8 espconn_regist_time(struct espconn *espconn, uint32 interval, uint8 type_flag);
+int8_t espconn_regist_time(struct espconn *espconn, uint32_t interval, uint8_t type_flag);
 
 /******************************************************************************
  * FunctionName : espconn_get_connection_info
@@ -187,7 +187,7 @@ sint8 espconn_regist_time(struct espconn *espconn, uint32 interval, uint8 type_f
  * Returns      : none
 *******************************************************************************/
 
-sint8 espconn_get_connection_info(struct espconn *pespconn, remot_info **pcon_info, uint8 typeflags);
+int8_t espconn_get_connection_info(struct espconn *pespconn, remot_info **pcon_info, uint8_t typeflags);
 
 /******************************************************************************
  * FunctionName : espconn_regist_sentcb
@@ -199,7 +199,7 @@ sint8 espconn_get_connection_info(struct espconn *pespconn, remot_info **pcon_in
  * Returns      : none
 *******************************************************************************/
 
-sint8 espconn_regist_sentcb(struct espconn *espconn, espconn_sent_callback sent_cb);
+int8_t espconn_regist_sentcb(struct espconn *espconn, espconn_sent_callback sent_cb);
 
 /******************************************************************************
  * FunctionName : espconn_sent
@@ -210,7 +210,7 @@ sint8 espconn_regist_sentcb(struct espconn *espconn, espconn_sent_callback sent_
  * Returns      : none
 *******************************************************************************/
 
-sint8 espconn_sent(struct espconn *espconn, uint8 *psent, uint16 length);
+int8_t espconn_sent(struct espconn *espconn, uint8_t *psent, uint16 length);
 
 /******************************************************************************
  * FunctionName : espconn_regist_connectcb
@@ -221,7 +221,7 @@ sint8 espconn_sent(struct espconn *espconn, uint8 *psent, uint16 length);
  * Returns      : none
 *******************************************************************************/
 
-sint8 espconn_regist_connectcb(struct espconn *espconn, espconn_connect_callback connect_cb);
+int8_t espconn_regist_connectcb(struct espconn *espconn, espconn_connect_callback connect_cb);
 
 /******************************************************************************
  * FunctionName : espconn_regist_recvcb
@@ -232,7 +232,7 @@ sint8 espconn_regist_connectcb(struct espconn *espconn, espconn_connect_callback
  * Returns      : none
 *******************************************************************************/
 
-sint8 espconn_regist_recvcb(struct espconn *espconn, espconn_recv_callback recv_cb);
+int8_t espconn_regist_recvcb(struct espconn *espconn, espconn_recv_callback recv_cb);
 
 /******************************************************************************
  * FunctionName : espconn_regist_reconcb
@@ -243,7 +243,7 @@ sint8 espconn_regist_recvcb(struct espconn *espconn, espconn_recv_callback recv_
  * Returns      : none
 *******************************************************************************/
 
-sint8 espconn_regist_reconcb(struct espconn *espconn, espconn_reconnect_callback recon_cb);
+int8_t espconn_regist_reconcb(struct espconn *espconn, espconn_reconnect_callback recon_cb);
 
 /******************************************************************************
  * FunctionName : espconn_regist_disconcb
@@ -253,7 +253,7 @@ sint8 espconn_regist_reconcb(struct espconn *espconn, espconn_reconnect_callback
  * Returns      : none
 *******************************************************************************/
 
-sint8 espconn_regist_disconcb(struct espconn *espconn, espconn_connect_callback discon_cb);
+int8_t espconn_regist_disconcb(struct espconn *espconn, espconn_connect_callback discon_cb);
 
 /******************************************************************************
  * FunctionName : espconn_port
@@ -263,7 +263,7 @@ sint8 espconn_regist_disconcb(struct espconn *espconn, espconn_connect_callback 
  * Returns      : access port value
 *******************************************************************************/
 
-uint32 espconn_port(void);
+uint32_t espconn_port(void);
 
 /******************************************************************************
  * TypedefName : dns_found_callback
@@ -305,7 +305,7 @@ err_t espconn_gethostbyname(struct espconn *pespconn, const char *hostname, ip_a
  * Returns      : none
 *******************************************************************************/
 
-sint8 espconn_secure_connect(struct espconn *espconn);
+int8_t espconn_secure_connect(struct espconn *espconn);
 
 /******************************************************************************
  * FunctionName : espconn_encry_disconnect
@@ -314,7 +314,7 @@ sint8 espconn_secure_connect(struct espconn *espconn);
  * Returns      : none
 *******************************************************************************/
 
-sint8 espconn_secure_disconnect(struct espconn *espconn);
+int8_t espconn_secure_disconnect(struct espconn *espconn);
 
 /******************************************************************************
  * FunctionName : espconn_encry_sent
@@ -325,7 +325,7 @@ sint8 espconn_secure_disconnect(struct espconn *espconn);
  * Returns      : none
 *******************************************************************************/
 
-sint8 espconn_secure_sent(struct espconn *espconn, uint8 *psent, uint16 length);
+int8_t espconn_secure_sent(struct espconn *espconn, uint8_t *psent, uint16 length);
 
 /******************************************************************************
  * FunctionName : espconn_secure_accept
@@ -334,7 +334,7 @@ sint8 espconn_secure_sent(struct espconn *espconn, uint8 *psent, uint16 length);
  * Returns      : none
 *******************************************************************************/
 
-sint8 espconn_secure_accept(struct espconn *espconn);
+int8_t espconn_secure_accept(struct espconn *espconn);
 
 /******************************************************************************
  * FunctionName : espconn_igmp_join
@@ -343,7 +343,7 @@ sint8 espconn_secure_accept(struct espconn *espconn);
  * 				  multicast_ip -- multicast ip given by user
  * Returns      : none
 *******************************************************************************/
-sint8 espconn_igmp_join(ip_addr_t *host_ip, ip_addr_t *multicast_ip);
+int8_t espconn_igmp_join(ip_addr_t *host_ip, ip_addr_t *multicast_ip);
 
 /******************************************************************************
  * FunctionName : espconn_igmp_leave
@@ -352,7 +352,7 @@ sint8 espconn_igmp_join(ip_addr_t *host_ip, ip_addr_t *multicast_ip);
  * 				  multicast_ip -- multicast ip given by user
  * Returns      : none
 *******************************************************************************/
-sint8 espconn_igmp_leave(ip_addr_t *host_ip, ip_addr_t *multicast_ip);
+int8_t espconn_igmp_leave(ip_addr_t *host_ip, ip_addr_t *multicast_ip);
 
 #endif
 
